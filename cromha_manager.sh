@@ -213,7 +213,7 @@ if [ "$option" == "help" ]; then
       echo " "
       echo "${bold}CUSTOMIZATION:"
       echo "${bold}customize${normal}: customize config.yaml"
-      echo "Go to: URL for more information"
+      echo "Go to: https://github.com/OcelotWalrus/Bash-Multi-Package-Manager for more information"
 	disable_done=True
 fi
 
