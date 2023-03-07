@@ -5,6 +5,7 @@
 option=$1
 parameter=$2
 parameter2=$3
+version=1.0
 
 disable_done=False
 
@@ -74,19 +75,31 @@ zypp=$(echo $zypp_check)
 
 # Start jobs
 
-echo "_________ .__                                 
-\_   ___ \|  |_________  ____   _____ _____   
-/    \  \/|  |  \_  __ \/  _ \ /     \\__  \  
-\     \___|   Y  \  | \(  <_> )  Y Y  \/ __ \_
- \______  /___|  /__|   \____/|__|_|  (____  /
-        \/     \/                   \/     \/ "
-echo "Github Repository: https://github.com/OcelotWalrus/Bash-Multi-Package-Manager"
-echo "
-
-sleep 1
+if [ "$option" == "" ]; then
+      echo -e "${BRed}_________                       .__            
+\_   ___ \_______  ____   _____ |  |__ _____   
+/    \  \/\_  __ \/  _ \ /     \|  |  \\__  \  
+\     \____|  | \(  <_> )  Y Y  \   Y  \/ __ \_
+ \______  /|__|   \____/|__|_|  /___|  (____  /
+        \/                    \/     \/     \/ 
+${Color_Off}"
+      echo " "
+      echo "${bold}=====================================================================${normal}"
+      echo -e "${BPurple}Github Repository${Color_Off}: ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
+      echo " "
+      echo -e "${Green}Current version${Color_Off}: ${BYellow}$version${Color_Off}"
+      echo "${bold}=====================================================================${normal}"
+      echo " "
+      echo -e "${Cyan}A bash script to manage multiple package
+managers easily with high customizability.${Color_Off}"
+      echo " "
+      echo "Tip: run '$ sh cromha_manager.sh help'"
+      disable_done=True
+fi
 
 if [ $disable_done == False ]; then
-      echo "Note that this operation can take multiple minutes"
+      echo "${bold}Note that this operation can take multiple minutes"
+      echo " "
 fi
 
 # Options
@@ -179,7 +192,7 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       fi
 fi
 
-if [ "$option" == "help" ] || [ "$option" == "" ]; then
+if [ "$option" == "help" ]; then
 	echo "${bold}HELP PAGE:"
 	echo " "
 	echo "${bold}OPTIONS${normal} (First entry):"
