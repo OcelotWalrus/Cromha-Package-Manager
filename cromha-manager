@@ -35,6 +35,38 @@ BPurple='\033[1;35m'      # Purple
 BCyan='\033[1;36m'        # Cyan
 BWhite='\033[1;37m'       # White
 
+# Functions
+
+# Progress bar
+ProgressBar(){
+for i in {1..100}; do
+	output="\r"
+
+	output="$output ["
+	total=$i
+	count=0
+
+	while [ $count -lt $total ]; do
+		output="$output▰"
+		let count=$count+1
+	done
+
+	let total=100-$total
+	count=0
+
+	while [ $count -lt $total ]; do
+		output="$output▱" 
+		let count=$count+1
+	done
+	output="$output ] $i%"
+	echo -ne "$output"
+
+	sleep .01
+done
+
+echo " ✔ "
+}
+
 # YAML parser
 
 function parse_yaml {
@@ -109,7 +141,7 @@ if [ "$option" == "autoremove" ]; then
       if [ $flatpak == True ]; then
             sudo flatpak uninstall -y --unused >&- 2>&-
             echo "[Autoremoving Flatpak Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $snap == True ]; then
             set -eu
@@ -118,12 +150,12 @@ if [ "$option" == "autoremove" ]; then
                   sudo snap remove "$snapname" --revision="$revision" >&- 2>&-
             done
             echo "[Autoremoving Snapcraft Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $yum == True ]; then
             sudo yum autoremove -y >&- 2>&-
             echo "[Autoremoving Yum Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $pacman == True ]; then
             echo ${bold}ERROR: Sorry but pacman autoremove is not yet supported${normal}
@@ -134,12 +166,12 @@ if [ "$option" == "autoremove" ]; then
       if [ $dnf == True ]; then
             sudo dnf autoremove -y >&- 2>&-
             echo "[Autoremoving Dnf Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $apt == True ]; then
             sudo apt autoremove -y >&- 2>&-
             echo "[Autoremoving APT Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $zypp == True ]; then
             echo ${bold}ERROR: Sorry but zypper autoremove is not yet supported${normal}
@@ -153,42 +185,42 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       if [ $flatpak == True ]; then
             sudo flatpak update -y >&- 2>&-
             echo "[Updating Flatpak Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $snap == True ]; then
             sudo snap refresh >&- 2>&-
             echo "[Updating Snapcraft Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $yum == True ]; then
             sudo yum update -y >&- 2>&-
             echo "[Updating Yum Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $pacman == True ]; then
             sudo pacman -Syu >&- 2>&-
             echo "[Updating Pacman Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $cargo == True ]; then
             sudo cargo update -y >&- 2>&-
             echo "[Updating Cargo Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $dnf == True ]; then
             sudo dnf update -y >&- 2>&-
             echo "[Updating Dnf Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $apt == True ]; then
             sudo apt update -y >&- 2>&-
             echo "[Updating APT Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
       if [ $zypp == True ]; then
             sudo zypper update -y >&- 2>&-
             echo "[Updating Zypp Packages]"
-            sh src/progress_bar.sh
+            ProgressBar
       fi
 fi
 
