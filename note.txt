@@ -1,0 +1,2 @@
+Add script to make it accessible anywhere: put it in /usr/bin/ and gives +x access
+Plus: remove the .sh at the end so instead of the user typing cromha-manager.sh, he just have to type cromha-manager
