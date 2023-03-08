@@ -5,7 +5,6 @@
 option=$1
 parameter=$2
 parameter2=$3
-version=1.0
 
 disable_done=False
 
@@ -88,6 +87,10 @@ function parse_yaml {
 
 eval "$(parse_yaml config.yaml "CONFIG_")"
 
+# Informations variables
+version_ver=$(echo "$CONFIG_informations_version")
+
+# Package managers variables
 flatpak_check=$(echo "$CONFIG_package_managers_flatpak")
 flatpak=$(echo $flatpak_check)
 snap_check=$(echo "$CONFIG_package_managers_snapcraft")
@@ -119,7 +122,7 @@ ${Color_Off}"
       echo "${bold}=====================================================================${normal}"
       echo -e "${BPurple}Github Repository${Color_Off}: ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
       echo " "
-      echo -e "${Green}Current version${Color_Off}: ${BYellow}$version${Color_Off}"
+      echo -e "${Green}Current version${Color_Off}: ${BYellow}$version_ver${Color_Off}"
       echo "${bold}=====================================================================${normal}"
       echo " "
       echo -e "${Cyan}A bash script to manage multiple package

@@ -7,3 +7,5 @@ package_managers:
   snapcraft: False
   yum: False
   zypp: False
+informations:
+  version: 0.1
