@@ -1,9 +1,9 @@
 package_managers:
-  flatpak: False
-  snapcraft: False
-  yum: False
-  pacman: False
+  apt: False
   cargo: False
   dnf: False
-  apt: False
+  flatpak: False
+  pacman: False
+  snapcraft: False
+  yum: False
   zypp: False
