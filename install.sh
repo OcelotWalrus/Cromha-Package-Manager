@@ -126,7 +126,7 @@ ${Color_Off}"
       echo -e "${Cyan}A bash script to manage multiple package
 managers easily with high customizability.${Color_Off}"
       echo " "
-      echo "Tip: run '$ sh cromha_manager.sh help'"
+      echo "Hint: run '$ cromha_manager.sh help' for help"
       echo " "
       echo " "
 
