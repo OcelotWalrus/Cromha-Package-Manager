@@ -8,10 +8,6 @@ parameter2=$3
 
 disable_done=False
 
-progress_bar_done="✔"
-progress_bar_none="▱"
-progress_bar_full="▰"
-
 random_sleep_progress_bar=$(echo $(( $RANDOM % 8 + 1 )))
 
 bold=$(tput bold)
@@ -104,10 +100,30 @@ zypp=$(echo "$CONFIG_package_managers_zypp")
 # Informations variables
 
 version_ver=$(echo "$CONFIG_informations_version")
+default_config="settings:
+  wait_time: 15
+  progress_bar_done_sprite: ✔
+  progress_bar_empty_sprite: ▱
+  progress_bar_full_sprite: ▰
+package_managers:
+  apt: False
+  cargo: False
+  dnf: False
+  flatpak: False
+  pacman: False
+  snapcraft: False
+  yum: False
+  zypp: False
+informations:
+  version: 0.1"
 
 # Settings
 
 wait_time=$(echo "$CONFIG_settings_wait_time")
+
+progress_bar_done=$(echo "$CONFIG_settings_progress_bar_done_sprite")
+progress_bar_none=$(echo "$CONFIG_settings_progress_bar_empty_sprite")
+progress_bar_full=$(echo "$CONFIG_settings_progress_bar_full_sprite")
 
 # Start jobs
 
@@ -129,7 +145,7 @@ ${Color_Off}"
       echo -e "${Cyan}A bash script to manage multiple package
 managers easily with high customizability.${Color_Off}"
       echo " "
-      echo "Hint: run '$ cromha_manager.sh help' for help"
+      echo "Hint: run '$ cromha_manager help' for help"
       disable_done=True
 fi
 
@@ -255,6 +271,7 @@ if [ "$option" == "help" ]; then
 	echo "${bold}help${normal}: show this page"
 	echo "${bold}upgrade/update${normal}: update your system"
       echo "${bold}customize${normal}: customize config.yaml"
+      echo "${bold}reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
 	echo " "
 	echo "${bold}PARAMETERS${normal} (Second and Third entry):"
 	echo " "
@@ -276,6 +293,13 @@ if [ "$option" == "customize" ]; then
       sleep 1
       nano $HOME/cromha-manager-config.yaml
       sleep .1
+fi
+
+if [ "$option" == "reset" ]; then
+      echo "Reseting config located in $HOME/cromha-manager-config.yaml file..."
+      sudo rm $HOME/cromha-manager-config.yaml
+      echo "$default_config" >> $HOME/cromha-manager-config.yaml
+      chmod 777 $HOME/cromha-manager-config.yaml
 fi
 
 # Parameters
