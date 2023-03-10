@@ -142,7 +142,7 @@ if [ "$answer" == "y" ]; then
 		sudo cp src/cromha-manager /usr/bin/
 	else
 		cp src/cromha-manager-config.yaml $HOME/
-      	chmod 777 $HOME/cromha-manager-config.yaml
+            chmod 777 $HOME/cromha-manager-config.yaml
 	fi
       ProgressBar
 
