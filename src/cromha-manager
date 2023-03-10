@@ -384,7 +384,7 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
             echo "[ZYPPER OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo "$zypp_list" >> $HOME/packages-list-cromha.temp
       fi
-      echo "Opening temporary file where story installed packages list..."
+      echo "Opening temporary file where is stored installed packages list..."
       notify-send "Installed packages listing finished"
       sleep 1
       nano $HOME/packages-list-cromha.temp
