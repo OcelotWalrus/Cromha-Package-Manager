@@ -460,5 +460,5 @@ fi
 # End jobs
 
 if [ "$disable_done" == False ]; then
-      echo -e ${Color_Off}${bold}Done !
+      echo -e "${Color_Off}${bold}Done $progress_bar_done"
 fi
