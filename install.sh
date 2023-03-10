@@ -85,7 +85,7 @@ function parse_yaml {
       }'
 }
 
-eval "$(parse_yaml config.yaml "CONFIG_")"
+eval "$(parse_yaml $HOME/cromha-manager-config.yaml "CONFIG_")"
 
 # Informations variables
 version_ver=$(echo "$CONFIG_informations_version")
@@ -139,7 +139,13 @@ read answer
 if [ "$answer" == "y" ]; then
 
       echo "Installing Cromha Multi Package Manager..."
-      sudo cp src/cromha-manager /usr/bin/
+      FILE=$HOME/cromha-manager-config.yaml
+	if test -f "$FILE"; then
+		sudo cp src/cromha-manager /usr/bin/
+	else
+		cp src/cromha-manager-config.yaml $HOME/
+      	chmod 777 $HOME/cromha-manager-config.yaml
+	fi
       ProgressBar
 
 else

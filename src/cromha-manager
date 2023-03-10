@@ -85,7 +85,7 @@ function parse_yaml {
       }'
 }
 
-eval "$(parse_yaml config.yaml "CONFIG_")"
+eval "$(parse_yaml $HOME/cromha-manager-config.yaml "CONFIG_")"
 
 # Informations variables
 version_ver=$(echo "$CONFIG_informations_version")
@@ -255,7 +255,7 @@ fi
 if [ "$option" == "customize" ]; then
       echo Opening config.yaml...
       sleep 1
-      nano config.yaml
+      nano $HOME/cromha-manager-config.yaml
 fi
 
 # Parameters
