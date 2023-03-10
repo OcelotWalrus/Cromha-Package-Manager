@@ -1,3 +1,5 @@
+settings:
+  wait_time: 15
 package_managers:
   apt: False
   cargo: False

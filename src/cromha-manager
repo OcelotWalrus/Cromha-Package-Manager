@@ -105,6 +105,10 @@ zypp=$(echo "$CONFIG_package_managers_zypp")
 
 version_ver=$(echo "$CONFIG_informations_version")
 
+# Settings
+
+wait_time=$(echo "$CONFIG_settings_wait_time")
+
 # Start jobs
 
 if [ "$option" == "" ]; then
@@ -279,61 +283,63 @@ fi
 # First
 
 if [ "$parameter" == "-clean" ]; then
+      echo " "
 	echo "Cleaning cashed data..."
 	sudo dnf clean all -y
+      echo " "
 fi
 
 if [ "$parameter" == "-exit" ]; then
-	echo "Closing terminal window..."
+      echo " "
+	echo "Closing terminal window in $wait_time secs..."
+      notify-send  "Closing terminal window in $wait_time secs..."
+      sleep "$wait_time"
 	kill -9 $PPID
 fi
 
 if [ "$parameter" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
-	echo "Shutingdown your system in 15 seconds..."
-	sleep 15
+	echo "Shutingdown your system in $wait_time seconds..."
+      notify-send "Shutingdown your system in $wait_time seconds..."
+	sleep "$wait_time"
 	sudo poweroff
 fi
 
 if [ "$parameter" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
-	echo "Rebooting your system in 15 seconds..."
-	sleep 15
+	echo "Rebooting your system in $wait_time seconds..."
+      notify-send "Rebooting your system in $wait_time seconds..."
+	sleep "$wait_time"
 	sudo reboot
 fi
 
 # Second
 
 if [ "$parameter2" == "-clean" ]; then
+      echo " "
 	echo "Cleaning cashed data..."
 	sudo dnf clean all -y
+      echo " "
 fi
 
 if [ "$parameter2" == "-exit" ]; then
-	echo "Closing terminal window..."
+      echo " "
+	echo "Closing terminal window in $wait_time secs..."
+      notify-send  "Closing terminal window in $wait_time secs..."
+      sleep "$wait_time"
 	kill -9 $PPID
 fi
 
-if [ "$parameter2" == "-poweroff" ]; then
-	echo "Shutingdown your system in 15 seconds..."
-	sleep 15
+if [ "$parameter2" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
+	echo "Shutingdown your system in $wait_time seconds..."
+      notify-send "Shutingdown your system in $wait_time seconds..."
+	sleep "$wait_time"
 	sudo poweroff
 fi
 
-if [ "$parameter2" == "-reboot" ]; then
-	echo "Rebooting your system in 15 seconds..."
-	sleep 15
+if [ "$parameter2" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
+	echo "Rebooting your system in $wait_time seconds..."
+      notify-send "Rebooting your system in $wait_time seconds..."
+	sleep "$wait_time"
 	sudo reboot
-fi
-
-if [ "$parameter2" == "-restart" ]; then
-	echo "Restarting your system in 15 seconds..."
-	sleep 15
-	sudo reboot
-fi
-
-if [ "$parameter2" == "-shutdown" ]; then
-	echo "Shutingdown your system in 15 seconds..."
-	sleep 15
-	sudo shutdown
 fi
 
 # End jobs
