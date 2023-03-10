@@ -8,6 +8,11 @@ parameter2=$3
 
 disable_done=False
 
+progress_bar_done="✔"
+progress_bar_none="▱"
+progress_bar_full="▰"
+
+random_sleep_progress_bar=$(echo $(( $RANDOM % 8 + 1 )))
 
 bold=$(tput bold)
 normal=$(tput sgr0)
@@ -37,8 +42,9 @@ BWhite='\033[1;37m'       # White
 # Functions
 
 # Progress bar
-ProgressBar(){
-for i in {1..100}; do
+
+function ProgressBar () {
+      for i in {1..100}; do
 	output="\r"
 
 	output="$output ["
@@ -46,28 +52,28 @@ for i in {1..100}; do
 	count=0
 
 	while [ $count -lt $total ]; do
-		output="$output▰"
-		let count=$count+1
+		output="$output${progress_bar_full}"
+		let count=$count+3
 	done
 
 	let total=100-$total
 	count=0
 
 	while [ $count -lt $total ]; do
-		output="$output▱" 
-		let count=$count+1
+		output="${output}${progress_bar_none}" 
+		let count=$count+3
 	done
-	output="$output ] $i%"
+	output="$output ] $i/100%"
 	echo -ne "$output"
 
-	sleep .01
+      random_sleep_progress_bar=$(echo "0.$(( ($RANDOM%40) + 100))")
+	sleep $random_sleep_progress_bar
 done
-
-echo " ✔ "
+echo " $progress_bar_done"
 }
 
-# YAML parser
 
+# YAML parser
 function parse_yaml {
       local prefix=$2
       local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
@@ -84,29 +90,20 @@ function parse_yaml {
             }
       }'
 }
-
 eval "$(parse_yaml $HOME/cromha-manager-config.yaml "CONFIG_")"
 
-# Informations variables
-version_ver=$(echo "$CONFIG_informations_version")
+flatpak=$(echo "$CONFIG_package_managers_flatpak")
+snap=$(echo "$CONFIG_package_managers_snapcraft")
+yum=$(echo "$CONFIG_package_managers_yum")
+pacman=$(echo "$CONFIG_package_managers_pacman")
+cargo=$(echo "$CONFIG_package_managers_cargo")
+dnf=$(echo "$CONFIG_package_managers_dnf")
+apt=$(echo "$CONFIG_package_managers_apt")
+zypp=$(echo "$CONFIG_package_managers_zypp")
 
-# Package managers variables
-flatpak_check=$(echo "$CONFIG_package_managers_flatpak")
-flatpak=$(echo $flatpak_check)
-snap_check=$(echo "$CONFIG_package_managers_snapcraft")
-snap=$(echo $snap_check)
-yum_check=$(echo "$CONFIG_package_managers_yum")
-yum=$(echo $yum_check)
-pacman_check=$(echo "$CONFIG_package_managers_pacman")
-pacman=$(echo $pacman_check)
-cargo_check=$(echo "$CONFIG_package_managers_cargo")
-cargo=$(echo $cargo_check)
-dnf_check=$(echo "$CONFIG_package_managers_dnf")
-dnf=$(echo $dnf_check)
-apt_check=$(echo "$CONFIG_package_managers_apt")
-apt=$(echo $apt_check)
-zypp_check=$(echo "$CONFIG_package_managers_zypp")
-zypp=$(echo $zypp_check)
+# Informations variables
+
+version_ver=$(echo "$CONFIG_informations_version")
 
 # Start jobs
 
@@ -141,42 +138,43 @@ fi
 
 if [ "$option" == "autoremove" ]; then
       echo "Autoremoving packages..."
-      if [ $flatpak == True ]; then
-            sudo flatpak uninstall -y --unused >&- 2>&-
+      if [ "$flatpak" == True ]; then
+            sudo flatpak uninstall -y --unused #>&- 2>&-
             echo "[Autoremoving Flatpak Packages]"
-            ProgressBar
+            #ProgressBar
       fi
-      if [ $snap == True ]; then
+      if [ "$snap" == True ]; then
             set -eu
             LANG=C snap list --all | awk '/disabled/{print $1, $3}' |
-            while read snapname revision; do
-                  sudo snap remove "$snapname" --revision="$revision" >&- 2>&-
+            while read snapname revision;
+            do
+                  sudo snap remove "$snapname" --revision="$revision" #>&- 2>&-
             done
             echo "[Autoremoving Snapcraft Packages]"
-            ProgressBar
+            #ProgressBar
       fi
-      if [ $yum == True ]; then
-            sudo yum autoremove -y >&- 2>&-
+      if [ "$yum" == True ]; then
+            sudo yum autoremove -y #>&- 2>&-
             echo "[Autoremoving Yum Packages]"
-            ProgressBar
+            #ProgressBar
       fi
-      if [ $pacman == True ]; then
-            echo ${bold}ERROR: Sorry but pacman autoremove is not yet supported${normal}
+      if [ "$pacman" == True ]; then
+            echo "${bold}ERROR: Sorry but pacman autoremove is not yet supported${normal}"
       fi
-      if [ $cargo == True ]; then
+      if [ "$cargo" == True ]; then
             echo ${bold}ERROR: Sorry but cargo autoremove is not yet supported${normal}
       fi
-      if [ $dnf == True ]; then
-            sudo dnf autoremove -y >&- 2>&-
+      if [ "$dnf" == True ]; then
+            sudo dnf autoremove -y #>&- 2>&-
             echo "[Autoremoving Dnf Packages]"
-            ProgressBar
+            #ProgressBar
       fi
-      if [ $apt == True ]; then
-            sudo apt autoremove -y >&- 2>&-
+      if [ "$apt " == True ]; then
+            sudo apt autoremove -y #>&- 2>&-
             echo "[Autoremoving APT Packages]"
-            ProgressBar
+            #ProgressBar
       fi
-      if [ $zypp == True ]; then
+      if [ "$zypp" == True ]; then
             echo ${bold}ERROR: Sorry but zypper autoremove is not yet supported${normal}
       fi
 fi
@@ -185,45 +183,62 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       echo "Checking for package managers updates..."
       sleep 3
       echo "Updating different package managers..."
+      echo " "
       if [ $flatpak == True ]; then
-            sudo flatpak update -y >&- 2>&-
             echo "[Updating Flatpak Packages]"
-            ProgressBar
+            sudo flatpak update -y >&- 2>&- & PIDFLATPAK1=$!
+            ProgressBar & PIDFLATPAK2=$!
+            wait $PIDFLATPAK1
+            wait $PIDFLATPAK2
       fi
       if [ $snap == True ]; then
-            sudo snap refresh >&- 2>&-
             echo "[Updating Snapcraft Packages]"
-            ProgressBar
+            sudo snap refresh >&- 2>&- & PIDSNAP1=$!
+            ProgressBar & PIDSNAP2=$!
+            wait $PIDSNAP1
+            wait $PIDSNAP2
       fi
       if [ $yum == True ]; then
-            sudo yum update -y >&- 2>&-
             echo "[Updating Yum Packages]"
-            ProgressBar
+            sudo yum update -y >&- 2>&- & PIDYUM1=$!
+            ProgressBar & PIDYUM2=$!
+            wait $PIDYUM1
+            wait $PIDYUM2
       fi
       if [ $pacman == True ]; then
-            sudo pacman -Syu >&- 2>&-
             echo "[Updating Pacman Packages]"
-            ProgressBar
+            sudo pacman -Syu >&- 2>&- & PIDPACMAN1=$!
+            ProgressBar & PIDPACMAN2=$!
+            wait $PIDPACMAN1
+            wait $PIDPACMAN2
       fi
       if [ $cargo == True ]; then
-            sudo cargo update -y >&- 2>&-
             echo "[Updating Cargo Packages]"
-            ProgressBar
+            sudo cargo update -y >&- 2>&- & PIDCARGO1=$!
+            ProgressBar & PIDCARGO2=$!
+            wait $PIDCARGO1
+            wait $PIDCARGO2
       fi
       if [ $dnf == True ]; then
-            sudo dnf update -y >&- 2>&-
             echo "[Updating Dnf Packages]"
-            ProgressBar
+            sudo dnf update -y >&- 2>&- & PIDDNF1=$!
+            ProgressBar & PIDDNF2=$!
+            wait $PIDDNF1
+            wait $PIDDNF2
       fi
       if [ $apt == True ]; then
-            sudo apt update -y >&- 2>&-
             echo "[Updating APT Packages]"
-            ProgressBar
+            sudo apt update -y >&- 2>&- & PIDAPT1=$!
+            ProgressBar & PIDAPT2=$!
+            wait $PIDAPT1
+            wait $PIDAPT2
       fi
       if [ $zypp == True ]; then
-            sudo zypper update -y >&- 2>&-
             echo "[Updating Zypp Packages]"
-            ProgressBar
+            sudo zypper update -y >&- 2>&- & PIDZYPP1=$!
+            ProgressBar & PIDZYPP2=$!
+            wait $PIDZYPP1
+            wait $PIDZYPP2
       fi
 fi
 
@@ -256,6 +271,7 @@ if [ "$option" == "customize" ]; then
       echo Opening config.yaml...
       sleep 1
       nano $HOME/cromha-manager-config.yaml
+      sleep .1
 fi
 
 # Parameters
@@ -322,6 +338,6 @@ fi
 
 # End jobs
 
-if [ $disable_done == False ]; then
-      echo -e $Color_Off $bold Done !
+if [ "$disable_done" == False ]; then
+      echo -e ${Color_Off}${bold}Done !
 fi
