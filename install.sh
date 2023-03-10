@@ -47,7 +47,7 @@ for i in {1..100}; do
 
 	while [ $count -lt $total ]; do
 		output="$output▰"
-		let count=$count+1
+		let count=$count+3
 	done
 
 	let total=100-$total
@@ -55,7 +55,7 @@ for i in {1..100}; do
 
 	while [ $count -lt $total ]; do
 		output="$output▱" 
-		let count=$count+1
+		let count=$count+3
 	done
 	output="$output ] $i%"
 	echo -ne "$output"
