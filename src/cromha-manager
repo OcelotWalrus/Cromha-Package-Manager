@@ -390,7 +390,7 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
       nano $HOME/packages-list-cromha.temp
       sleep 1
       echo "Deleting temporary file..."
-      rm $HOME/packages-list-cromha.temp
+      rm $HOME/packages-list-cromha.temp >&- 2>&-
 fi
 
 # Parameters
