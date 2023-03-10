@@ -150,7 +150,7 @@ managers easily with high customizability.${Color_Off}"
 fi
 
 if [ $disable_done == False ]; then
-      echo "${bold}Note that this operation can take multiple minutes"
+      echo "${bold}Note that this operation can take multiple minutes${normal}"
       echo " "
 fi
 
@@ -269,6 +269,7 @@ if [ "$option" == "help" ]; then
 	echo " "
 	echo "${bold}autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
 	echo "${bold}help${normal}: show this page"
+      echo "${bold}list/packages${normal}: list packages installed on your package managers one by one in nano"
 	echo "${bold}upgrade/update${normal}: update your system"
       echo "${bold}customize${normal}: customize config.yaml"
       echo "${bold}reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
@@ -300,6 +301,96 @@ if [ "$option" == "reset" ]; then
       sudo rm $HOME/cromha-manager-config.yaml
       echo "$default_config" >> $HOME/cromha-manager-config.yaml
       chmod 777 $HOME/cromha-manager-config.yaml
+fi
+
+if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
+      echo "Searching for your installed packages..."
+      echo "Warning, packages list file can be very big..."
+      echo " "
+      if [ $flatpak == True ]; then
+            echo "Would you want to get the list of your flatpak packages ? (y/n)"
+            read anwser_flatpack
+      fi
+      if [ $snap == True ]; then
+            echo "Would you want to get the list of your snapcraft packages ? (y/n)"
+            read anwser_snapcraft
+      fi
+      if [ $yum == True ]; then
+            echo "Would you want to get the list of your yum packages ? (y/n)"
+            read anwser_yum
+      fi
+      if [ $pacman == True ]; then
+            echo "Would you want to get the list of your pacman packages ? (y/n)"
+            read anwser_pacman
+      fi
+      if [ $cargo == True ]; then
+            echo "Would you want to get the list of your cargo packages ? (y/n)"
+            read anwser_cargo
+      fi
+      if [ $dnf == True ]; then
+            echo "Would you want to get the list of your dnf packages ? (y/n)"
+            read anwser_dnf
+      fi
+      if [ $apt == True ]; then
+            echo "Would you want to get the list of your apt packages ? (y/n)"
+            read anwser_apt
+      fi
+      if [ $zypp == True ]; then
+            echo "Would you want to get the list of your zypp packages ? (y/n)"
+            read anwser_zypp
+      fi
+      if [ "$anwser_flatpack" == "y" ]; then
+            flatpak_list=$(flatpak list)
+            echo "[FLATPAK OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo "$flatpak_list" >> $HOME/packages-list-cromha.temp
+      fi
+      if [ "$anwser_snapcraft" == "y" ]; then
+            snap_list=$(snap list)
+            echo "[SNAPCRAFT OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo "$snap_list" >> $HOME/packages-list-cromha.temp
+      fi
+      if [ "$anwser_yum" == "y" ]; then
+            yum_list=$(yum list)
+            echo "[YUM OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo "$yum_list" >> $HOME/packages-list-cromha.temp
+      fi
+      if [ "$anwser_pacman" == "y" ]; then
+            pacman_list=$(pacman -Q)
+            echo "[PACMAN OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo "$pacman_list" >> $HOME/packages-list-cromha.temp
+      fi
+      if [ "$anwser_cargo" == "y" ]; then
+            cargo_list=$(cargo install --list)
+            echo "[CARGO OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo "$cargo_list" >> $HOME/packages-list-cromha.temp
+      fi
+      if [ "$anwser_dnf" == "y" ]; then
+            dnf_list=$(dnf list)
+            echo "[DNF OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo "$dnf_list" >> $HOME/packages-list-cromha.temp
+      fi
+      if [ "$anwser_apt" == "y" ]; then
+            apt_list=$(apt list --installed)
+            echo "[APT OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo "$apt_list" >> $HOME/packages-list-cromha.temp
+      fi
+      if [ "$anwser_apt" == "y" ]; then
+            apt_list=$(apt list --installed)
+            echo "[APT OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo "$apt_list" >> $HOME/packages-list-cromha.temp
+      fi
+      if [ "$anwser_zypp" == "y" ]; then
+            zypp_list=$(zypper search -i)
+            echo "[ZYPPER OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo "$zypp_list" >> $HOME/packages-list-cromha.temp
+      fi
+      echo "Opening temporary file where story installed packages list..."
+      notify-send "Installed packages listing finished"
+      sleep 1
+      nano $HOME/packages-list-cromha.temp
+      sleep 1
+      echo "Deleting temporary file..."
+      rm $HOME/packages-list-cromha.temp
 fi
 
 # Parameters
