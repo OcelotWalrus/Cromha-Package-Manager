@@ -269,6 +269,7 @@ if [ "$option" == "help" ]; then
 	echo " "
 	echo "${bold}autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
 	echo "${bold}help${normal}: show this page"
+      echo "${bold}search/find${normal}: search and find packages on enabled package managers"
       echo "${bold}list/packages${normal}: list packages installed on your package managers one by one in nano"
 	echo "${bold}upgrade/update${normal}: update your system"
       echo "${bold}customize${normal}: customize config.yaml"
@@ -309,7 +310,7 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
       echo " "
       if [ $flatpak == True ]; then
             echo "Would you want to get the list of your flatpak packages ? (y/n)"
-            read anwser_flatpack
+            read anwser_flatpak
       fi
       if [ $snap == True ]; then
             echo "Would you want to get the list of your snapcraft packages ? (y/n)"
@@ -339,7 +340,7 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
             echo "Would you want to get the list of your zypp packages ? (y/n)"
             read anwser_zypp
       fi
-      if [ "$anwser_flatpack" == "y" ]; then
+      if [ "$anwser_flatpak" == "y" ]; then
             flatpak_list=$(flatpak list)
             echo "[FLATPAK OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo "$flatpak_list" >> $HOME/packages-list-cromha.temp
@@ -391,6 +392,26 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
       sleep 1
       echo "Deleting temporary file..."
       rm $HOME/packages-list-cromha.temp >&- 2>&-
+fi
+
+if [ "$option" == "search" ] || [ "$option" == "find" ]; then
+      echo "Enter package name:"
+      read package_find_name
+      echo "Searching for matches..."
+      echo " "
+      if [ "$flatpak" == True ]; then
+            flatpak_search=$(flatpak search "$package_find_name")
+            flatpak search "$package_find_name" >&- 2>&- & PIDSEARCH1=$!
+            ProgressBar & PIDSEARCH2=$!
+            wait $PIDSEARCH1
+            wait $PIDSEARCH2
+            if [ "$flatpak_search" == "No matches found" ]; then
+                  echo "No macthes found for package name '$package_find_name' on flatpak repositories..."
+                  echo " "
+            else
+                  echo ""
+            fi
+      fi
 fi
 
 # Parameters
