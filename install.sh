@@ -88,7 +88,7 @@ function parse_yaml {
 eval "$(parse_yaml $HOME/cromha-manager-config.yaml "CONFIG_")"
 
 # Informations variables
-version_ver=$(echo "$CONFIG_informations_version")
+version_ver=0.1
 
 # Package managers variables
 flatpak_check=$(echo "$CONFIG_package_managers_flatpak")
