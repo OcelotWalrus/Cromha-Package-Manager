@@ -136,11 +136,11 @@ if [ "$option" == "" ]; then
         \/                    \/     \/     \/ 
 ${Color_Off}"
       echo " "
-      echo "${bold}=====================================================================${normal}"
+      echo "${bold}===============================================================================${normal}"
       echo -e "${BPurple}Github Repository${Color_Off}: ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
       echo " "
       echo -e "${Green}Current version${Color_Off}: ${BYellow}$version_ver${Color_Off}"
-      echo "${bold}=====================================================================${normal}"
+      echo "${bold}===============================================================================${normal}"
       echo " "
       echo -e "${Cyan}A bash script to manage multiple package
 managers easily with high customizability.${Color_Off}"
