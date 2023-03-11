@@ -97,6 +97,21 @@ done
 echo -e " ${BGreen}$progress_bar_done${Color_Off}"
 }
 
+function Timer () {
+      current_wait_time="$wait_time"
+
+      echo " "
+      echo -e "${BRed}Timer:${Color_Off}"
+
+      while [ "$current_wait_time" -gt -1 ]; do
+            echo -ne "${BCyan}$current_wait_time\033[0K\r${Color_Off}"
+            let current_wait_time=$current_wait_time-1
+            sleep 1
+      done
+
+      sleep 1
+      echo 0
+}
 
 # YAML parser
 function parse_yaml {
@@ -184,7 +199,7 @@ fi
 # Options
 
 if [ "$option" == "autoremove" ]; then
-      echo -e "Autoremoving packages..."
+      echo -e "${Purple}Autoremoving packages...${Color_Off}"
       if [ "$flatpak" == True ]; then
             sudo flatpak uninstall -y --unused #>&- 2>&-
             echo -e "[Autoremoving Flatpak Packages]"
@@ -224,9 +239,9 @@ if [ "$option" == "autoremove" ]; then
 fi
 
 if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
-      echo -e "Checking for package managers updates..."
+      echo -e "${Purple}Checking for package managers updates...${Color_Off}"
       sleep 3
-      echo -e "Updating different package managers..."
+      echo -e "${Purple}Updating different package managers...${Color_Off}"
       echo -e " "
       if [ $flatpak == True ]; then
             echo -e "[Updating Flatpak Packages]"
@@ -307,49 +322,49 @@ if [ "$option" == "help" ]; then
 fi
 
 if [ "$option" == "customize" ]; then
-      echo -e Opening config.yaml...
+      echo -e "${Purple}Opening config.yaml...${Color_Off}"
       sleep 1
       nano $HOME/cromha-manager-config.yaml
       sleep .1
 fi
 
 if [ "$option" == "reset" ]; then
-      echo -e "Reseting config located in $HOME/cromha-manager-config.yaml file..."
+      echo -e "${Purple}Reseting config located in $HOME/cromha-manager-config.yaml file...${Color_Off}"
       sudo rm $HOME/cromha-manager-config.yaml
       echo -e "$default_config" >> $HOME/cromha-manager-config.yaml
       chmod 777 $HOME/cromha-manager-config.yaml
 fi
 
 if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
-      echo -e "Searching for your installed packages..."
-      echo -e "Warning, packages list file can be very big..."
+      echo -e "${Purple}Searching for your installed packages...${Color_Off}"
+      echo -e "${Purple}Warning, packages list file can be very big...${Color_Off}"
       echo -e " "
       if [ $flatpak == True ]; then
-            echo -e "Would you want to get the list of your flatpak packages ? (y/n)"
+            echo -e "${Yellow}Would you want to get the list of your flatpak packages ? (y/n)${Color_Off}"
             read anwser_flatpak
       fi
       if [ $snap == True ]; then
-            echo -e "Would you want to get the list of your snapcraft packages ? (y/n)"
+            echo -e "${Yellow}Would you want to get the list of your snapcraft packages ? (y/n)${Color_Off}"
             read anwser_snapcraft
       fi
       if [ $yum == True ]; then
-            echo -e "Would you want to get the list of your yum packages ? (y/n)"
+            echo -e "${Yellow}Would you want to get the list of your yum packages ? (y/n)${Color_Off}"
             read anwser_yum
       fi
       if [ $cargo == True ]; then
-            echo -e "Would you want to get the list of your cargo packages ? (y/n)"
+            echo -e "${Yellow}Would you want to get the list of your cargo packages ? (y/n)${Color_Off}"
             read anwser_cargo
       fi
       if [ $dnf == True ]; then
-            echo -e "Would you want to get the list of your dnf packages ? (y/n)"
+            echo -e "${Yellow}Would you want to get the list of your dnf packages ? (y/n)${Color_Off}"
             read anwser_dnf
       fi
       if [ $apt == True ]; then
-            echo -e "Would you want to get the list of your apt packages ? (y/n)"
+            echo -e "${Yellow}Would you want to get the list of your apt packages ? (y/n)${Color_Off}"
             read anwser_apt
       fi
       if [ $zypp == True ]; then
-            echo -e "Would you want to get the list of your zypp packages ? (y/n)"
+            echo -e "${Yellow}Would you want to get the list of your zypp packages ? (y/n)${Color_Off}"
             read anwser_zypp
       fi
       if [ "$anwser_flatpak" == "y" ]; then
@@ -402,12 +417,12 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
 fi
 
 if [ "$option" == "search" ] || [ "$option" == "find" ]; then
-      echo -e "Enter package name:"
+      echo -e "${Yellow}Enter package name:${Color_Off}"
       read package_find_name
       echo -e " "
-      echo -e "Updating package managers..."
+      echo -e "${Purple}Updating package managers...${Color_Off}"
       sleep 1
-      echo -e "Searching for matches..."
+      echo -e "${Purple}Searching for matches..."${Color_Off}
       echo -e " "
       if [ "$flatpak" == True ]; then
             echo -e "[Searching On Flatpak]"
@@ -484,30 +499,39 @@ fi
 
 if [ "$parameter" == "-clean" ]; then
       echo -e " "
-	echo -e "Cleaning cashed data..."
-	sudo dnf clean all -y
+	echo -e "${Purple}Cleaning cashed data...${Color_Off}"
+	sudo dnf clean all -y >&- 2>&-
       echo -e " "
 fi
 
 if [ "$parameter" == "-exit" ]; then
       echo -e " "
-	echo -e "Closing terminal window in $wait_time secs..."
+	echo -e "${Purple}Closing terminal window in $wait_time secs...${Color_Off}"
       notify-send  "Closing terminal window in $wait_time secs..."
-      sleep "$wait_time"
-	kill -9 $PPID
+      Timer
+      echo " "
+      echo -e "${Purple}Closing terminal window now...${Color_Off}"
+      notify-send "Closing terminal window now..."
+	sudo kill -9 $PPID >&- 2>&-
 fi
 
 if [ "$parameter" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
-	echo -e "Shutingdown your system in $wait_time seconds..."
+	echo -e "${Purple}Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
-	sleep "$wait_time"
+	Timer
+      echo " "
+      echo -e "${Purple}Shutingdown your system now...${Color_Off}"
+      notify-send "Shutingdown your system now..."
 	sudo poweroff
 fi
 
 if [ "$parameter" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
-	echo -e "Rebooting your system in $wait_time seconds..."
+	echo -e "${Purple}Rebooting your system in $wait_time seconds...${Color_Off}"
       notify-send "Rebooting your system in $wait_time seconds..."
-	sleep "$wait_time"
+	Timer
+      echo " "
+      echo -e "${Purple}Rebooting your system now...${Color_Off}"
+      notify-send "Rebooting your system now"
 	sudo reboot
 fi
 
@@ -515,35 +539,44 @@ fi
 
 if [ "$parameter2" == "-clean" ]; then
       echo -e " "
-	echo -e "Cleaning cashed data..."
-	sudo dnf clean all -y
+	echo -e "${Purple}Cleaning cashed data...${Color_Off}"
+	sudo dnf clean all -y >&- 2>&-
       echo -e " "
 fi
 
 if [ "$parameter2" == "-exit" ]; then
       echo -e " "
-	echo -e "Closing terminal window in $wait_time secs..."
+	echo -e "${Purple}Closing terminal window in $wait_time secs...${Color_Off}"
       notify-send  "Closing terminal window in $wait_time secs..."
-      sleep "$wait_time"
-	kill -9 $PPID
+      Timer
+      echo " "
+      echo -e "${Purple}Closing terminal window now...${Color_Off}"
+      notify-send "Closing terminal window now..."
+	sudo kill -9 $PPID >&- 2>&-
 fi
 
 if [ "$parameter2" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
-	echo -e "Shutingdown your system in $wait_time seconds..."
+	echo -e "${Purple}Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
-	sleep "$wait_time"
+	Timer
+      echo " "
+      echo -e "${Purple}Shutingdown your system now...${Color_Off}"
+      notify-send "Shutingdown your system now..."
 	sudo poweroff
 fi
 
 if [ "$parameter2" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
-	echo -e "Rebooting your system in $wait_time seconds..."
+	echo -e "${Purple}Rebooting your system in $wait_time seconds...${Color_Off}"
       notify-send "Rebooting your system in $wait_time seconds..."
-	sleep "$wait_time"
+	Timer
+      echo " "
+      echo -e "${Purple}Rebooting your system now...${Color_Off}"
+      notify-send "Rebooting your system now"
 	sudo reboot
 fi
 
 # End jobs
 
 if [ "$disable_done" == False ]; then
-      echo -e  "${Color_Off}${BCyan}Done $progress_bar_done"
+      echo -e  "${Color_Off}${BCyan}Done $progress_bar_done${Color_Off}"
 fi
