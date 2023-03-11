@@ -130,7 +130,7 @@ managers easily with high customizability.${Color_Off}"
 
 fi
 
-sleep 3
+sleep 1
 echo "Would you want to install the Cromha Multi Package Manager? (y/n)"
 read answer
 

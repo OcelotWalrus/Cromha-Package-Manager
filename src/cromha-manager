@@ -411,39 +411,72 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
       echo "Searching for matches..."
       echo " "
       if [ "$flatpak" == True ]; then
-            flatpak_search=$(flatpak search "$package_find_name" >&- 2>&-)
             echo "[Searching On Flatpak]"
-            flatpak search "$package_find_name" >&- 2>&- & PIDSEARCH1=$!
+            echo "[FLATPAK OUTPUT]" >> $HOME/cromha-manager-search.temp
+            flatpak search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
             ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
-            if [ "$flatpak_search" == "No matches found" ]; then
-                  echo "No macthes found for package name '$package_find_name' on flatpak repositories..."
-                  echo " "
-            else
-                  echo "Found macthes on flatpak repositories for package '$package_find_name':"
-                  echo " "
-                  echo "$flatpak_search"
-                  echo " "
-            fi
+            echo " "
       fi
       if [ "$snap" == True ]; then
-            snapcraft_search=$(snap find "$package_find_name" >&- 2>&-)
             echo "[Searching On Snapcraft]"
-            snap find "$package_find_name" >&- 2>&- & PIDSEARCH1=$!
+            echo "[SNAPCRAFT OUTPUT]" >> $HOME/cromha-manager-search.temp
+            snap find "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
             ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
-            if [ "$snapcraft_search" == "No matching snaps for '$package_find_name'" ]; then
-                  echo "No macthes found for package name '$package_find_name' on snapcraft repositories..."
-                  echo " "
-            else
-                  echo "Found macthes on snapcraft repositories for package '$package_find_name':"
-                  echo " "
-                  echo "$snapcraft_search"
-                  echo " "
-            fi
+            echo " "
       fi
+      if [ "$yum" == True ]; then
+            echo "[Searching On Yum]"
+            echo "[YUM OUTPUT]" >> $HOME/cromha-manager-search.temp
+            yum search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
+            ProgressBarFast & PIDSEARCH2=$!
+            wait $PIDSEARCH1
+            wait $PIDSEARCH2
+            echo " "
+      fi
+      if [ "$cargo" == True ]; then
+            echo "[Searching On Cargo]"
+            echo "[CARGO OUTPUT]" >> $HOME/cromha-manager-search.temp
+            cargo search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
+            ProgressBarFast & PIDSEARCH2=$!
+            wait $PIDSEARCH1
+            wait $PIDSEARCH2
+            echo " "
+      fi
+      if [ "$dnf" == True ]; then
+            echo "[Searching On DNF]"
+            echo "[DNF OUTPUT]" >> $HOME/cromha-manager-search.temp
+            dnf search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
+            ProgressBarFast & PIDSEARCH2=$!
+            wait $PIDSEARCH1
+            wait $PIDSEARCH2
+            echo " "
+      fi
+      if [ "$apt" == True ]; then
+            echo "[Searching On APT]"
+            echo "[APT OUTPUT]" >> $HOME/cromha-manager-search.temp
+            apt search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
+            ProgressBarFast & PIDSEARCH2=$!
+            wait $PIDSEARCH1
+            wait $PIDSEARCH2
+            echo " "
+      fi
+      if [ "$zypp" == True ]; then
+            echo "[Searching On Zypp]"
+            echo "[ZYPPER OUTPUT]" >> $HOME/cromha-manager-search.temp
+            zypper search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
+            ProgressBarFast & PIDSEARCH2=$!
+            wait $PIDSEARCH1
+            wait $PIDSEARCH2
+            echo " "
+      fi
+      echo "Opening search temp file..."
+      sleep 1
+      nano $HOME/cromha-manager-search.temp
+      sudo rm $HOME/cromha-manager-search.temp
 fi
 
 # Parameters
