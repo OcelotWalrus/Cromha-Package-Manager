@@ -148,7 +148,7 @@ informations:
 
 wait_time=$(echo -e "$CONFIG_settings_wait_time")
 
-progress_bar_done=$(echo -e "${BGreen}$CONFIG_settings_progress_bar_done_sprite")
+progress_bar_done=$(echo -e "${BGreen}$CONFIG_settings_progress_bar_done_sprite${Color_Off}")
 progress_bar_none=$(echo -e "${Cyan}$CONFIG_settings_progress_bar_empty_sprite${Color_Off}")
 progress_bar_full=$(echo -e "${BCyan}$CONFIG_settings_progress_bar_full_sprite${Color_Off}")
 
