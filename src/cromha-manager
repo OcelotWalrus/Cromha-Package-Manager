@@ -68,6 +68,35 @@ done
 echo " $progress_bar_done"
 }
 
+function ProgressBarFast () {
+      for i in {1..100}; do
+	output="\r"
+
+	output="$output ["
+	total=$i
+	count=0
+
+	while [ $count -lt $total ]; do
+		output="$output${progress_bar_full}"
+		let count=$count+3
+	done
+
+	let total=100-$total
+	count=0
+
+	while [ $count -lt $total ]; do
+		output="${output}${progress_bar_none}" 
+		let count=$count+3
+	done
+	output="$output ] $i/100%"
+	echo -ne "$output"
+
+      random_sleep_progress_bar=.01
+	sleep $random_sleep_progress_bar
+done
+echo " $progress_bar_done"
+}
+
 
 # YAML parser
 function parse_yaml {
@@ -376,13 +405,16 @@ fi
 if [ "$option" == "search" ] || [ "$option" == "find" ]; then
       echo "Enter package name:"
       read package_find_name
+      echo " "
+      echo "Updating package managers..."
+      sleep 1
       echo "Searching for matches..."
       echo " "
       if [ "$flatpak" == True ]; then
-            flatpak_search=$(flatpak search "$package_find_name")
+            flatpak_search=$(flatpak search "$package_find_name" >&- 2>&-)
             echo "[Searching On Flatpak]"
             flatpak search "$package_find_name" >&- 2>&- & PIDSEARCH1=$!
-            ProgressBar & PIDSEARCH2=$!
+            ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
             if [ "$flatpak_search" == "No matches found" ]; then
@@ -396,13 +428,13 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
             fi
       fi
       if [ "$snap" == True ]; then
-            snapcraft_search=$(snap find "$package_find_name")
+            snapcraft_search=$(snap find "$package_find_name" >&- 2>&-)
             echo "[Searching On Snapcraft]"
             snap find "$package_find_name" >&- 2>&- & PIDSEARCH1=$!
-            ProgressBar & PIDSEARCH2=$!
+            ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
-            if [ "$snapcraft_search" == "No matches found" ]; then
+            if [ "$snapcraft_search" == "No matching snaps for '$package_find_name'" ]; then
                   echo "No macthes found for package name '$package_find_name' on snapcraft repositories..."
                   echo " "
             else
