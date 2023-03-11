@@ -555,7 +555,7 @@ if [ "$parameter2" == "-exit" ]; then
 	sudo kill -9 $PPID >&- 2>&-
 fi
 
-if [ "$parameter2" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
+if [ "$parameter2" == "-poweroff" ] || [ "$parameter2" == "-shutdown" ]; then
 	echo -e "${Purple}Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
 	Timer
@@ -565,7 +565,7 @@ if [ "$parameter2" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
 	sudo poweroff
 fi
 
-if [ "$parameter2" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
+if [ "$parameter2" == "-reboot" ] || [ "$parameter2" == "-restart" ]; then
 	echo -e "${Purple}Rebooting your system in $wait_time seconds...${Color_Off}"
       notify-send "Rebooting your system in $wait_time seconds..."
 	Timer
