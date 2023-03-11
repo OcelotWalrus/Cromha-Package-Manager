@@ -8,7 +8,6 @@ package_managers:
   cargo: False
   dnf: False
   flatpak: False
-  pacman: False
   snapcraft: False
   yum: False
   zypp: False

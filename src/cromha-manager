@@ -91,7 +91,6 @@ eval "$(parse_yaml $HOME/cromha-manager-config.yaml "CONFIG_")"
 flatpak=$(echo "$CONFIG_package_managers_flatpak")
 snap=$(echo "$CONFIG_package_managers_snapcraft")
 yum=$(echo "$CONFIG_package_managers_yum")
-pacman=$(echo "$CONFIG_package_managers_pacman")
 cargo=$(echo "$CONFIG_package_managers_cargo")
 dnf=$(echo "$CONFIG_package_managers_dnf")
 apt=$(echo "$CONFIG_package_managers_apt")
@@ -110,7 +109,6 @@ package_managers:
   cargo: False
   dnf: False
   flatpak: False
-  pacman: False
   snapcraft: False
   yum: False
   zypp: False
@@ -178,9 +176,6 @@ if [ "$option" == "autoremove" ]; then
             echo "[Autoremoving Yum Packages]"
             #ProgressBar
       fi
-      if [ "$pacman" == True ]; then
-            echo "${bold}ERROR: Sorry but pacman autoremove is not yet supported${normal}"
-      fi
       if [ "$cargo" == True ]; then
             echo ${bold}ERROR: Sorry but cargo autoremove is not yet supported${normal}
       fi
@@ -224,13 +219,6 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
             ProgressBar & PIDYUM2=$!
             wait $PIDYUM1
             wait $PIDYUM2
-      fi
-      if [ $pacman == True ]; then
-            echo "[Updating Pacman Packages]"
-            sudo pacman -Syu >&- 2>&- & PIDPACMAN1=$!
-            ProgressBar & PIDPACMAN2=$!
-            wait $PIDPACMAN1
-            wait $PIDPACMAN2
       fi
       if [ $cargo == True ]; then
             echo "[Updating Cargo Packages]"
@@ -320,10 +308,6 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
             echo "Would you want to get the list of your yum packages ? (y/n)"
             read anwser_yum
       fi
-      if [ $pacman == True ]; then
-            echo "Would you want to get the list of your pacman packages ? (y/n)"
-            read anwser_pacman
-      fi
       if [ $cargo == True ]; then
             echo "Would you want to get the list of your cargo packages ? (y/n)"
             read anwser_cargo
@@ -354,11 +338,6 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
             yum_list=$(yum list)
             echo "[YUM OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo "$yum_list" >> $HOME/packages-list-cromha.temp
-      fi
-      if [ "$anwser_pacman" == "y" ]; then
-            pacman_list=$(pacman -Q)
-            echo "[PACMAN OUTPUT]" >> $HOME/packages-list-cromha.temp
-            echo "$pacman_list" >> $HOME/packages-list-cromha.temp
       fi
       if [ "$anwser_cargo" == "y" ]; then
             cargo_list=$(cargo install --list)
