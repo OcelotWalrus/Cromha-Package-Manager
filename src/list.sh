@@ -6,8 +6,8 @@ to_filter="list.txt"
 rm $data
 rm $to_filter
 
-flatpak list >> "$to_filter"
-flatpak list | sed 's/\t.*//g' | awk '{ print length, $0 }' | sort -r -n | cut -d" " -f2- >> "$data"
+flatpak search $1 >> "$to_filter"
+flatpak search $1 | sed 's/\t.*//g' | awk '{ print length, $0 }' | sort -r -n | cut -d" " -f2- >> "$data"
 
 while read line; do
         echo "$line"
