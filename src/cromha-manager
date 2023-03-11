@@ -8,7 +8,7 @@ parameter2=$3
 
 disable_done=False
 
-random_sleep_progress_bar=$(echo $(( $RANDOM % 8 + 1 )))
+random_sleep_progress_bar=$(echo -e $(( $RANDOM % 8 + 1 )))
 
 bold=$(tput bold)
 normal=$(tput sgr0)
@@ -62,10 +62,10 @@ function ProgressBar () {
 	output="$output ] $i/100%"
 	echo -ne "$output"
 
-      random_sleep_progress_bar=$(echo "0.$(( ($RANDOM%40) + 100))")
+      random_sleep_progress_bar=$(echo -e "0.$(( ($RANDOM%40) + 100))")
 	sleep $random_sleep_progress_bar
 done
-echo " $progress_bar_done"
+echo -e " ${BGreen}$progress_bar_done${Color_Off}"
 }
 
 function ProgressBarFast () {
@@ -94,14 +94,14 @@ function ProgressBarFast () {
       random_sleep_progress_bar=.01
 	sleep $random_sleep_progress_bar
 done
-echo " $progress_bar_done"
+echo -e " ${BGreen}$progress_bar_done${Color_Off}"
 }
 
 
 # YAML parser
 function parse_yaml {
       local prefix=$2
-      local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+      local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo -e @|tr @ '\034')
       sed -ne "s|^\($s\):|\1|" \
             -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
             -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
@@ -117,17 +117,17 @@ function parse_yaml {
 }
 eval "$(parse_yaml $HOME/cromha-manager-config.yaml "CONFIG_")"
 
-flatpak=$(echo "$CONFIG_package_managers_flatpak")
-snap=$(echo "$CONFIG_package_managers_snapcraft")
-yum=$(echo "$CONFIG_package_managers_yum")
-cargo=$(echo "$CONFIG_package_managers_cargo")
-dnf=$(echo "$CONFIG_package_managers_dnf")
-apt=$(echo "$CONFIG_package_managers_apt")
-zypp=$(echo "$CONFIG_package_managers_zypp")
+flatpak=$(echo -e "$CONFIG_package_managers_flatpak")
+snap=$(echo -e "$CONFIG_package_managers_snapcraft")
+yum=$(echo -e "$CONFIG_package_managers_yum")
+cargo=$(echo -e "$CONFIG_package_managers_cargo")
+dnf=$(echo -e "$CONFIG_package_managers_dnf")
+apt=$(echo -e "$CONFIG_package_managers_apt")
+zypp=$(echo -e "$CONFIG_package_managers_zypp")
 
 # Informations variables
 
-version_ver=$(echo "$CONFIG_informations_version")
+version_ver=$(echo -e "$CONFIG_informations_version")
 default_config="settings:
   wait_time: 15
   progress_bar_done_sprite: ✔
@@ -146,48 +146,48 @@ informations:
 
 # Settings
 
-wait_time=$(echo "$CONFIG_settings_wait_time")
+wait_time=$(echo -e "$CONFIG_settings_wait_time")
 
-progress_bar_done=$(echo "$CONFIG_settings_progress_bar_done_sprite")
-progress_bar_none=$(echo "$CONFIG_settings_progress_bar_empty_sprite")
-progress_bar_full=$(echo "$CONFIG_settings_progress_bar_full_sprite")
+progress_bar_done=$(echo -e "$CONFIG_settings_progress_bar_done_sprite")
+progress_bar_none=$(echo -e "$CONFIG_settings_progress_bar_empty_sprite")
+progress_bar_full=$(echo -e "$CONFIG_settings_progress_bar_full_sprite")
 
 # Start jobs
 
 if [ "$option" == "" ]; then
-      echo -e "${BRed}_________                       .__            
+      echo -e  "${BRed}_________                       .__            
 \_   ___ \_______  ____   _____ |  |__ _____   
 /    \  \/\_  __ \/  _ \ /     \|  |  \\__  \  
 \     \____|  | \(  <_> )  Y Y  \   Y  \/ __ \_
  \______  /|__|   \____/|__|_|  /___|  (____  /
         \/                    \/     \/     \/ 
 ${Color_Off}"
-      echo " "
-      echo "${bold}===============================================================================${normal}"
-      echo -e "${BPurple}Github Repository${Color_Off}: ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
-      echo " "
-      echo -e "${Green}Current version${Color_Off}: ${BYellow}$version_ver${Color_Off}"
-      echo "${bold}===============================================================================${normal}"
-      echo " "
-      echo -e "${Cyan}A bash script to manage multiple package
+      echo -e " "
+      echo -e "${BCyan}===============================================================================${normal}"
+      echo -e  "${BPurple}Github Repository${Color_Off}: ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
+      echo -e " "
+      echo -e  "${Green}Current version${Color_Off}: ${BYellow}$version_ver${Color_Off}"
+      echo -e "${BCyan}===============================================================================${normal}"
+      echo -e " "
+      echo -e  "${Cyan}A bash script to manage multiple package
 managers easily with high customizability.${Color_Off}"
-      echo " "
-      echo "Hint: run '$ cromha_manager help' for help"
+      echo -e " "
+      echo -e "Hint: run '$ cromha_manager help' for help"
       disable_done=True
 fi
 
 if [ $disable_done == False ]; then
-      echo "${bold}Note that this operation can take multiple minutes${normal}"
-      echo " "
+      echo -e "${BCyan}Note that this operation can take multiple minutes${normal}"
+      echo -e " "
 fi
 
 # Options
 
 if [ "$option" == "autoremove" ]; then
-      echo "Autoremoving packages..."
+      echo -e "Autoremoving packages..."
       if [ "$flatpak" == True ]; then
             sudo flatpak uninstall -y --unused #>&- 2>&-
-            echo "[Autoremoving Flatpak Packages]"
+            echo -e "[Autoremoving Flatpak Packages]"
             #ProgressBar
       fi
       if [ "$snap" == True ]; then
@@ -197,81 +197,81 @@ if [ "$option" == "autoremove" ]; then
             do
                   sudo snap remove "$snapname" --revision="$revision" #>&- 2>&-
             done
-            echo "[Autoremoving Snapcraft Packages]"
+            echo -e "[Autoremoving Snapcraft Packages]"
             #ProgressBar
       fi
       if [ "$yum" == True ]; then
             sudo yum autoremove -y #>&- 2>&-
-            echo "[Autoremoving Yum Packages]"
+            echo -e "[Autoremoving Yum Packages]"
             #ProgressBar
       fi
       if [ "$cargo" == True ]; then
-            echo ${bold}ERROR: Sorry but cargo autoremove is not yet supported${normal}
+            echo -e ${BCyan}ERROR: Sorry but cargo autoremove is not yet supported${normal}
       fi
       if [ "$dnf" == True ]; then
             sudo dnf autoremove -y #>&- 2>&-
-            echo "[Autoremoving Dnf Packages]"
+            echo -e "[Autoremoving Dnf Packages]"
             #ProgressBar
       fi
       if [ "$apt " == True ]; then
             sudo apt autoremove -y #>&- 2>&-
-            echo "[Autoremoving APT Packages]"
+            echo -e "[Autoremoving APT Packages]"
             #ProgressBar
       fi
       if [ "$zypp" == True ]; then
-            echo ${bold}ERROR: Sorry but zypper autoremove is not yet supported${normal}
+            echo -e ${BCyan}ERROR: Sorry but zypper autoremove is not yet supported${normal}
       fi
 fi
 
 if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
-      echo "Checking for package managers updates..."
+      echo -e "Checking for package managers updates..."
       sleep 3
-      echo "Updating different package managers..."
-      echo " "
+      echo -e "Updating different package managers..."
+      echo -e " "
       if [ $flatpak == True ]; then
-            echo "[Updating Flatpak Packages]"
+            echo -e "[Updating Flatpak Packages]"
             sudo flatpak update -y >&- 2>&- & PIDFLATPAK1=$!
             ProgressBar & PIDFLATPAK2=$!
             wait $PIDFLATPAK1
             wait $PIDFLATPAK2
       fi
       if [ $snap == True ]; then
-            echo "[Updating Snapcraft Packages]"
+            echo -e "[Updating Snapcraft Packages]"
             sudo snap refresh >&- 2>&- & PIDSNAP1=$!
             ProgressBar & PIDSNAP2=$!
             wait $PIDSNAP1
             wait $PIDSNAP2
       fi
       if [ $yum == True ]; then
-            echo "[Updating Yum Packages]"
+            echo -e "[Updating Yum Packages]"
             sudo yum update -y >&- 2>&- & PIDYUM1=$!
             ProgressBar & PIDYUM2=$!
             wait $PIDYUM1
             wait $PIDYUM2
       fi
       if [ $cargo == True ]; then
-            echo "[Updating Cargo Packages]"
+            echo -e "[Updating Cargo Packages]"
             sudo cargo update -y >&- 2>&- & PIDCARGO1=$!
             ProgressBar & PIDCARGO2=$!
             wait $PIDCARGO1
             wait $PIDCARGO2
       fi
       if [ $dnf == True ]; then
-            echo "[Updating Dnf Packages]"
+            echo -e "[Updating Dnf Packages]"
             sudo dnf update -y >&- 2>&- & PIDDNF1=$!
             ProgressBar & PIDDNF2=$!
             wait $PIDDNF1
             wait $PIDDNF2
       fi
       if [ $apt == True ]; then
-            echo "[Updating APT Packages]"
+            echo -e "[Updating APT Packages]"
             sudo apt update -y >&- 2>&- & PIDAPT1=$!
             ProgressBar & PIDAPT2=$!
             wait $PIDAPT1
             wait $PIDAPT2
       fi
       if [ $zypp == True ]; then
-            echo "[Updating Zypp Packages]"
+            echo -e "[Updating Zypp Packages]"
             sudo zypper update -y >&- 2>&- & PIDZYPP1=$!
             ProgressBar & PIDZYPP2=$!
             wait $PIDZYPP1
@@ -280,200 +280,199 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
 fi
 
 if [ "$option" == "help" ]; then
-	echo "${bold}HELP PAGE:"
-	echo " "
-	echo "${bold}OPTIONS${normal} (First entry):"
-	echo " "
-	echo "${bold}autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
-	echo "${bold}help${normal}: show this page"
-      echo "${bold}search/find${normal}: search and find packages on enabled package managers"
-      echo "${bold}list/packages${normal}: list packages installed on your package managers one by one in nano"
-	echo "${bold}upgrade/update${normal}: update your system"
-      echo "${bold}customize${normal}: customize config.yaml"
-      echo "${bold}reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
-	echo " "
-	echo "${bold}PARAMETERS${normal} (Second and Third entry):"
-	echo " "
-	echo "${bold}-clean${normal}: clean cashed data after executing option"
-	echo "${bold}-exit${normal}: close terminal window after executing option"
-	echo "${bold}-poweroff${normal}: poweroff your system after executing option (alias: -shutdown)"
-	echo "${bold}-reboot${normal}: reboot your system after executing option (alias: -restart)"
-	echo "${bold}-restart${normal}: restart your system after executing option (alias: -reboot)"
-	echo "${bold}-shutdown${normal}: shutdown your system after executing option (alias: -poweroff)"
-      echo " "
-      echo "${bold}CUSTOMIZATION:"
-      echo "${bold}customize${normal}: customize config.yaml"
-      echo "Go to: https://github.com/OcelotWalrus/Bash-Multi-Package-Manager for more information"
+	echo -e  "${BGreen}HELP PAGE:${Color_Off}"
+	echo -e " "
+	echo -e  "${BPurple}OPTIONS${normal} ${Yellow}(First entry):${Color_Off}"
+	echo -e " "
+	echo -e  "${BCyan}autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
+	echo -e  "${BCyan}help${normal}: show this page"
+      echo -e  "${BCyan}search/find${normal}: search and find packages on enabled package managers"
+      echo -e  "${BCyan}list/packages${normal}: list packages installed on your package managers one by one in nano"
+	echo -e  "${BCyan}upgrade/update${normal}: update your system"
+      echo -e  "${BCyan}customize${normal}: customize config.yaml"
+      echo -e  "${BCyan}reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
+	echo -e " "
+	echo -e  "${BPurple}PARAMETERS${normal} ${Yellow}(Second and Third entry):${Color_Off}"
+	echo -e " "
+	echo -e  "${BCyan}-clean${normal}: clean cashed data after executing option"
+	echo -e  "${BCyan}-exit${normal}: close terminal window after executing option"
+	echo -e  "${BCyan}-poweroff${normal}: poweroff your system after executing option (alias: -shutdown)"
+	echo -e  "${BCyan}-reboot${normal}: reboot your system after executing option (alias: -restart)"
+	echo -e  "${BCyan}-restart${normal}: restart your system after executing option (alias: -reboot)"
+	echo -e  "${BCyan}-shutdown${normal}: shutdown your system after executing option (alias: -poweroff)"
+      echo -e " "
+      echo -e  "${BPurple}CUSTOMIZATION:${Color_Off}"
+      echo -e  "Go to: ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off} for more information"
 	disable_done=True
 fi
 
 if [ "$option" == "customize" ]; then
-      echo Opening config.yaml...
+      echo -e Opening config.yaml...
       sleep 1
       nano $HOME/cromha-manager-config.yaml
       sleep .1
 fi
 
 if [ "$option" == "reset" ]; then
-      echo "Reseting config located in $HOME/cromha-manager-config.yaml file..."
+      echo -e "Reseting config located in $HOME/cromha-manager-config.yaml file..."
       sudo rm $HOME/cromha-manager-config.yaml
-      echo "$default_config" >> $HOME/cromha-manager-config.yaml
+      echo -e "$default_config" >> $HOME/cromha-manager-config.yaml
       chmod 777 $HOME/cromha-manager-config.yaml
 fi
 
 if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
-      echo "Searching for your installed packages..."
-      echo "Warning, packages list file can be very big..."
-      echo " "
+      echo -e "Searching for your installed packages..."
+      echo -e "Warning, packages list file can be very big..."
+      echo -e " "
       if [ $flatpak == True ]; then
-            echo "Would you want to get the list of your flatpak packages ? (y/n)"
+            echo -e "Would you want to get the list of your flatpak packages ? (y/n)"
             read anwser_flatpak
       fi
       if [ $snap == True ]; then
-            echo "Would you want to get the list of your snapcraft packages ? (y/n)"
+            echo -e "Would you want to get the list of your snapcraft packages ? (y/n)"
             read anwser_snapcraft
       fi
       if [ $yum == True ]; then
-            echo "Would you want to get the list of your yum packages ? (y/n)"
+            echo -e "Would you want to get the list of your yum packages ? (y/n)"
             read anwser_yum
       fi
       if [ $cargo == True ]; then
-            echo "Would you want to get the list of your cargo packages ? (y/n)"
+            echo -e "Would you want to get the list of your cargo packages ? (y/n)"
             read anwser_cargo
       fi
       if [ $dnf == True ]; then
-            echo "Would you want to get the list of your dnf packages ? (y/n)"
+            echo -e "Would you want to get the list of your dnf packages ? (y/n)"
             read anwser_dnf
       fi
       if [ $apt == True ]; then
-            echo "Would you want to get the list of your apt packages ? (y/n)"
+            echo -e "Would you want to get the list of your apt packages ? (y/n)"
             read anwser_apt
       fi
       if [ $zypp == True ]; then
-            echo "Would you want to get the list of your zypp packages ? (y/n)"
+            echo -e "Would you want to get the list of your zypp packages ? (y/n)"
             read anwser_zypp
       fi
       if [ "$anwser_flatpak" == "y" ]; then
             flatpak_list=$(flatpak list)
-            echo "[FLATPAK OUTPUT]" >> $HOME/packages-list-cromha.temp
-            echo "$flatpak_list" >> $HOME/packages-list-cromha.temp
+            echo -e "[FLATPAK OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo -e "$flatpak_list" >> $HOME/packages-list-cromha.temp
       fi
       if [ "$anwser_snapcraft" == "y" ]; then
             snap_list=$(snap list)
-            echo "[SNAPCRAFT OUTPUT]" >> $HOME/packages-list-cromha.temp
-            echo "$snap_list" >> $HOME/packages-list-cromha.temp
+            echo -e "[SNAPCRAFT OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo -e "$snap_list" >> $HOME/packages-list-cromha.temp
       fi
       if [ "$anwser_yum" == "y" ]; then
             yum_list=$(yum list)
-            echo "[YUM OUTPUT]" >> $HOME/packages-list-cromha.temp
-            echo "$yum_list" >> $HOME/packages-list-cromha.temp
+            echo -e "[YUM OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo -e "$yum_list" >> $HOME/packages-list-cromha.temp
       fi
       if [ "$anwser_cargo" == "y" ]; then
             cargo_list=$(cargo install --list)
-            echo "[CARGO OUTPUT]" >> $HOME/packages-list-cromha.temp
-            echo "$cargo_list" >> $HOME/packages-list-cromha.temp
+            echo -e "[CARGO OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo -e "$cargo_list" >> $HOME/packages-list-cromha.temp
       fi
       if [ "$anwser_dnf" == "y" ]; then
             dnf_list=$(dnf list)
-            echo "[DNF OUTPUT]" >> $HOME/packages-list-cromha.temp
-            echo "$dnf_list" >> $HOME/packages-list-cromha.temp
+            echo -e "[DNF OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo -e "$dnf_list" >> $HOME/packages-list-cromha.temp
       fi
       if [ "$anwser_apt" == "y" ]; then
             apt_list=$(apt list --installed)
-            echo "[APT OUTPUT]" >> $HOME/packages-list-cromha.temp
-            echo "$apt_list" >> $HOME/packages-list-cromha.temp
+            echo -e "[APT OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo -e "$apt_list" >> $HOME/packages-list-cromha.temp
       fi
       if [ "$anwser_apt" == "y" ]; then
             apt_list=$(apt list --installed)
-            echo "[APT OUTPUT]" >> $HOME/packages-list-cromha.temp
-            echo "$apt_list" >> $HOME/packages-list-cromha.temp
+            echo -e "[APT OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo -e "$apt_list" >> $HOME/packages-list-cromha.temp
       fi
       if [ "$anwser_zypp" == "y" ]; then
             zypp_list=$(zypper search -i)
-            echo "[ZYPPER OUTPUT]" >> $HOME/packages-list-cromha.temp
-            echo "$zypp_list" >> $HOME/packages-list-cromha.temp
+            echo -e "[ZYPPER OUTPUT]" >> $HOME/packages-list-cromha.temp
+            echo -e "$zypp_list" >> $HOME/packages-list-cromha.temp
       fi
-      echo "Opening temporary file where is stored installed packages list..."
+      echo -e "Opening temporary file where is stored installed packages list..."
       notify-send "Installed packages listing finished"
       sleep 1
       nano $HOME/packages-list-cromha.temp
       sleep 1
-      echo "Deleting temporary file..."
+      echo -e "Deleting temporary file..."
       rm $HOME/packages-list-cromha.temp >&- 2>&-
 fi
 
 if [ "$option" == "search" ] || [ "$option" == "find" ]; then
-      echo "Enter package name:"
+      echo -e "Enter package name:"
       read package_find_name
-      echo " "
-      echo "Updating package managers..."
+      echo -e " "
+      echo -e "Updating package managers..."
       sleep 1
-      echo "Searching for matches..."
-      echo " "
+      echo -e "Searching for matches..."
+      echo -e " "
       if [ "$flatpak" == True ]; then
-            echo "[Searching On Flatpak]"
-            echo "[FLATPAK OUTPUT]" >> $HOME/cromha-manager-search.temp
+            echo -e "[Searching On Flatpak]"
+            echo -e "[FLATPAK OUTPUT]" >> $HOME/cromha-manager-search.temp
             flatpak search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
             ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
-            echo " "
+            echo -e " "
       fi
       if [ "$snap" == True ]; then
-            echo "[Searching On Snapcraft]"
-            echo "[SNAPCRAFT OUTPUT]" >> $HOME/cromha-manager-search.temp
+            echo -e "[Searching On Snapcraft]"
+            echo -e "[SNAPCRAFT OUTPUT]" >> $HOME/cromha-manager-search.temp
             snap find "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
             ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
-            echo " "
+            echo -e " "
       fi
       if [ "$yum" == True ]; then
-            echo "[Searching On Yum]"
-            echo "[YUM OUTPUT]" >> $HOME/cromha-manager-search.temp
+            echo -e "[Searching On Yum]"
+            echo -e "[YUM OUTPUT]" >> $HOME/cromha-manager-search.temp
             yum search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
             ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
-            echo " "
+            echo -e " "
       fi
       if [ "$cargo" == True ]; then
-            echo "[Searching On Cargo]"
-            echo "[CARGO OUTPUT]" >> $HOME/cromha-manager-search.temp
+            echo -e "[Searching On Cargo]"
+            echo -e "[CARGO OUTPUT]" >> $HOME/cromha-manager-search.temp
             cargo search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
             ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
-            echo " "
+            echo -e " "
       fi
       if [ "$dnf" == True ]; then
-            echo "[Searching On DNF]"
-            echo "[DNF OUTPUT]" >> $HOME/cromha-manager-search.temp
+            echo -e "[Searching On DNF]"
+            echo -e "[DNF OUTPUT]" >> $HOME/cromha-manager-search.temp
             dnf search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
             ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
-            echo " "
+            echo -e " "
       fi
       if [ "$apt" == True ]; then
-            echo "[Searching On APT]"
-            echo "[APT OUTPUT]" >> $HOME/cromha-manager-search.temp
+            echo -e "[Searching On APT]"
+            echo -e "[APT OUTPUT]" >> $HOME/cromha-manager-search.temp
             apt search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
             ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
-            echo " "
+            echo -e " "
       fi
       if [ "$zypp" == True ]; then
-            echo "[Searching On Zypp]"
-            echo "[ZYPPER OUTPUT]" >> $HOME/cromha-manager-search.temp
+            echo -e "[Searching On Zypp]"
+            echo -e "[ZYPPER OUTPUT]" >> $HOME/cromha-manager-search.temp
             zypper search "$package_find_name" >> $HOME/cromha-manager-search.temp & PIDSEARCH1=$!
             ProgressBarFast & PIDSEARCH2=$!
             wait $PIDSEARCH1
             wait $PIDSEARCH2
-            echo " "
+            echo -e " "
       fi
-      echo "Opening search temp file..."
+      echo -e "Opening search temp file..."
       sleep 1
       nano $HOME/cromha-manager-search.temp
       sudo rm $HOME/cromha-manager-search.temp
@@ -484,29 +483,29 @@ fi
 # First
 
 if [ "$parameter" == "-clean" ]; then
-      echo " "
-	echo "Cleaning cashed data..."
+      echo -e " "
+	echo -e "Cleaning cashed data..."
 	sudo dnf clean all -y
-      echo " "
+      echo -e " "
 fi
 
 if [ "$parameter" == "-exit" ]; then
-      echo " "
-	echo "Closing terminal window in $wait_time secs..."
+      echo -e " "
+	echo -e "Closing terminal window in $wait_time secs..."
       notify-send  "Closing terminal window in $wait_time secs..."
       sleep "$wait_time"
 	kill -9 $PPID
 fi
 
 if [ "$parameter" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
-	echo "Shutingdown your system in $wait_time seconds..."
+	echo -e "Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
 	sleep "$wait_time"
 	sudo poweroff
 fi
 
 if [ "$parameter" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
-	echo "Rebooting your system in $wait_time seconds..."
+	echo -e "Rebooting your system in $wait_time seconds..."
       notify-send "Rebooting your system in $wait_time seconds..."
 	sleep "$wait_time"
 	sudo reboot
@@ -515,29 +514,29 @@ fi
 # Second
 
 if [ "$parameter2" == "-clean" ]; then
-      echo " "
-	echo "Cleaning cashed data..."
+      echo -e " "
+	echo -e "Cleaning cashed data..."
 	sudo dnf clean all -y
-      echo " "
+      echo -e " "
 fi
 
 if [ "$parameter2" == "-exit" ]; then
-      echo " "
-	echo "Closing terminal window in $wait_time secs..."
+      echo -e " "
+	echo -e "Closing terminal window in $wait_time secs..."
       notify-send  "Closing terminal window in $wait_time secs..."
       sleep "$wait_time"
 	kill -9 $PPID
 fi
 
 if [ "$parameter2" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
-	echo "Shutingdown your system in $wait_time seconds..."
+	echo -e "Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
 	sleep "$wait_time"
 	sudo poweroff
 fi
 
 if [ "$parameter2" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
-	echo "Rebooting your system in $wait_time seconds..."
+	echo -e "Rebooting your system in $wait_time seconds..."
       notify-send "Rebooting your system in $wait_time seconds..."
 	sleep "$wait_time"
 	sudo reboot
@@ -546,5 +545,5 @@ fi
 # End jobs
 
 if [ "$disable_done" == False ]; then
-      echo -e "${Color_Off}${bold}Done $progress_bar_done"
+      echo -e  "${Color_Off}${BCyan}Done $progress_bar_done"
 fi

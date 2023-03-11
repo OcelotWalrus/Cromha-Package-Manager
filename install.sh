@@ -63,14 +63,14 @@ for i in {1..100}; do
 	sleep .01
 done
 
-echo " ✔ "
+echo -e " ${BGreen}✔ "
 }
 
 # YAML parser
 
 function parse_yaml {
       local prefix=$2
-      local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+      local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo -e @|tr @ '\034')
       sed -ne "s|^\($s\):|\1|" \
             -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
             -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
@@ -91,52 +91,52 @@ eval "$(parse_yaml $HOME/cromha-manager-config.yaml "CONFIG_")"
 version_ver=0.1
 
 # Package managers variables
-flatpak_check=$(echo "$CONFIG_package_managers_flatpak")
-flatpak=$(echo $flatpak_check)
-snap_check=$(echo "$CONFIG_package_managers_snapcraft")
-snap=$(echo $snap_check)
-yum_check=$(echo "$CONFIG_package_managers_yum")
-yum=$(echo $yum_check)
-pacman_check=$(echo "$CONFIG_package_managers_pacman")
-pacman=$(echo $pacman_check)
-cargo_check=$(echo "$CONFIG_package_managers_cargo")
-cargo=$(echo $cargo_check)
-dnf_check=$(echo "$CONFIG_package_managers_dnf")
-dnf=$(echo $dnf_check)
-apt_check=$(echo "$CONFIG_package_managers_apt")
-apt=$(echo $apt_check)
-zypp_check=$(echo "$CONFIG_package_managers_zypp")
-zypp=$(echo $zypp_check)
+flatpak_check=$(echo -e "$CONFIG_package_managers_flatpak")
+flatpak=$(echo -e $flatpak_check)
+snap_check=$(echo -e "$CONFIG_package_managers_snapcraft")
+snap=$(echo -e $snap_check)
+yum_check=$(echo -e "$CONFIG_package_managers_yum")
+yum=$(echo -e $yum_check)
+pacman_check=$(echo -e "$CONFIG_package_managers_pacman")
+pacman=$(echo -e $pacman_check)
+cargo_check=$(echo -e "$CONFIG_package_managers_cargo")
+cargo=$(echo -e $cargo_check)
+dnf_check=$(echo -e "$CONFIG_package_managers_dnf")
+dnf=$(echo -e $dnf_check)
+apt_check=$(echo -e "$CONFIG_package_managers_apt")
+apt=$(echo -e $apt_check)
+zypp_check=$(echo -e "$CONFIG_package_managers_zypp")
+zypp=$(echo -e $zypp_check)
 
 if [ "$option" == "" ]; then
-      echo -e "${BRed}_________                       .__            
+      echo -e  "${BRed}_________                       .__            
 \_   ___ \_______  ____   _____ |  |__ _____   
 /    \  \/\_  __ \/  _ \ /     \|  |  \\__  \  
 \     \____|  | \(  <_> )  Y Y  \   Y  \/ __ \_
  \______  /|__|   \____/|__|_|  /___|  (____  /
         \/                    \/     \/     \/ 
 ${Color_Off}"
-      echo " "
-      echo "${bold}=====================================================================${normal}"
-      echo -e "${BPurple}Github Repository${Color_Off}: ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
-      echo " "
-      echo -e "${Green}Current version${Color_Off}: ${BYellow}$version_ver${Color_Off}"
-      echo "${bold}=====================================================================${normal}"
-      echo " "
-      echo -e "${Cyan}A bash script to manage multiple package
+      echo -e " "
+      echo -e "${BCyan}=====================================================================${normal}"
+      echo -e  "${BPurple}Github Repository${Color_Off}: ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
+      echo -e " "
+      echo -e  "${Green}Current version${Color_Off}: ${BYellow}$version_ver${Color_Off}"
+      echo -e "${BCyan}=====================================================================${normal}"
+      echo -e " "
+      echo -e  "${Cyan}A bash script to manage multiple package
 managers easily with high customizability.${Color_Off}"
-      echo " "
-      echo " "
+      echo -e " "
+      echo -e " "
 
 fi
 
 sleep 1
-echo "Would you want to install the Cromha Multi Package Manager? (y/n)"
+echo -e "Would you want to install the Cromha Multi Package Manager? (y/n)"
 read answer
 
 if [ "$answer" == "y" ]; then
 
-      echo "Installing Cromha Multi Package Manager..."
+      echo -e "Installing Cromha Multi Package Manager..."
       FILE=$HOME/cromha-manager-config.yaml
 	if test -f "$FILE"; then
 		sudo cp src/cromha-manager /usr/bin/
@@ -147,6 +147,6 @@ if [ "$answer" == "y" ]; then
       ProgressBar
 
 else
-      echo "Aborting installing Cromha Multi Package Manager..."
+      echo -e "Aborting installing Cromha Multi Package Manager..."
       sleep 1
 fi
