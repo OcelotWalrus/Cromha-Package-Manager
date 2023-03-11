@@ -380,6 +380,7 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
       echo " "
       if [ "$flatpak" == True ]; then
             flatpak_search=$(flatpak search "$package_find_name")
+            echo "[Searching On Flatpak]"
             flatpak search "$package_find_name" >&- 2>&- & PIDSEARCH1=$!
             ProgressBar & PIDSEARCH2=$!
             wait $PIDSEARCH1
@@ -388,7 +389,27 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
                   echo "No macthes found for package name '$package_find_name' on flatpak repositories..."
                   echo " "
             else
-                  echo ""
+                  echo "Found macthes on flatpak repositories for package '$package_find_name':"
+                  echo " "
+                  echo "$flatpak_search"
+                  echo " "
+            fi
+      fi
+      if [ "$snap" == True ]; then
+            snapcraft_search=$(snap find "$package_find_name")
+            echo "[Searching On Snapcraft]"
+            snap find "$package_find_name" >&- 2>&- & PIDSEARCH1=$!
+            ProgressBar & PIDSEARCH2=$!
+            wait $PIDSEARCH1
+            wait $PIDSEARCH2
+            if [ "$snapcraft_search" == "No matches found" ]; then
+                  echo "No macthes found for package name '$package_find_name' on snapcraft repositories..."
+                  echo " "
+            else
+                  echo "Found macthes on snapcraft repositories for package '$package_find_name':"
+                  echo " "
+                  echo "$snapcraft_search"
+                  echo " "
             fi
       fi
 fi
