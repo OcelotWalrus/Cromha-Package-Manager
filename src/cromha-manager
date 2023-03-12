@@ -311,12 +311,13 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
             wait $PIDZYPP1
             wait $PIDZYPP2
       fi
+      notify-send "Finished upgrading your system"
 fi
 
 if [ "$option" == "help" ]; then
 	echo -e  "${B2}HELP PAGE:${Color_Off}"
 	echo -e " "
-	echo -e  "${B5}OPTIONS${normal} ${3}(First entry):${Color_Off}"
+	echo -e  "${B5}OPTIONS${normal} ${C3}(First entry):${Color_Off}"
 	echo -e " "
 	echo -e  "${B6}autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
 	echo -e  "${B6}help${normal}: show this page"
@@ -327,7 +328,7 @@ if [ "$option" == "help" ]; then
       echo -e  "${B6}config/customize${normal}: customize config.yaml"
       echo -e  "${B6}reset/config-reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
 	echo -e " "
-	echo -e  "${B5}PARAMETERS${normal} ${3}(Second and Third entry):${Color_Off}"
+	echo -e  "${B5}PARAMETERS${normal} ${C3}(Second and Third entry):${Color_Off}"
 	echo -e " "
 	echo -e  "${B6}-clean${normal}: clean cashed data after executing option"
 	echo -e  "${B6}-exit${normal}: close terminal window after executing option"
@@ -360,69 +361,69 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
       echo -e "${C5}Warning, packages list file can be very big...${Color_Off}"
       echo -e " "
       if [ $flatpak == True ]; then
-            echo -e "${3}Would you want to get the list of your flatpak packages ? (y/n)${Color_Off}"
-            read anwser_flatpak
+            echo -e "${C3}Would you want to get the list of your flatpak packages ? (y/n)${Color_Off}"
+            read answer_flatpak
       fi
       if [ $snap == True ]; then
-            echo -e "${3}Would you want to get the list of your snapcraft packages ? (y/n)${Color_Off}"
-            read anwser_snapcraft
+            echo -e "${C3}Would you want to get the list of your snapcraft packages ? (y/n)${Color_Off}"
+            read answer_snapcraft
       fi
       if [ $yum == True ]; then
-            echo -e "${3}Would you want to get the list of your yum packages ? (y/n)${Color_Off}"
-            read anwser_yum
+            echo -e "${C3}Would you want to get the list of your yum packages ? (y/n)${Color_Off}"
+            read answer_yum
       fi
       if [ $cargo == True ]; then
-            echo -e "${3}Would you want to get the list of your cargo packages ? (y/n)${Color_Off}"
-            read anwser_cargo
+            echo -e "${C3}Would you want to get the list of your cargo packages ? (y/n)${Color_Off}"
+            read answer_cargo
       fi
       if [ $dnf == True ]; then
-            echo -e "${3}Would you want to get the list of your dnf packages ? (y/n)${Color_Off}"
-            read anwser_dnf
+            echo -e "${C3}Would you want to get the list of your dnf packages ? (y/n)${Color_Off}"
+            read answer_dnf
       fi
       if [ $apt == True ]; then
-            echo -e "${3}Would you want to get the list of your apt packages ? (y/n)${Color_Off}"
-            read anwser_apt
+            echo -e "${C3}Would you want to get the list of your apt packages ? (y/n)${Color_Off}"
+            read answer_apt
       fi
       if [ $zypp == True ]; then
-            echo -e "${3}Would you want to get the list of your zypp packages ? (y/n)${Color_Off}"
-            read anwser_zypp
+            echo -e "${C3}Would you want to get the list of your zypp packages ? (y/n)${Color_Off}"
+            read answer_zypp
       fi
-      if [ "$anwser_flatpak" == "y" ]; then
+      if [ "$answer_flatpak" == "y" ]; then
             flatpak_list=$(flatpak list)
             echo -e "[FLATPAK OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$flatpak_list" >> $HOME/packages-list-cromha.temp
       fi
-      if [ "$anwser_snapcraft" == "y" ]; then
+      if [ "$answer_snapcraft" == "y" ]; then
             snap_list=$(snap list)
             echo -e "[SNAPCRAFT OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$snap_list" >> $HOME/packages-list-cromha.temp
       fi
-      if [ "$anwser_yum" == "y" ]; then
+      if [ "$answer_yum" == "y" ]; then
             yum_list=$(yum list)
             echo -e "[YUM OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$yum_list" >> $HOME/packages-list-cromha.temp
       fi
-      if [ "$anwser_cargo" == "y" ]; then
+      if [ "$answer_cargo" == "y" ]; then
             cargo_list=$(cargo install --list)
             echo -e "[CARGO OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$cargo_list" >> $HOME/packages-list-cromha.temp
       fi
-      if [ "$anwser_dnf" == "y" ]; then
+      if [ "$answer_dnf" == "y" ]; then
             dnf_list=$(dnf list)
             echo -e "[DNF OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$dnf_list" >> $HOME/packages-list-cromha.temp
       fi
-      if [ "$anwser_apt" == "y" ]; then
+      if [ "$answer_apt" == "y" ]; then
             apt_list=$(apt list --installed)
             echo -e "[APT OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$apt_list" >> $HOME/packages-list-cromha.temp
       fi
-      if [ "$anwser_apt" == "y" ]; then
+      if [ "$answer_apt" == "y" ]; then
             apt_list=$(apt list --installed)
             echo -e "[APT OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$apt_list" >> $HOME/packages-list-cromha.temp
       fi
-      if [ "$anwser_zypp" == "y" ]; then
+      if [ "$answer_zypp" == "y" ]; then
             zypp_list=$(zypper search -i)
             echo -e "[ZYPPER OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$zypp_list" >> $HOME/packages-list-cromha.temp
@@ -437,7 +438,7 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
 fi
 
 if [ "$option" == "search" ] || [ "$option" == "find" ]; then
-      echo -e "${3}Enter package name:${Color_Off}"
+      echo -e "${C3}Enter package name:${Color_Off}"
       read package_find_name
       echo -e " "
       echo -e "${C5}Updating package managers...${Color_Off}"
@@ -514,41 +515,144 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
 fi
 
 if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
-      echo -e "${3}Please enter package name${Color_Off}"
-      read package_info_name
-      echo -e " "
-      echo -e "${C5}Searching for matches...${Color_Off}"
-      sleep 1
-      if [ "$flatpak" == True ]; then
-            echo -e " "
-            echo -e "[Searching On Flatpak]"
-            ProgressBarFast
-            flatpak_info=$(flatpak info "$package_info_name")
-            echo "[FLATPAK OUTPUT]" >> $HOME/cromha-manager-package-info.tmp
-            echo "$flatpak_info" >> $HOME/cromha-manager-package-info.tmp
+      echo -e "${C3}Please select a valid package manager:${Color_Off}"
+      read answer
+      echo " "
+      if [ "$answer" == "flatpak" ] || [ "$answer" == "flathub" ]; then
+            if [ "$flatpak" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that flatpak has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable flatpak"
+            fi
+            if [ "$flatpak" == True ]; then
+                  echo -e "${C3}Please enter a valid flatpak package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  read package_info_name
+                  echo -e "[Getting Info]"
+                  ProgressBarFast & PID1=$!
+                  echo "[$package_info_name PACKAGE INFO]" >> $HOME/cromha-manager-info.tmp
+                  flatpak info "$package_info_name" >> $HOME/cromha-manager-info.tmp & PID2=$!
+                  wait $PID1
+                  wait $PID2
+                  echo " "
+                  echo -e "${C5}Opening temp file where stored info about the package..."
+                  sleep 1
+                  nano $HOME/cromha-manager-info.tmp
+                  rm $HOME/cromha-manager-info.tmp
+            fi
       fi
-      if [ "$snap" == True ]; then
-            echo -e " "
-            echo -e "[Searching On Snapcraft]"
-            ProgressBarFast
-            snap_info=$(snap info "$package_info_name")
-            echo "[SNAPCRAFT OUTPUT]" >> $HOME/cromha-manager-package-info.tmp
-            echo "$snap_info" >> $HOME/cromha-manager-package-info.tmp
+      if [ "$answer" == "snap" ] || [ "$answer" == "snapcraft" ]; then
+            if [ "$snap" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that snapcraft has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable snapcraft"
+            fi
+            if [ "$snap" == True ]; then
+                  echo -e "${C3}Please enter a valid snap package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  read package_info_name
+                  echo -e "[Getting Info]"
+                  ProgressBarFast & PID1=$!
+                  echo "[$package_info_name PACKAGE INFO]" >> $HOME/cromha-manager-info.tmp
+                  snap info "$package_info_name" >> $HOME/cromha-manager-info.tmp & PID2=$!
+                  wait $PID1
+                  wait $PID2
+                  echo " "
+                  echo -e "${C5}Opening temp file where stored info about the package..."
+                  sleep 1
+                  nano $HOME/cromha-manager-info.tmp
+                  rm $HOME/cromha-manager-info.tmp
+            fi
       fi
-      if [ "$yum" == True ]; then
-            echo -e " "
-            echo -e "[Searching On Yum]"
-            ProgressBarFast
-            yum_info=$(yum info "$package_info_name")
-            echo "[YUM OUTPUT]" >> $HOME/cromha-manager-package-info.tmp
-            echo "$yum_info" >> $HOME/cromha-manager-package-info.tmp
+      if [ "$answer" == "yum" ]; then
+            if [ "$yum" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that yum has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable yum"
+            fi
+            if [ "$yum" == True ]; then
+                  echo -e "${C3}Please enter a valid yum package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  read package_info_name
+                  echo -e "[Getting Info]"
+                  ProgressBarFast & PID1=$!
+                  echo "[$package_info_name PACKAGE INFO]" >> $HOME/cromha-manager-info.tmp
+                  yum info "$package_info_name" >> $HOME/cromha-manager-info.tmp & PID2=$!
+                  wait $PID1
+                  wait $PID2
+                  echo " "
+                  echo -e "${C5}Opening temp file where stored info about the package..."
+                  sleep 1
+                  nano $HOME/cromha-manager-info.tmp
+                  rm $HOME/cromha-manager-info.tmp
+            fi
       fi
-      echo -e " "
-      echo -e "${C5}Opening temp file where sto1 info about the package..."
-      sleep 1
-      nano $HOME/cromha-manager-package-info.tmp
-      sleep .1
-      sudo rm $HOME/cromha-manager-package-info.tmp
+      if [ "$answer" == "cargo" ]; then
+            if [ "$cargo" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that cargo has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable cargo"
+            fi
+            if [ "$cargo" == True ]; then
+                  echo -e "${bold}Sorry but this feature is not enaled for cargo. Maybe it will in the future...${normal}"
+            fi
+      fi
+      if [ "$answer" == "dnf" ]; then
+            if [ "$dnf" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that dnf has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable dnf"
+            fi
+            if [ "$dnf" == True ]; then
+                  echo -e "${C3}Please enter a valid dnf package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  read package_info_name
+                  echo -e "[Getting Info]"
+                  ProgressBarFast & PID1=$!
+                  echo "[$package_info_name PACKAGE INFO]" >> $HOME/cromha-manager-info.tmp
+                  dnf info "$package_info_name" >> $HOME/cromha-manager-info.tmp & PID2=$!
+                  wait $PID1
+                  wait $PID2
+                  echo " "
+                  echo -e "${C5}Opening temp file where stored info about the package..."
+                  sleep 1
+                  nano $HOME/cromha-manager-info.tmp
+                  rm $HOME/cromha-manager-info.tmp
+            fi
+      fi
+      if [ "$answer" == "apt" ]; then
+            if [ "$apt" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that apt has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable apt"
+            fi
+            if [ "$apt" == True ]; then
+                  echo -e "${C3}Please enter a valid apt package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  read package_info_name
+                  echo -e "[Getting Info]"
+                  ProgressBarFast & PID1=$!
+                  echo "[$package_info_name PACKAGE INFO]" >> $HOME/cromha-manager-info.tmp
+                  apt info "$package_info_name" >> $HOME/cromha-manager-info.tmp & PID2=$!
+                  wait $PID1
+                  wait $PID2
+                  echo " "
+                  echo -e "${C5}Opening temp file where stored info about the package..."
+                  sleep 1
+                  nano $HOME/cromha-manager-info.tmp
+                  rm $HOME/cromha-manager-info.tmp
+            fi
+      fi
+      if [ "$answer" == "zypp" ] || [ "$answer" == "zypper" ]; then
+            if [ "$zypp" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that zypp has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable zypp"
+            fi
+            if [ "$zypp" == True ]; then
+                  echo -e "${C3}Please enter a valid apt package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  read package_info_name
+                  echo -e "[Getting Info]"
+                  ProgressBarFast & PID1=$!
+                  echo "[$package_info_name PACKAGE INFO]" >> $HOME/cromha-manager-info.tmp
+                  zypp info "$package_info_name" >> $HOME/cromha-manager-info.tmp & PID2=$!
+                  wait $PID1
+                  wait $PID2
+                  echo " "
+                  echo -e "${C5}Opening temp file where stored info about the package..."
+                  sleep 1
+                  nano $HOME/cromha-manager-info.tmp
+                  rm $HOME/cromha-manager-info.tmp
+            fi
+      fi
 fi
 
 # Parameters
