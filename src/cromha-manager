@@ -325,7 +325,7 @@ if [ "$option" == "help" ]; then
       echo -e  "${B6}list/packages${normal}: list packages installed on your package managers one by one in nano"
 	echo -e  "${B6}upgrade/update${normal}: update your system"
       echo -e  "${B6}config/customize${normal}: customize config.yaml"
-      echo -e  "${B6}reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
+      echo -e  "${B6}reset/config-reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
 	echo -e " "
 	echo -e  "${B5}PARAMETERS${normal} ${3}(Second and Third entry):${Color_Off}"
 	echo -e " "
@@ -348,7 +348,7 @@ if [ "$option" == "customize" ] || [ "$option" == "config" ]; then
       sleep .1
 fi
 
-if [ "$option" == "reset" ]; then
+if [ "$option" == "reset" ] || [ "$option" == "config-reset" ]; then
       echo -e "${C5}Reseting config located in $HOME/cromha-manager-config.yaml file...${Color_Off}"
       sudo rm $HOME/cromha-manager-config.yaml
       echo -e "$default_config" >> $HOME/cromha-manager-config.yaml
