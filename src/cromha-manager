@@ -124,14 +124,14 @@ zypp=$(echo -e "$CONFIG_package_managers_zypp")
 
 # Color palette variables
 
-0=$(echo -e "$CONFIG_color_palette_color_0")
-1=$(echo -e "$CONFIG_color_palette_color_1")
-2=$(echo -e "$CONFIG_color_palette_color_2")
-3=$(echo -e "$CONFIG_color_palette_color_3")
-4=$(echo -e "$CONFIG_color_palette_color_4")
-5=$(echo -e "$CONFIG_color_palette_color_5")
-6=$(echo -e "$CONFIG_color_palette_color_6")
-7=$(echo -e "$CONFIG_color_palette_color_7")
+C0=$(echo -e "$CONFIG_color_palette_color_0")
+C1=$(echo -e "$CONFIG_color_palette_color_1")
+C2=$(echo -e "$CONFIG_color_palette_color_2")
+C3=$(echo -e "$CONFIG_color_palette_color_3")
+C4=$(echo -e "$CONFIG_color_palette_color_4")
+C5=$(echo -e "$CONFIG_color_palette_color_5")
+C6=$(echo -e "$CONFIG_color_palette_color_6")
+C7=$(echo -e "$CONFIG_color_palette_color_7")
 
 B0=$(echo -e "$CONFIG_color_palette_color_B0")
 B1=$(echo -e "$CONFIG_color_palette_color_B1")
@@ -183,7 +183,7 @@ color_palette:
 wait_time=$(echo -e "$CONFIG_settings_wait_time")
 
 progress_bar_done=$(echo -e "${B2}$CONFIG_settings_progress_bar_done_sprite${Color_Off}")
-progress_bar_none=$(echo -e "${6}$CONFIG_settings_progress_bar_empty_sprite${Color_Off}")
+progress_bar_none=$(echo -e "${C6}$CONFIG_settings_progress_bar_empty_sprite${Color_Off}")
 progress_bar_full=$(echo -e "${B6}$CONFIG_settings_progress_bar_full_sprite${Color_Off}")
 
 # Start jobs
@@ -200,10 +200,10 @@ ${Color_Off}"
       echo -e "${B6}===============================================================================${normal}"
       echo -e  "${B5}Github Repository${Color_Off}: ${B4}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
       echo -e " "
-      echo -e  "${2}Current version${Color_Off}: ${B3}$version_ver${Color_Off}"
+      echo -e  "${C2}Current version${Color_Off}: ${B3}$version_ver${Color_Off}"
       echo -e "${B6}===============================================================================${normal}"
       echo -e " "
-      echo -e  "${6}A bash script to manage multiple package
+      echo -e  "${C6}A bash script to manage multiple package
 managers easily with high customizability.${Color_Off}"
       echo -e " "
       echo -e "Hint: run '$ cromha_manager help' for help"
@@ -218,7 +218,7 @@ fi
 # Options
 
 if [ "$option" == "autoremove" ]; then
-      echo -e "${5}Autoremoving packages...${Color_Off}"
+      echo -e "${C5}Autoremoving packages...${Color_Off}"
       if [ "$flatpak" == True ]; then
             sudo flatpak uninstall -y --unused #>&- 2>&-
             echo -e "[Autoremoving Flatpak Packages]"
@@ -258,9 +258,9 @@ if [ "$option" == "autoremove" ]; then
 fi
 
 if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
-      echo -e "${5}Checking for package managers updates...${Color_Off}"
+      echo -e "${C5}Checking for package managers updates...${Color_Off}"
       sleep 3
-      echo -e "${5}Updating different package managers...${Color_Off}"
+      echo -e "${C5}Updating different package managers...${Color_Off}"
       echo -e " "
       if [ $flatpak == True ]; then
             echo -e "[Updating Flatpak Packages]"
@@ -342,22 +342,22 @@ if [ "$option" == "help" ]; then
 fi
 
 if [ "$option" == "customize" ] || [ "$option" == "config" ]; then
-      echo -e "${5}Opening config.yaml...${Color_Off}"
+      echo -e "${C5}Opening config.yaml...${Color_Off}"
       sleep 1
       nano $HOME/cromha-manager-config.yaml
       sleep .1
 fi
 
 if [ "$option" == "reset" ]; then
-      echo -e "${5}Reseting config located in $HOME/cromha-manager-config.yaml file...${Color_Off}"
+      echo -e "${C5}Reseting config located in $HOME/cromha-manager-config.yaml file...${Color_Off}"
       sudo rm $HOME/cromha-manager-config.yaml
       echo -e "$default_config" >> $HOME/cromha-manager-config.yaml
       chmod 777 $HOME/cromha-manager-config.yaml
 fi
 
 if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
-      echo -e "${5}Searching for your installed packages...${Color_Off}"
-      echo -e "${5}Warning, packages list file can be very big...${Color_Off}"
+      echo -e "${C5}Searching for your installed packages...${Color_Off}"
+      echo -e "${C5}Warning, packages list file can be very big...${Color_Off}"
       echo -e " "
       if [ $flatpak == True ]; then
             echo -e "${3}Would you want to get the list of your flatpak packages ? (y/n)${Color_Off}"
@@ -440,9 +440,9 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
       echo -e "${3}Enter package name:${Color_Off}"
       read package_find_name
       echo -e " "
-      echo -e "${5}Updating package managers...${Color_Off}"
+      echo -e "${C5}Updating package managers...${Color_Off}"
       sleep 1
-      echo -e "${5}Searching for matches..."${Color_Off}
+      echo -e "${C5}Searching for matches..."${Color_Off}
       echo -e " "
       if [ "$flatpak" == True ]; then
             echo -e "[Searching On Flatpak]"
@@ -517,7 +517,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
       echo -e "${3}Please enter package name${Color_Off}"
       read package_info_name
       echo -e " "
-      echo -e "${5}Searching for matches...${Color_Off}"
+      echo -e "${C5}Searching for matches...${Color_Off}"
       sleep 1
       if [ "$flatpak" == True ]; then
             echo -e " "
@@ -544,7 +544,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
             echo "$yum_info" >> $HOME/cromha-manager-package-info.tmp
       fi
       echo -e " "
-      echo -e "${5}Opening temp file where sto1 info about the package..."
+      echo -e "${C5}Opening temp file where sto1 info about the package..."
       sleep 1
       nano $HOME/cromha-manager-package-info.tmp
       sleep .1
@@ -557,38 +557,38 @@ fi
 
 if [ "$parameter" == "-clean" ]; then
       echo -e " "
-	echo -e "${5}Cleaning cashed data...${Color_Off}"
+	echo -e "${C5}Cleaning cashed data...${Color_Off}"
 	sudo dnf clean all -y >&- 2>&-
       echo -e " "
 fi
 
 if [ "$parameter" == "-exit" ]; then
       echo -e " "
-	echo -e "${5}Closing terminal window in $wait_time secs...${Color_Off}"
+	echo -e "${C5}Closing terminal window in $wait_time secs...${Color_Off}"
       notify-send  "Closing terminal window in $wait_time secs..."
       Timer
       echo " "
-      echo -e "${5}Closing terminal window now...${Color_Off}"
+      echo -e "${C5}Closing terminal window now...${Color_Off}"
       notify-send "Closing terminal window now..."
 	sudo kill -9 $PPID >&- 2>&-
 fi
 
 if [ "$parameter" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
-	echo -e "${5}Shutingdown your system in $wait_time seconds..."
+	echo -e "${C5}Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
 	Timer
       echo " "
-      echo -e "${5}Shutingdown your system now...${Color_Off}"
+      echo -e "${C5}Shutingdown your system now...${Color_Off}"
       notify-send "Shutingdown your system now..."
 	sudo poweroff
 fi
 
 if [ "$parameter" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
-	echo -e "${5}Rebooting your system in $wait_time seconds...${Color_Off}"
+	echo -e "${C5}Rebooting your system in $wait_time seconds...${Color_Off}"
       notify-send "Rebooting your system in $wait_time seconds..."
 	Timer
       echo " "
-      echo -e "${5}Rebooting your system now...${Color_Off}"
+      echo -e "${C5}Rebooting your system now...${Color_Off}"
       notify-send "Rebooting your system now"
 	sudo reboot
 fi
@@ -597,38 +597,38 @@ fi
 
 if [ "$parameter2" == "-clean" ]; then
       echo -e " "
-	echo -e "${5}Cleaning cashed data...${Color_Off}"
+	echo -e "${C5}Cleaning cashed data...${Color_Off}"
 	sudo dnf clean all -y >&- 2>&-
       echo -e " "
 fi
 
 if [ "$parameter2" == "-exit" ]; then
       echo -e " "
-	echo -e "${5}Closing terminal window in $wait_time secs...${Color_Off}"
+	echo -e "${C5}Closing terminal window in $wait_time secs...${Color_Off}"
       notify-send  "Closing terminal window in $wait_time secs..."
       Timer
       echo " "
-      echo -e "${5}Closing terminal window now...${Color_Off}"
+      echo -e "${C5}Closing terminal window now...${Color_Off}"
       notify-send "Closing terminal window now..."
 	sudo kill -9 $PPID >&- 2>&-
 fi
 
 if [ "$parameter2" == "-poweroff" ] || [ "$parameter2" == "-shutdown" ]; then
-	echo -e "${5}Shutingdown your system in $wait_time seconds..."
+	echo -e "${C5}Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
 	Timer
       echo " "
-      echo -e "${5}Shutingdown your system now...${Color_Off}"
+      echo -e "${C5}Shutingdown your system now...${Color_Off}"
       notify-send "Shutingdown your system now..."
 	sudo poweroff
 fi
 
 if [ "$parameter2" == "-reboot" ] || [ "$parameter2" == "-restart" ]; then
-	echo -e "${5}Rebooting your system in $wait_time seconds...${Color_Off}"
+	echo -e "${C5}Rebooting your system in $wait_time seconds...${Color_Off}"
       notify-send "Rebooting your system in $wait_time seconds..."
 	Timer
       echo " "
-      echo -e "${5}Rebooting your system now...${Color_Off}"
+      echo -e "${C5}Rebooting your system now...${Color_Off}"
       notify-send "Rebooting your system now"
 	sudo reboot
 fi
