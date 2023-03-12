@@ -493,6 +493,20 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
       sudo rm $HOME/cromha-manager-search.temp
 fi
 
+if [ "$option" == "info" ]; then
+      echo -e "${Yellow}Please enter package name${Color_Off}"
+      read package_info_name
+      echo -e " "
+      echo -e "${Purple}Searching for matches...${Color_Off}""
+      sleep 1
+      if [ "$flatpak" == True ]; then
+            echo "[Searching On Flatpak]"
+            ProgressBarFast
+            flatpak_info=$(flatpak info "$package_info_name")
+            echo "$flatpak_info" >> $HOME/cromha-manager-package-info.tmp
+      fi
+fi
+
 # Parameters
 
 # First
