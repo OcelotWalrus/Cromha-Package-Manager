@@ -45,7 +45,7 @@ function ProgressBar () {
       random_sleep_progress_bar=$(echo -e "0.$(( ($RANDOM%40) + 100))")
 	sleep $random_sleep_progress_bar
 done
-echo -e " ${BGreen}$progress_bar_done${Color_Off}"
+echo -e " ${B2}$progress_bar_done${Color_Off}"
 }
 
 function ProgressBarFast () {
@@ -74,17 +74,17 @@ function ProgressBarFast () {
       random_sleep_progress_bar=.01
 	sleep $random_sleep_progress_bar
 done
-echo -e " ${BGreen}$progress_bar_done${Color_Off}"
+echo -e " ${B2}$progress_bar_done${Color_Off}"
 }
 
 function Timer () {
       current_wait_time="$wait_time"
 
       echo " "
-      echo -e "${BRed}Timer:${Color_Off}"
+      echo -e "${B1}Timer:${Color_Off}"
 
       while [ "$current_wait_time" -gt -1 ]; do
-            echo -ne "${BCyan}$current_wait_time\033[0K\r${Color_Off}"
+            echo -ne "${B6}$current_wait_time\033[0K\r${Color_Off}"
             let current_wait_time=$current_wait_time-1
             sleep 1
       done
@@ -124,23 +124,23 @@ zypp=$(echo -e "$CONFIG_package_managers_zypp")
 
 # Color palette variables
 
-Black=$(echo -e "$CONFIG_color_palette_color_0")
-Red=$(echo -e "$CONFIG_color_palette_color_1")
-Green=$(echo -e "$CONFIG_color_palette_color_2")
-Yellow=$(echo -e "$CONFIG_color_palette_color_3")
-Blue=$(echo -e "$CONFIG_color_palette_color_4")
-Purple=$(echo -e "$CONFIG_color_palette_color_5")
-Cyan=$(echo -e "$CONFIG_color_palette_color_6")
-White=$(echo -e "$CONFIG_color_palette_color_7")
+0=$(echo -e "$CONFIG_color_palette_color_0")
+1=$(echo -e "$CONFIG_color_palette_color_1")
+2=$(echo -e "$CONFIG_color_palette_color_2")
+3=$(echo -e "$CONFIG_color_palette_color_3")
+4=$(echo -e "$CONFIG_color_palette_color_4")
+5=$(echo -e "$CONFIG_color_palette_color_5")
+6=$(echo -e "$CONFIG_color_palette_color_6")
+7=$(echo -e "$CONFIG_color_palette_color_7")
 
-BBlack=$(echo -e "$CONFIG_color_palette_color_B0")
-BRed=$(echo -e "$CONFIG_color_palette_color_B1")
-BGreen=$(echo -e "$CONFIG_color_palette_color_B2")
-BYellow=$(echo -e "$CONFIG_color_palette_color_B3")
-BBlue=$(echo -e "$CONFIG_color_palette_color_B4")
-BPurple=$(echo -e "$CONFIG_color_palette_color_B5")
-BCyan=$(echo -e "$CONFIG_color_palette_color_B6")
-BWhite=$(echo -e "$CONFIG_color_palette_color_B7")
+B0=$(echo -e "$CONFIG_color_palette_color_B0")
+B1=$(echo -e "$CONFIG_color_palette_color_B1")
+B2=$(echo -e "$CONFIG_color_palette_color_B2")
+B3=$(echo -e "$CONFIG_color_palette_color_B3")
+B4=$(echo -e "$CONFIG_color_palette_color_B4")
+B5=$(echo -e "$CONFIG_color_palette_color_B5")
+B6=$(echo -e "$CONFIG_color_palette_color_B6")
+B7=$(echo -e "$CONFIG_color_palette_color_B7")
 
 # Informations variables
 
@@ -182,14 +182,14 @@ color_palette:
 
 wait_time=$(echo -e "$CONFIG_settings_wait_time")
 
-progress_bar_done=$(echo -e "${BGreen}$CONFIG_settings_progress_bar_done_sprite${Color_Off}")
-progress_bar_none=$(echo -e "${Cyan}$CONFIG_settings_progress_bar_empty_sprite${Color_Off}")
-progress_bar_full=$(echo -e "${BCyan}$CONFIG_settings_progress_bar_full_sprite${Color_Off}")
+progress_bar_done=$(echo -e "${B2}$CONFIG_settings_progress_bar_done_sprite${Color_Off}")
+progress_bar_none=$(echo -e "${6}$CONFIG_settings_progress_bar_empty_sprite${Color_Off}")
+progress_bar_full=$(echo -e "${B6}$CONFIG_settings_progress_bar_full_sprite${Color_Off}")
 
 # Start jobs
 
 if [ "$option" == "" ]; then
-      echo -e  "${BRed}_________                       .__            
+      echo -e  "${B1}_________                       .__            
 \_   ___ \_______  ____   _____ |  |__ _____   
 /    \  \/\_  __ \/  _ \ /     \|  |  \\__  \  
 \     \____|  | \(  <_> )  Y Y  \   Y  \/ __ \_
@@ -197,13 +197,13 @@ if [ "$option" == "" ]; then
         \/                    \/     \/     \/ 
 ${Color_Off}"
       echo -e " "
-      echo -e "${BCyan}===============================================================================${normal}"
-      echo -e  "${BPurple}Github Repository${Color_Off}: ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
+      echo -e "${B6}===============================================================================${normal}"
+      echo -e  "${B5}Github Repository${Color_Off}: ${B4}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
       echo -e " "
-      echo -e  "${Green}Current version${Color_Off}: ${BYellow}$version_ver${Color_Off}"
-      echo -e "${BCyan}===============================================================================${normal}"
+      echo -e  "${2}Current version${Color_Off}: ${B3}$version_ver${Color_Off}"
+      echo -e "${B6}===============================================================================${normal}"
       echo -e " "
-      echo -e  "${Cyan}A bash script to manage multiple package
+      echo -e  "${6}A bash script to manage multiple package
 managers easily with high customizability.${Color_Off}"
       echo -e " "
       echo -e "Hint: run '$ cromha_manager help' for help"
@@ -211,14 +211,14 @@ managers easily with high customizability.${Color_Off}"
 fi
 
 if [ $disable_done == False ]; then
-      echo -e "${BCyan}Note that this operation can take multiple minutes${normal}"
+      echo -e "${B6}Note that this operation can take multiple minutes${normal}"
       echo -e " "
 fi
 
 # Options
 
 if [ "$option" == "autoremove" ]; then
-      echo -e "${Purple}Autoremoving packages...${Color_Off}"
+      echo -e "${5}Autoremoving packages...${Color_Off}"
       if [ "$flatpak" == True ]; then
             sudo flatpak uninstall -y --unused #>&- 2>&-
             echo -e "[Autoremoving Flatpak Packages]"
@@ -240,7 +240,7 @@ if [ "$option" == "autoremove" ]; then
             #ProgressBar
       fi
       if [ "$cargo" == True ]; then
-            echo -e ${BCyan}ERROR: Sorry but cargo autoremove is not yet supported${normal}
+            echo -e ${B6}ERROR: Sorry but cargo autoremove is not yet supported${normal}
       fi
       if [ "$dnf" == True ]; then
             sudo dnf autoremove -y #>&- 2>&-
@@ -253,14 +253,14 @@ if [ "$option" == "autoremove" ]; then
             #ProgressBar
       fi
       if [ "$zypp" == True ]; then
-            echo -e ${BCyan}ERROR: Sorry but zypper autoremove is not yet supported${normal}
+            echo -e ${B6}ERROR: Sorry but zypper autoremove is not yet supported${normal}
       fi
 fi
 
 if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
-      echo -e "${Purple}Checking for package managers updates...${Color_Off}"
+      echo -e "${5}Checking for package managers updates...${Color_Off}"
       sleep 3
-      echo -e "${Purple}Updating different package managers...${Color_Off}"
+      echo -e "${5}Updating different package managers...${Color_Off}"
       echo -e " "
       if [ $flatpak == True ]; then
             echo -e "[Updating Flatpak Packages]"
@@ -314,77 +314,77 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
 fi
 
 if [ "$option" == "help" ]; then
-	echo -e  "${BGreen}HELP PAGE:${Color_Off}"
+	echo -e  "${B2}HELP PAGE:${Color_Off}"
 	echo -e " "
-	echo -e  "${BPurple}OPTIONS${normal} ${Yellow}(First entry):${Color_Off}"
+	echo -e  "${B5}OPTIONS${normal} ${3}(First entry):${Color_Off}"
 	echo -e " "
-	echo -e  "${BCyan}autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
-	echo -e  "${BCyan}help${normal}: show this page"
-      echo -e  "${BCyan}info/get-info${normal}: get infos about a specific package"
-      echo -e  "${BCyan}search/find${normal}: search and find packages on enabled package managers"
-      echo -e  "${BCyan}list/packages${normal}: list packages installed on your package managers one by one in nano"
-	echo -e  "${BCyan}upgrade/update${normal}: update your system"
-      echo -e  "${BCyan}config/customize${normal}: customize config.yaml"
-      echo -e  "${BCyan}reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
+	echo -e  "${B6}autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
+	echo -e  "${B6}help${normal}: show this page"
+      echo -e  "${B6}info/get-info${normal}: get infos about a specific package"
+      echo -e  "${B6}search/find${normal}: search and find packages on enabled package managers"
+      echo -e  "${B6}list/packages${normal}: list packages installed on your package managers one by one in nano"
+	echo -e  "${B6}upgrade/update${normal}: update your system"
+      echo -e  "${B6}config/customize${normal}: customize config.yaml"
+      echo -e  "${B6}reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
 	echo -e " "
-	echo -e  "${BPurple}PARAMETERS${normal} ${Yellow}(Second and Third entry):${Color_Off}"
+	echo -e  "${B5}PARAMETERS${normal} ${3}(Second and Third entry):${Color_Off}"
 	echo -e " "
-	echo -e  "${BCyan}-clean${normal}: clean cashed data after executing option"
-	echo -e  "${BCyan}-exit${normal}: close terminal window after executing option"
-	echo -e  "${BCyan}-poweroff${normal}: poweroff your system after executing option (alias: -shutdown)"
-	echo -e  "${BCyan}-reboot${normal}: reboot your system after executing option (alias: -restart)"
-	echo -e  "${BCyan}-restart${normal}: restart your system after executing option (alias: -reboot)"
-	echo -e  "${BCyan}-shutdown${normal}: shutdown your system after executing option (alias: -poweroff)"
+	echo -e  "${B6}-clean${normal}: clean cashed data after executing option"
+	echo -e  "${B6}-exit${normal}: close terminal window after executing option"
+	echo -e  "${B6}-poweroff${normal}: poweroff your system after executing option (alias: -shutdown)"
+	echo -e  "${B6}-reboot${normal}: reboot your system after executing option (alias: -restart)"
+	echo -e  "${B6}-restart${normal}: restart your system after executing option (alias: -reboot)"
+	echo -e  "${B6}-shutdown${normal}: shutdown your system after executing option (alias: -poweroff)"
       echo -e " "
-      echo -e  "${BPurple}CUSTOMIZATION:${Color_Off}"
-      echo -e  "Go to: ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off} for more information"
+      echo -e  "${B5}CUSTOMIZATION:${Color_Off}"
+      echo -e  "Go to: ${B4}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off} for more information"
 	disable_done=True
 fi
 
 if [ "$option" == "customize" ] || [ "$option" == "config" ]; then
-      echo -e "${Purple}Opening config.yaml...${Color_Off}"
+      echo -e "${5}Opening config.yaml...${Color_Off}"
       sleep 1
       nano $HOME/cromha-manager-config.yaml
       sleep .1
 fi
 
 if [ "$option" == "reset" ]; then
-      echo -e "${Purple}Reseting config located in $HOME/cromha-manager-config.yaml file...${Color_Off}"
+      echo -e "${5}Reseting config located in $HOME/cromha-manager-config.yaml file...${Color_Off}"
       sudo rm $HOME/cromha-manager-config.yaml
       echo -e "$default_config" >> $HOME/cromha-manager-config.yaml
       chmod 777 $HOME/cromha-manager-config.yaml
 fi
 
 if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
-      echo -e "${Purple}Searching for your installed packages...${Color_Off}"
-      echo -e "${Purple}Warning, packages list file can be very big...${Color_Off}"
+      echo -e "${5}Searching for your installed packages...${Color_Off}"
+      echo -e "${5}Warning, packages list file can be very big...${Color_Off}"
       echo -e " "
       if [ $flatpak == True ]; then
-            echo -e "${Yellow}Would you want to get the list of your flatpak packages ? (y/n)${Color_Off}"
+            echo -e "${3}Would you want to get the list of your flatpak packages ? (y/n)${Color_Off}"
             read anwser_flatpak
       fi
       if [ $snap == True ]; then
-            echo -e "${Yellow}Would you want to get the list of your snapcraft packages ? (y/n)${Color_Off}"
+            echo -e "${3}Would you want to get the list of your snapcraft packages ? (y/n)${Color_Off}"
             read anwser_snapcraft
       fi
       if [ $yum == True ]; then
-            echo -e "${Yellow}Would you want to get the list of your yum packages ? (y/n)${Color_Off}"
+            echo -e "${3}Would you want to get the list of your yum packages ? (y/n)${Color_Off}"
             read anwser_yum
       fi
       if [ $cargo == True ]; then
-            echo -e "${Yellow}Would you want to get the list of your cargo packages ? (y/n)${Color_Off}"
+            echo -e "${3}Would you want to get the list of your cargo packages ? (y/n)${Color_Off}"
             read anwser_cargo
       fi
       if [ $dnf == True ]; then
-            echo -e "${Yellow}Would you want to get the list of your dnf packages ? (y/n)${Color_Off}"
+            echo -e "${3}Would you want to get the list of your dnf packages ? (y/n)${Color_Off}"
             read anwser_dnf
       fi
       if [ $apt == True ]; then
-            echo -e "${Yellow}Would you want to get the list of your apt packages ? (y/n)${Color_Off}"
+            echo -e "${3}Would you want to get the list of your apt packages ? (y/n)${Color_Off}"
             read anwser_apt
       fi
       if [ $zypp == True ]; then
-            echo -e "${Yellow}Would you want to get the list of your zypp packages ? (y/n)${Color_Off}"
+            echo -e "${3}Would you want to get the list of your zypp packages ? (y/n)${Color_Off}"
             read anwser_zypp
       fi
       if [ "$anwser_flatpak" == "y" ]; then
@@ -427,7 +427,7 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
             echo -e "[ZYPPER OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$zypp_list" >> $HOME/packages-list-cromha.temp
       fi
-      echo -e "Opening temporary file where is stored installed packages list..."
+      echo -e "Opening temporary file where is sto1 installed packages list..."
       notify-send "Installed packages listing finished"
       sleep 1
       nano $HOME/packages-list-cromha.temp
@@ -437,12 +437,12 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
 fi
 
 if [ "$option" == "search" ] || [ "$option" == "find" ]; then
-      echo -e "${Yellow}Enter package name:${Color_Off}"
+      echo -e "${3}Enter package name:${Color_Off}"
       read package_find_name
       echo -e " "
-      echo -e "${Purple}Updating package managers...${Color_Off}"
+      echo -e "${5}Updating package managers...${Color_Off}"
       sleep 1
-      echo -e "${Purple}Searching for matches..."${Color_Off}
+      echo -e "${5}Searching for matches..."${Color_Off}
       echo -e " "
       if [ "$flatpak" == True ]; then
             echo -e "[Searching On Flatpak]"
@@ -514,10 +514,10 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
 fi
 
 if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
-      echo -e "${Yellow}Please enter package name${Color_Off}"
+      echo -e "${3}Please enter package name${Color_Off}"
       read package_info_name
       echo -e " "
-      echo -e "${Purple}Searching for matches...${Color_Off}"
+      echo -e "${5}Searching for matches...${Color_Off}"
       sleep 1
       if [ "$flatpak" == True ]; then
             echo -e " "
@@ -544,7 +544,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
             echo "$yum_info" >> $HOME/cromha-manager-package-info.tmp
       fi
       echo -e " "
-      echo -e "${Purple}Opening temp file where stored info about the package..."
+      echo -e "${5}Opening temp file where sto1 info about the package..."
       sleep 1
       nano $HOME/cromha-manager-package-info.tmp
       sleep .1
@@ -557,38 +557,38 @@ fi
 
 if [ "$parameter" == "-clean" ]; then
       echo -e " "
-	echo -e "${Purple}Cleaning cashed data...${Color_Off}"
+	echo -e "${5}Cleaning cashed data...${Color_Off}"
 	sudo dnf clean all -y >&- 2>&-
       echo -e " "
 fi
 
 if [ "$parameter" == "-exit" ]; then
       echo -e " "
-	echo -e "${Purple}Closing terminal window in $wait_time secs...${Color_Off}"
+	echo -e "${5}Closing terminal window in $wait_time secs...${Color_Off}"
       notify-send  "Closing terminal window in $wait_time secs..."
       Timer
       echo " "
-      echo -e "${Purple}Closing terminal window now...${Color_Off}"
+      echo -e "${5}Closing terminal window now...${Color_Off}"
       notify-send "Closing terminal window now..."
 	sudo kill -9 $PPID >&- 2>&-
 fi
 
 if [ "$parameter" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
-	echo -e "${Purple}Shutingdown your system in $wait_time seconds..."
+	echo -e "${5}Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
 	Timer
       echo " "
-      echo -e "${Purple}Shutingdown your system now...${Color_Off}"
+      echo -e "${5}Shutingdown your system now...${Color_Off}"
       notify-send "Shutingdown your system now..."
 	sudo poweroff
 fi
 
 if [ "$parameter" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
-	echo -e "${Purple}Rebooting your system in $wait_time seconds...${Color_Off}"
+	echo -e "${5}Rebooting your system in $wait_time seconds...${Color_Off}"
       notify-send "Rebooting your system in $wait_time seconds..."
 	Timer
       echo " "
-      echo -e "${Purple}Rebooting your system now...${Color_Off}"
+      echo -e "${5}Rebooting your system now...${Color_Off}"
       notify-send "Rebooting your system now"
 	sudo reboot
 fi
@@ -597,38 +597,38 @@ fi
 
 if [ "$parameter2" == "-clean" ]; then
       echo -e " "
-	echo -e "${Purple}Cleaning cashed data...${Color_Off}"
+	echo -e "${5}Cleaning cashed data...${Color_Off}"
 	sudo dnf clean all -y >&- 2>&-
       echo -e " "
 fi
 
 if [ "$parameter2" == "-exit" ]; then
       echo -e " "
-	echo -e "${Purple}Closing terminal window in $wait_time secs...${Color_Off}"
+	echo -e "${5}Closing terminal window in $wait_time secs...${Color_Off}"
       notify-send  "Closing terminal window in $wait_time secs..."
       Timer
       echo " "
-      echo -e "${Purple}Closing terminal window now...${Color_Off}"
+      echo -e "${5}Closing terminal window now...${Color_Off}"
       notify-send "Closing terminal window now..."
 	sudo kill -9 $PPID >&- 2>&-
 fi
 
 if [ "$parameter2" == "-poweroff" ] || [ "$parameter2" == "-shutdown" ]; then
-	echo -e "${Purple}Shutingdown your system in $wait_time seconds..."
+	echo -e "${5}Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
 	Timer
       echo " "
-      echo -e "${Purple}Shutingdown your system now...${Color_Off}"
+      echo -e "${5}Shutingdown your system now...${Color_Off}"
       notify-send "Shutingdown your system now..."
 	sudo poweroff
 fi
 
 if [ "$parameter2" == "-reboot" ] || [ "$parameter2" == "-restart" ]; then
-	echo -e "${Purple}Rebooting your system in $wait_time seconds...${Color_Off}"
+	echo -e "${5}Rebooting your system in $wait_time seconds...${Color_Off}"
       notify-send "Rebooting your system in $wait_time seconds..."
 	Timer
       echo " "
-      echo -e "${Purple}Rebooting your system now...${Color_Off}"
+      echo -e "${5}Rebooting your system now...${Color_Off}"
       notify-send "Rebooting your system now"
 	sudo reboot
 fi
@@ -636,5 +636,5 @@ fi
 # End jobs
 
 if [ "$disable_done" == False ]; then
-      echo -e  "${Color_Off}${BCyan}Done $progress_bar_done${Color_Off}"
+      echo -e  "${Color_Off}${B6}Done $progress_bar_done${Color_Off}"
 fi
