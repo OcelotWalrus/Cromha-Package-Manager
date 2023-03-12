@@ -497,14 +497,21 @@ if [ "$option" == "info" ]; then
       echo -e "${Yellow}Please enter package name${Color_Off}"
       read package_info_name
       echo -e " "
-      echo -e "${Purple}Searching for matches...${Color_Off}""
+      echo -e "${Purple}Searching for matches...${Color_Off}"
       sleep 1
       if [ "$flatpak" == True ]; then
-            echo "[Searching On Flatpak]"
+            echo -e " "
+            echo -e "[Searching On Flatpak]"
             ProgressBarFast
             flatpak_info=$(flatpak info "$package_info_name")
             echo "$flatpak_info" >> $HOME/cromha-manager-package-info.tmp
       fi
+      echo -e " "
+      echo -e "${Purple}Opening temp file where stored info about the package..."
+      sleep 1
+      nano $HOME/cromha-manager-package-info.tmp
+      sleep .1
+      sudo rm $HOME/cromha-manager-package-info.tmp
 fi
 
 # Parameters
