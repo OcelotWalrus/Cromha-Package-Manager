@@ -504,7 +504,24 @@ if [ "$option" == "info" ]; then
             echo -e "[Searching On Flatpak]"
             ProgressBarFast
             flatpak_info=$(flatpak info "$package_info_name")
+            echo "[FLATPAK OUTPUT]" >> $HOME/cromha-manager-package-info.tmp
             echo "$flatpak_info" >> $HOME/cromha-manager-package-info.tmp
+      fi
+      if [ "$snap" == True ]; then
+            echo -e " "
+            echo -e "[Searching On Snapcraft]"
+            ProgressBarFast
+            snap_info=$(snap info "$package_info_name")
+            echo "[SNAPCRAFT OUTPUT]" >> $HOME/cromha-manager-package-info.tmp
+            echo "$snap_info" >> $HOME/cromha-manager-package-info.tmp
+      fi
+      if [ "$yum" == True ]; then
+            echo -e " "
+            echo -e "[Searching On Yum]"
+            ProgressBarFast
+            yum_info=$(yum info "$package_info_name")
+            echo "[YUM OUTPUT]" >> $HOME/cromha-manager-package-info.tmp
+            echo "$yum_info" >> $HOME/cromha-manager-package-info.tmp
       fi
       echo -e " "
       echo -e "${Purple}Opening temp file where stored info about the package..."
