@@ -524,7 +524,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo -e "Hint: run 'cromha-manager config' to enable flatpak"
             fi
             if [ "$flatpak" == True ]; then
-                  echo -e "${C3}Please enter a valid flatpak package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  echo -e "${C3}Please enter a valid flatpak package id (Use cromha-manager find/search to find an id):${Color_Off}"
                   read package_info_name
                   echo -e "[Getting Info]"
                   ProgressBarFast & PID1=$!
@@ -545,7 +545,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo -e "Hint: run 'cromha-manager config' to enable snapcraft"
             fi
             if [ "$snap" == True ]; then
-                  echo -e "${C3}Please enter a valid snap package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  echo -e "${C3}Please enter a valid snap package id (Use cromha-manager find/search to find an id):${Color_Off}"
                   read package_info_name
                   echo -e "[Getting Info]"
                   ProgressBarFast & PID1=$!
@@ -566,7 +566,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo -e "Hint: run 'cromha-manager config' to enable yum"
             fi
             if [ "$yum" == True ]; then
-                  echo -e "${C3}Please enter a valid yum package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  echo -e "${C3}Please enter a valid yum package id (Use cromha-manager find/search to find an id):${Color_Off}"
                   read package_info_name
                   echo -e "[Getting Info]"
                   ProgressBarFast & PID1=$!
@@ -596,7 +596,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo -e "Hint: run 'cromha-manager config' to enable dnf"
             fi
             if [ "$dnf" == True ]; then
-                  echo -e "${C3}Please enter a valid dnf package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  echo -e "${C3}Please enter a valid dnf package id (Use cromha-manager find/search to find an id):${Color_Off}"
                   read package_info_name
                   echo -e "[Getting Info]"
                   ProgressBarFast & PID1=$!
@@ -617,7 +617,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo -e "Hint: run 'cromha-manager config' to enable apt"
             fi
             if [ "$apt" == True ]; then
-                  echo -e "${C3}Please enter a valid apt package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  echo -e "${C3}Please enter a valid apt package id (Use cromha-manager find/search to find an id):${Color_Off}"
                   read package_info_name
                   echo -e "[Getting Info]"
                   ProgressBarFast & PID1=$!
@@ -638,7 +638,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo -e "Hint: run 'cromha-manager config' to enable zypp"
             fi
             if [ "$zypp" == True ]; then
-                  echo -e "${C3}Please enter a valid apt package id (Use cromha-manager find/list to find an id):${Color_Off}"
+                  echo -e "${C3}Please enter a valid apt package id (Use cromha-manager find/search to find an id):${Color_Off}"
                   read package_info_name
                   echo -e "[Getting Info]"
                   ProgressBarFast & PID1=$!
