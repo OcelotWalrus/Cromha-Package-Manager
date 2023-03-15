@@ -321,6 +321,8 @@ if [ "$option" == "help" ]; then
 	echo -e " "
 	echo -e  "${B6}autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
 	echo -e  "${B6}help${normal}: show this page"
+      echo -e  "${B6}install/add${normal}: install/add a new package to one of your package manager"
+      echo -e  "${B6}colors/color-test${normal}: show an output text to test color palette"
       echo -e  "${B6}info/get-info${normal}: get infos about a specific package"
       echo -e  "${B6}search/find${normal}: search and find packages on enabled package managers"
       echo -e  "${B6}list/packages${normal}: list packages installed on your package managers one by one in nano"
@@ -653,6 +655,70 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   rm $HOME/cromha-manager-info.tmp
             fi
       fi
+fi
+
+if [ "$option" == "install" ] || [ "$option" == "add" ]; then
+      echo -e "${C3}Please enter a valid package manager:${Color_Off}"
+      read answer
+      echo " "
+      if [ "$answer" == "flatpak" ] || [ "$answer" == "flathub" ]; then
+            if [ "$flatpak" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that flatpak has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable flatpak"
+            fi
+            if [ "$flatpak" == True ]; then
+                  echo -e "${C3}Please enter a valid flatpak package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying installing package '$package_install_name' from flathub repo...${Color_Off}"
+                  echo " "
+                  echo "[Installin From Flatpak]"
+                  flatpak install flathub "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "snap" ] || [ "$answer" == "snapcraft" ]; then
+            if [ "$snap" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that snap has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable snap"
+            fi
+            if [ "$snap" == True ]; then
+                  echo -e "${C3}Please enter a valid snapcraft package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying installing package '$package_install_name' from snapcraft repo...${Color_Off}"
+                  echo " "
+                  echo "[Installin From Snapcraft]"
+                  sudo snap install "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+fi
+
+if [ "$option" == "colors" ] || [ "$option" == "color-test" ]; then
+      echo -e "${C5}Loading color paletter...${Color_Off}"
+      echo -e "${B6}Note that you can customize to color palette using cromha-manager config/customize${Color_Off}"
+      echo " "
+      echo -e "Color Palette 0(Normal): ${C0}cromha${Color_Off}"
+      echo -e "Color Palette 1(Normal): ${C1}cromha${Color_Off}"
+      echo -e "Color Palette 2(Normal): ${C2}cromha${Color_Off}"
+      echo -e "Color Palette 3(Normal): ${C3}cromha${Color_Off}"
+      echo -e "Color Palette 4(Normal): ${C4}cromha${Color_Off}"
+      echo -e "Color Palette 5(Normal): ${C5}cromha${Color_Off}"
+      echo -e "Color Palette 6(Normal): ${C6}cromha${Color_Off}"
+      echo -e "Color Palette 7(Normal): ${C7}cromha${Color_Off}"
+      echo -e "Color Palette 0(${bold}Bold${normal}): ${B0}cromha${Color_Off}"
+      echo -e "Color Palette 1(${bold}Bold${normal}): ${B1}cromha${Color_Off}"
+      echo -e "Color Palette 2(${bold}Bold${normal}): ${B2}cromha${Color_Off}"
+      echo -e "Color Palette 3(${bold}Bold${normal}): ${B3}cromha${Color_Off}"
+      echo -e "Color Palette 4(${bold}Bold${normal}): ${B4}cromha${Color_Off}"
+      echo -e "Color Palette 5(${bold}Bold${normal}): ${B5}cromha${Color_Off}"
+      echo -e "Color Palette 6(${bold}Bold${normal}): ${B6}cromha${Color_Off}"
+      echo -e "Color Palette 7(${bold}Bold${normal}): ${B7}cromha${Color_Off}"
 fi
 
 # Parameters
