@@ -321,6 +321,7 @@ if [ "$option" == "help" ]; then
 	echo -e " "
 	echo -e  "${B6}autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
 	echo -e  "${B6}help${normal}: show this page"
+      echo -e  "${B6}current-config${normal}: echo to the terminal your current config"
       echo -e  "${B6}install/add${normal}: install/add a new package to one of your package manager"
       echo -e  "${B6}colors/color-test${normal}: show an output text to test color palette"
       echo -e  "${B6}info/get-info${normal}: get infos about a specific package"
@@ -719,6 +720,14 @@ if [ "$option" == "colors" ] || [ "$option" == "color-test" ]; then
       echo -e "Color Palette 5(${bold}Bold${normal}): ${B5}cromha${Color_Off}"
       echo -e "Color Palette 6(${bold}Bold${normal}): ${B6}cromha${Color_Off}"
       echo -e "Color Palette 7(${bold}Bold${normal}): ${B7}cromha${Color_Off}"
+fi
+
+if [ "$option" == "current-config" ]; then
+      echo -e "${C5}Searching for config file...${Color_Off}"
+      echo " "
+      echo -e "${C2}CURRENT CONFIG:${Color_Off}"
+      current_config=$(cat $HOME/cromha-manager-config.yaml)
+      echo -e "${C3}$current_config${Color_Off}"
 fi
 
 # Parameters
