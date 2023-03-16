@@ -150,6 +150,7 @@ default_config="settings:
   progress_bar_done_sprite: ✔
   progress_bar_empty_sprite: ▱
   progress_bar_full_sprite: ▰
+  prefered_txt_editor: nano
 package_managers:
   apt: False
   cargo: False
@@ -185,6 +186,8 @@ wait_time=$(echo -e "$CONFIG_settings_wait_time")
 progress_bar_done=$(echo -e "${B2}$CONFIG_settings_progress_bar_done_sprite${Color_Off}")
 progress_bar_none=$(echo -e "${C6}$CONFIG_settings_progress_bar_empty_sprite${Color_Off}")
 progress_bar_full=$(echo -e "${B6}$CONFIG_settings_progress_bar_full_sprite${Color_Off}")
+
+prefered_text_editor=$(echo -e "$CONFIG_settings_prefered_text_editor")
 
 # Start jobs
 
@@ -326,7 +329,7 @@ if [ "$option" == "help" ]; then
       echo -e  "${B6}colors/color-test${normal}: show an output text to test color palette"
       echo -e  "${B6}info/get-info${normal}: get infos about a specific package"
       echo -e  "${B6}search/find${normal}: search and find packages on enabled package managers"
-      echo -e  "${B6}list/packages${normal}: list packages installed on your package managers one by one in nano"
+      echo -e  "${B6}list/packages${normal}: list packages installed on your package managers one by one in $prefered_text_editor"
 	echo -e  "${B6}upgrade/update${normal}: update your system"
       echo -e  "${B6}config/customize${normal}: customize config.yaml"
       echo -e  "${B6}reset/config-reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
@@ -348,7 +351,7 @@ fi
 if [ "$option" == "customize" ] || [ "$option" == "config" ]; then
       echo -e "${C5}Opening config.yaml...${Color_Off}"
       sleep 1
-      nano $HOME/cromha-manager-config.yaml
+      $prefered_text_editor $HOME/cromha-manager-config.yaml >&- 2>&-
       sleep .1
 fi
 
@@ -431,10 +434,10 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
             echo -e "[ZYPPER OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$zypp_list" >> $HOME/packages-list-cromha.temp
       fi
-      echo -e "Opening temporary file where is sto1 installed packages list..."
+      echo -e "Opening temporary file where is stored installed packages list..."
       notify-send "Installed packages listing finished"
       sleep 1
-      nano $HOME/packages-list-cromha.temp
+      $prefered_text_editor $HOME/packages-list-cromha.temp >&- 2>&-
       sleep 1
       echo -e "Deleting temporary file..."
       rm $HOME/packages-list-cromha.temp >&- 2>&-
@@ -513,7 +516,7 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
       fi
       echo -e "Opening search temp file..."
       sleep 1
-      nano $HOME/cromha-manager-search.temp
+      $prefered_text_editor $HOME/cromha-manager-search.temp >&- 2>&-
       sudo rm $HOME/cromha-manager-search.temp
 fi
 
@@ -538,7 +541,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo " "
                   echo -e "${C5}Opening temp file where stored info about the package..."
                   sleep 1
-                  nano $HOME/cromha-manager-info.tmp
+                  $prefered_text_editor $HOME/cromha-manager-info.tmp >&- 2>&-
                   rm $HOME/cromha-manager-info.tmp
             fi
       fi
@@ -559,7 +562,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo " "
                   echo -e "${C5}Opening temp file where stored info about the package..."
                   sleep 1
-                  nano $HOME/cromha-manager-info.tmp
+                  $prefered_text_editor $HOME/cromha-manager-info.tmp
                   rm $HOME/cromha-manager-info.tmp
             fi
       fi
@@ -580,7 +583,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo " "
                   echo -e "${C5}Opening temp file where stored info about the package..."
                   sleep 1
-                  nano $HOME/cromha-manager-info.tmp
+                  $prefered_text_editor $HOME/cromha-manager-info.tmp
                   rm $HOME/cromha-manager-info.tmp
             fi
       fi
@@ -610,7 +613,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo " "
                   echo -e "${C5}Opening temp file where stored info about the package..."
                   sleep 1
-                  nano $HOME/cromha-manager-info.tmp
+                  $prefered_text_editor $HOME/cromha-manager-info.tmp
                   rm $HOME/cromha-manager-info.tmp
             fi
       fi
@@ -631,7 +634,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo " "
                   echo -e "${C5}Opening temp file where stored info about the package..."
                   sleep 1
-                  nano $HOME/cromha-manager-info.tmp
+                  $prefered_text_editor $HOME/cromha-manager-info.tmp
                   rm $HOME/cromha-manager-info.tmp
             fi
       fi
@@ -652,7 +655,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo " "
                   echo -e "${C5}Opening temp file where stored info about the package..."
                   sleep 1
-                  nano $HOME/cromha-manager-info.tmp
+                  $prefered_text_editor $HOME/cromha-manager-info.tmp
                   rm $HOME/cromha-manager-info.tmp
             fi
       fi

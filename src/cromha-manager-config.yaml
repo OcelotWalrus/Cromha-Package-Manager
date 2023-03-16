@@ -3,6 +3,7 @@ settings:
   progress_bar_done_sprite: ✔
   progress_bar_empty_sprite: ▱
   progress_bar_full_sprite: ▰
+  prefered_text_editor: nano
 package_managers:
   apt: False
   cargo: False
