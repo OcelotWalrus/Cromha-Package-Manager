@@ -698,6 +698,24 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   wait $PID2
             fi
       fi
+      if [ "$answer" == "yum" ]; then
+            if [ "$yum" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that yum has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable yum"
+            fi
+            if [ "$yum" == True ]; then
+                  echo -e "${C3}Please enter a valid yum package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying installing package '$package_install_name' from yum repo...${Color_Off}"
+                  echo " "
+                  echo "[Installin From Yum]"
+                  sudo yum install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
 fi
 
 if [ "$option" == "colors" ] || [ "$option" == "color-test" ]; then
