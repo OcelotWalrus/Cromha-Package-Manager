@@ -726,7 +726,7 @@ if [ "$option" == "current-config" ]; then
       echo -e "${C5}Searching for config file...${Color_Off}"
       echo " "
       echo -e "${C2}CURRENT CONFIG:${Color_Off}"
-      current_config=$(cat $HOME/cromha-manager-config.yaml)
+      current_config=$(cat -A $HOME/cromha-manager-config.yaml)
       echo -e "${C3}$current_config${Color_Off}"
 fi
 
