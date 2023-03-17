@@ -151,6 +151,7 @@ default_config="settings:
   progress_bar_empty_sprite: ▱
   progress_bar_full_sprite: ▰
   prefered_txt_editor: nano
+  prefered_flatpak_repo: flathub
 package_managers:
   apt: False
   cargo: False
@@ -188,6 +189,7 @@ progress_bar_none=$(echo -e "${C6}$CONFIG_settings_progress_bar_empty_sprite${Co
 progress_bar_full=$(echo -e "${B6}$CONFIG_settings_progress_bar_full_sprite${Color_Off}")
 
 prefered_text_editor=$(echo -e "$CONFIG_settings_prefered_text_editor")
+prefered_flatpak_repo=$(echo -e "$CONFIG_settings_prefered_flatpak_repo")
 
 # Start jobs
 
@@ -677,7 +679,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo -e "${C5}Trying installing package '$package_install_name' from flathub repo...${Color_Off}"
                   echo " "
                   echo "[Installin From Flatpak]"
-                  flatpak install flathub "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
+                  flatpak install $prefered_flatpak_repo "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2

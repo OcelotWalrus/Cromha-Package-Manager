@@ -4,6 +4,7 @@ settings:
   progress_bar_empty_sprite: ▱
   progress_bar_full_sprite: ▰
   prefered_text_editor: nano
+  prefered_flatpak_repo: flathub
 package_managers:
   apt: False
   cargo: False
