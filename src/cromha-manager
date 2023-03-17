@@ -721,6 +721,78 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   wait $PID2
             fi
       fi
+      if [ "$answer" == "cargo" ]; then
+            if [ "$cargo" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that cargo has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable cargo"
+            fi
+            if [ "$cargo" == True ]; then
+                  echo -e "${C3}Please enter a valid cargo package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying installing package '$package_install_name' from cargo repo...${Color_Off}"
+                  echo " "
+                  echo "[Installin From Cargo]"
+                  sudo cargo install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "dnf" ]; then
+            if [ "$dnf" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that dnf has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable dnf"
+            fi
+            if [ "$dnf" == True ]; then
+                  echo -e "${C3}Please enter a valid dnf package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying installing package '$package_install_name' from dnf repo...${Color_Off}"
+                  echo " "
+                  echo "[Installin From Dnf]"
+                  sudo dnf install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "apt" ]; then
+            if [ "$apt" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that apt has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable apt"
+            fi
+            if [ "$apt" == True ]; then
+                  echo -e "${C3}Please enter a valid apt package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying installing package '$package_install_name' from apt repo...${Color_Off}"
+                  echo " "
+                  echo "[Installin From APT]"
+                  sudo apt install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "zypp" ] || [ "$answer" == "zypper" ]; then
+            if [ "$zypp" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that zypp has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable zypp"
+            fi
+            if [ "$zypp" == True ]; then
+                  echo -e "${C3}Please enter a valid zypp package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying installing package '$package_install_name' from zypp repo...${Color_Off}"
+                  echo " "
+                  echo "[Installin From Zypp]"
+                  sudo zypp install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
 fi
 
 if [ "$option" == "colors" ] || [ "$option" == "color-test" ]; then
