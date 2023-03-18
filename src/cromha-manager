@@ -328,6 +328,7 @@ if [ "$option" == "help" ]; then
 	echo -e  "${B6}help${normal}: show this page"
       echo -e  "${B6}current-config${normal}: echo to the terminal your current config"
       echo -e  "${B6}install/add${normal}: install/add a new package to one of your package manager"
+      echo -e  "${B6}uninstall/remove${normal}: uninstall/remove a package to one of your package manager"
       echo -e  "${B6}colors/color-test${normal}: show an output text to test color palette"
       echo -e  "${B6}info/get-info${normal}: get infos about a specific package"
       echo -e  "${B6}search/find${normal}: search and find packages on enabled package managers"
@@ -678,7 +679,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo " "
                   echo -e "${C5}Trying installing package '$package_install_name' from flathub repo...${Color_Off}"
                   echo " "
-                  echo "[Installin From Flatpak]"
+                  echo "[Installing From Flatpak]"
                   flatpak install $prefered_flatpak_repo "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
@@ -696,7 +697,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo " "
                   echo -e "${C5}Trying installing package '$package_install_name' from snapcraft repo...${Color_Off}"
                   echo " "
-                  echo "[Installin From Snapcraft]"
+                  echo "[Installing From Snapcraft]"
                   sudo snap install "$package_install_name" >&- 2>&- & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
@@ -714,7 +715,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo " "
                   echo -e "${C5}Trying installing package '$package_install_name' from yum repo...${Color_Off}"
                   echo " "
-                  echo "[Installin From Yum]"
+                  echo "[Installing From Yum]"
                   sudo yum install -y "$package_install_name" >&- 2>&- & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
@@ -732,7 +733,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo " "
                   echo -e "${C5}Trying installing package '$package_install_name' from cargo repo...${Color_Off}"
                   echo " "
-                  echo "[Installin From Cargo]"
+                  echo "[Installing From Cargo]"
                   sudo cargo install -y "$package_install_name" >&- 2>&- & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
@@ -750,7 +751,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo " "
                   echo -e "${C5}Trying installing package '$package_install_name' from dnf repo...${Color_Off}"
                   echo " "
-                  echo "[Installin From Dnf]"
+                  echo "[Installing From Dnf]"
                   sudo dnf install -y "$package_install_name" >&- 2>&- & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
@@ -768,7 +769,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo " "
                   echo -e "${C5}Trying installing package '$package_install_name' from apt repo...${Color_Off}"
                   echo " "
-                  echo "[Installin From APT]"
+                  echo "[Installing From APT]"
                   sudo apt install -y "$package_install_name" >&- 2>&- & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
@@ -786,8 +787,140 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo " "
                   echo -e "${C5}Trying installing package '$package_install_name' from zypp repo...${Color_Off}"
                   echo " "
-                  echo "[Installin From Zypp]"
+                  echo "[Installing From Zypp]"
                   sudo zypp install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+fi
+
+if [ "$option" == "remove" ] || [ "$option" == "uninstall" ]; then
+      echo -e "${C3}Please enter a valid package manager:${Color_Off}"
+      read answer
+      echo " "
+      if [ "$answer" == "flatpak" ] || [ "$answer" == "flathub" ]; then
+            if [ "$flatpak" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that flatpak has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable flatpak"
+            fi
+            if [ "$flatpak" == True ]; then
+                  echo -e "${C3}Please enter a valid flatpak package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying uninstalling package '$package_install_name'...${Color_Off}"
+                  echo " "
+                  echo "[Removing From Flatpak]"
+                  flatpak uninstall $prefered_flatpak_repo "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "snap" ] || [ "$answer" == "snapcraft" ]; then
+            if [ "$snap" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that snap has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable snap"
+            fi
+            if [ "$snap" == True ]; then
+                  echo -e "${C3}Please enter a valid snapcraft package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
+                  echo " "
+                  echo "[Removing From Snapcraft]"
+                  sudo snap remove "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "yum" ]; then
+            if [ "$yum" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that yum has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable yum"
+            fi
+            if [ "$yum" == True ]; then
+                  echo -e "${C3}Please enter a valid yum package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
+                  echo " "
+                  echo "[Removing From Yum]"
+                  sudo yum remove -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "cargo" ]; then
+            if [ "$cargo" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that cargo has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable cargo"
+            fi
+            if [ "$cargo" == True ]; then
+                  echo -e "${C3}Please enter a valid cargo package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
+                  echo " "
+                  echo "[Removing From Cargo]"
+                  sudo cargo uninstall -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "dnf" ]; then
+            if [ "$dnf" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that dnf has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable dnf"
+            fi
+            if [ "$dnf" == True ]; then
+                  echo -e "${C3}Please enter a valid dnf package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
+                  echo " "
+                  echo "[Removing From Dnf]"
+                  sudo dnf remove -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "apt" ]; then
+            if [ "$apt" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that apt has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable apt"
+            fi
+            if [ "$apt" == True ]; then
+                  echo -e "${C3}Please enter a valid apt package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
+                  echo " "
+                  echo "[Removing From APT]"
+                  sudo apt uninstall -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "zypp" ] || [ "$answer" == "zypper" ]; then
+            if [ "$zypp" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that zypp has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable zypp"
+            fi
+            if [ "$zypp" == True ]; then
+                  echo -e "${C3}Please enter a valid zypp package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
+                  echo " "
+                  echo "[Removing From Zypp]"
+                  sudo zypp remove -y "$package_install_name" >&- 2>&- & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
