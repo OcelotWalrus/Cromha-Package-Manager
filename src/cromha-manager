@@ -812,7 +812,7 @@ if [ "$option" == "remove" ] || [ "$option" == "uninstall" ]; then
                   echo -e "${C5}Trying uninstalling package '$package_install_name'...${Color_Off}"
                   echo " "
                   echo "[Removing From Flatpak]"
-                  flatpak uninstall $prefered_flatpak_repo "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
+                  flatpak uninstall "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
