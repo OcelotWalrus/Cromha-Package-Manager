@@ -333,6 +333,7 @@ if [ "$option" == "help" ]; then
       echo -e  "${B6}install/add${normal}: install/add a new package to one of your package manager"
       echo -e  "${B6}list/packages${normal}: list packages installed on your package managers one by one in $prefered_text_editor"
       echo -e  "${B6}reinstall${normal}: reinstall a package to one of your package manager (remove then install the selected package)"
+      echo -e  "${B6}downgrade${normal}: downgrade a package to one of your package manager"
       echo -e  "${B6}reset/config-reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
       echo -e  "${B6}search/find${normal}: search and find packages on enabled package managers"
       echo -e  "${B6}uninstall/remove${normal}: uninstall/remove a package to one of your package manager"
@@ -1063,6 +1064,100 @@ if [ "$option" == "reinstall" ]; then
                   wait $PID1
                   wait $PID2
                   wait $PID3
+            fi
+      fi
+fi
+
+if [ "$option" == "downgrade" ]; then
+      echo -e "${C3}Please enter a valid package manager:${Color_Off}"
+      read answer
+      echo " "
+      if [ "$answer" == "flatpak" ] || [ "$answer" == "flathub" ]; then
+            if [ "$flatpak" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that flatpak has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable flatpak"
+            fi
+            if [ "$flatpak" == True ]; then
+                  echo -e "${bold}Sorry; but it seems that flatpak downgrade is not avaible${normal}"
+                  echo -e "It will maybe in the future"
+            fi
+      fi
+      if [ "$answer" == "snap" ] || [ "$answer" == "snapcraft" ]; then
+            if [ "$snap" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that snap has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable snap"
+            fi
+            if [ "$snap" == True ]; then
+                  if [ "$flatpak" == True ]; then
+                  echo -e "${bold}Sorry; but it seems that snapcraft downgrade is not avaible${normal}"
+                  echo -e "It will maybe in the future"
+            fi
+            fi
+      fi
+      if [ "$answer" == "yum" ]; then
+            if [ "$yum" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that yum has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable yum"
+            fi
+            if [ "$yum" == True ]; then
+                  echo -e "${C3}Please enter a valid yum package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying downgrading package '$package_install_name' from yum repo...${Color_Off}"
+                  echo " "
+                  echo "[Downgrading From Yum]"
+                  sudo yum downgrade -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "cargo" ]; then
+            if [ "$cargo" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that cargo has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable cargo"
+            fi
+            if [ "$cargo" == True ]; then
+                  echo -e "${bold}Sorry; but it seems that cargo downgrade is not avaible${normal}"
+                  echo -e "It will maybe in the future"
+            fi
+      fi
+      if [ "$answer" == "dnf" ]; then
+            if [ "$dnf" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that dnf has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable dnf"
+            fi
+            if [ "$dnf" == True ]; then
+                  echo -e "${C3}Please enter a valid dnf package id (Use cromha-manager find/search to find an id):${Color_Off}"
+                  read package_install_name
+                  echo " "
+                  echo -e "${C5}Trying downgrading package '$package_install_name' from dnf repo...${Color_Off}"
+                  echo " "
+                  echo "[Downgrading From Dnf]"
+                  sudo dnf downgrade -y "$package_install_name" >&- 2>&- & PID1=$!
+                  ProgressBar & PID2=$!
+                  wait $PID1
+                  wait $PID2
+            fi
+      fi
+      if [ "$answer" == "apt" ]; then
+            if [ "$apt" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that apt has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable apt"
+            fi
+            if [ "$apt" == True ]; then
+                  echo -e "${bold}Sorry; but it seems that apt downgrade is not avaible${normal}"
+                  echo -e "It will maybe in the future"
+            fi
+      fi
+      if [ "$answer" == "zypp" ] || [ "$answer" == "zypper" ]; then
+            if [ "$zypp" == False ]; then
+                  echo -e "${bold}Sorry; but it seems that zypp has been disabled on the cromha-manager.yaml config${normal}"
+                  echo -e "Hint: run 'cromha-manager config' to enable zypp"
+            fi
+            if [ "$zypp" == True ]; then
+                  echo -e "${bold}Sorry; but it seems that zypp downgrade is not avaible${normal}"
+                  echo -e "It will maybe in the future"
             fi
       fi
 fi
