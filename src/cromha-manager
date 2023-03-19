@@ -48,6 +48,35 @@ done
 echo -e " ${B2}$progress_bar_done${Color_Off}"
 }
 
+function ProgressBarSlow () {
+      for i in {1..100}; do
+	output="\r"
+
+	output="$output ["
+	total=$i
+	count=0
+
+	while [ $count -lt $total ]; do
+		output="$output${progress_bar_full}"
+		let count=$count+3
+	done
+
+	let total=100-$total
+	count=0
+
+	while [ $count -lt $total ]; do
+		output="${output}${progress_bar_none}" 
+		let count=$count+3
+	done
+	output="$output ] $i/100%"
+	echo -ne "$output"
+
+      random_sleep_progress_bar=$(echo -e "0.$(( ($RANDOM%900) + 130))")
+	sleep $random_sleep_progress_bar
+done
+echo -e " ${B2}$progress_bar_done${Color_Off}"
+}
+
 function ProgressBarFast () {
       for i in {1..100}; do
 	output="\r"
@@ -162,6 +191,7 @@ package_managers:
   zypp: False
 informations:
   version: 0.1
+  distro: none
 color_palette:
   color_0: \033[0;30m
   color_1: \033[0;31m
@@ -190,6 +220,8 @@ progress_bar_full=$(echo -e "${B6}$CONFIG_settings_progress_bar_full_sprite${Col
 
 prefered_text_editor=$(echo -e "$CONFIG_settings_prefered_text_editor")
 prefered_flatpak_repo=$(echo -e "$CONFIG_settings_prefered_flatpak_repo")
+
+user_distro=$(echo -e "$CONFIG_informations_distro")
 
 # Start jobs
 
@@ -317,6 +349,38 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
             wait $PIDZYPP2
       fi
       notify-send "Finished upgrading your system"
+fi
+
+if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
+      echo -e "${C6}It is highly recommended to make a backup of your system before upgrading to a new distribution release"
+      echo -e ""
+      echo -e "${C5}Checking current Linux distribution...${Color_Off}"
+      echo " "
+      echo -e "${C3}Is it right that you are on the distro '$user_distro'? (y/n)${Color_Off}"
+      read answer
+      echo -e " "
+      if [ "$user_distro" == "fedora" ] && [ "$answer" == "y" ]; then
+            current_fedora_ver=$(awk -F= '$1=="VERSION_ID" { print $2 ;}' /etc/os-release)
+            new_fedora_ver=$(echo -e $(( "$current_fedora_ver" + 1 )))
+            echo -e "${B6}Please make sure that before running this command you have upgraded then rebooted your computer (by running 'cromha-manager upgrade -reboot' ${Color_Off}"
+            echo -e "${B6}System upgrade will begin in $wait_time$ seconds{Color_Off}"
+            notify-send "System upgrade will begin in $wait_time seconds"
+            Timer
+            echo -e "${C5}Installing dnf system-upgrade plugin if not installed...${Color_Off}"
+            sudo dnf install dnf-plugin-system-upgrade -y >&- 2>&- & PID1=$!
+            ProgressBarFast & PID2=$!
+            wait $PID1
+            wait $PID2
+            echo -e "${C5}Downloading Fedora $new_fedora_ver packages...${Color_Off}"
+            sudo dnf system-upgrade download -allowerasing --releasever="$new_fedora_ver" -y >&- 2>&- & PID1=$!
+            ProgressBarSlow & PID2=$!
+            wait $PID1
+            wait $PID2
+            echo -e "${C5} Rebooting in $wait_time seconds to apply upgrades...${Color_Off}"
+            notify-send "Rebooting in $wait_time seconds to apply upgrades"
+            Timer
+            sudo dnf system-upgrade reboot -y >&- 2>&-
+      fi
 fi
 
 if [ "$option" == "package-upgrade" ] || [ "$option" == "package-update" ]; then
@@ -463,6 +527,7 @@ if [ "$option" == "help" ]; then
       echo -e  "${B6}search/find${normal}: search and find packages on enabled package managers"
       echo -e  "${B6}uninstall/remove${normal}: uninstall/remove a package to one of your package manager"
       echo -e  "${B6}upgrade/update${normal}: upgrade all your system packages"
+      echo -e  "${B6}sys-upgrade/system-upgrade${normal}: upgrade your system (upgrade from Fedora 36 to 37 for example)" 
 	echo -e " "
 	echo -e  "${B5}PARAMETERS${normal} ${C3}(Second and Third entry):${Color_Off}"
 	echo -e " "

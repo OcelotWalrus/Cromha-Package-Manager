@@ -15,6 +15,7 @@ package_managers:
   zypp: False
 informations:
   version: 0.1
+  distro: none
 color_palette:
   color_0: \033[0;30m
   color_1: \033[0;31m
