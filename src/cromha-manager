@@ -368,10 +368,12 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
             Timer
             echo -e "${C5}Installing dnf system-upgrade plugin if not installed...${Color_Off}"
             sudo dnf install dnf-plugin-system-upgrade -y >&- 2>&- & PID1=$!
+            echo "[Installing system-upgrade dnf plugin]"
             ProgressBarFast & PID2=$!
             wait $PID1
             wait $PID2
             echo -e "${C5}Downloading Fedora $new_fedora_ver packages...${Color_Off}"
+            echo -e "[Downloading Fedora $new_fedora_ver packages]"
             sudo dnf system-upgrade download --allowerasing --releasever="$new_fedora_ver" -y >&- 2>&- & PID1=$!
             ProgressBarSlow & PID2=$!
             wait $PID1
