@@ -351,6 +351,49 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       notify-send "Finished upgrading your system"
 fi
 
+if [ "$option" == "upgrade-all" ] || [ "$option" == "update-all" ]; then
+      echo -e "${C5}Checking for package managers updates...${Color_Off}"
+      sleep 3
+      echo -e "${C5}Trying to updating all package managers...${Color_Off}"
+      echo -e " "
+      echo -e "[Updating Flatpak Packages]"
+      sudo flatpak update -y >&- 2>&- & PIDFLATPAK1=$!
+      ProgressBar & PIDFLATPAK2=$!
+      wait $PIDFLATPAK1
+      wait $PIDFLATPAK2
+      echo -e "[Updating Snapcraft Packages]"
+      sudo snap refresh >&- 2>&- & PIDSNAP1=$!
+      ProgressBar & PIDSNAP2=$!
+      wait $PIDSNAP1
+      wait $PIDSNAP2
+      echo -e "[Updating Yum Packages]"
+      sudo yum update -y >&- 2>&- & PIDYUM1=$!
+      ProgressBar & PIDYUM2=$!
+      wait $PIDYUM1
+      wait $PIDYUM2
+      echo -e "[Updating Cargo Packages]"
+      sudo cargo update -y >&- 2>&- & PIDCARGO1=$!
+      ProgressBar & PIDCARGO2=$!
+      wait $PIDCARGO1
+      wait $PIDCARGO2
+      echo -e "[Updating Dnf Packages]"
+      sudo dnf update -y >&- 2>&- & PIDDNF1=$!
+      ProgressBar & PIDDNF2=$!
+      wait $PIDDNF1
+      wait $PIDDNF2
+      echo -e "[Updating APT Packages]"
+      sudo apt update -y >&- 2>&- & PIDAPT1=$!
+      ProgressBar & PIDAPT2=$!
+      wait $PIDAPT1
+      wait $PIDAPT2
+      echo -e "[Updating Zypp Packages]"
+      sudo zypper update -y >&- 2>&- & PIDZYPP1=$!
+      ProgressBar & PIDZYPP2=$!
+      wait $PIDZYPP1
+      wait $PIDZYPP2
+      notify-send "Finished upgrading your system"
+fi
+
 if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
       echo -e "${C6}It is highly recommended to make a backup of your system before upgrading to a new distribution release"
       echo -e ""
@@ -528,7 +571,8 @@ if [ "$option" == "help" ]; then
       echo -e  "${B6}reset/config-reset${normal}: reset config ($HOME/cromha-manager-config.yaml file)"
       echo -e  "${B6}search/find${normal}: search and find packages on enabled package managers"
       echo -e  "${B6}uninstall/remove${normal}: uninstall/remove a package to one of your package manager"
-      echo -e  "${B6}upgrade/update${normal}: upgrade all your system packages"
+      echo -e  "${B6}upgrade/update${normal}: upgrade all your packages installed from activated package managers"
+      echo -e  "${B6}upgrade-all/update-all${normal}: try to upgrade all package managers packages, even the one not installed"
       echo -e  "${B6}sys-upgrade/system-upgrade${normal}: upgrade your system (upgrade from Fedora 36 to 37 for example)" 
 	echo -e " "
 	echo -e  "${B5}PARAMETERS${normal} ${C3}(Second and Third entry):${Color_Off}"
