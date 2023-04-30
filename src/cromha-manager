@@ -42,7 +42,7 @@ function ProgressBar () {
 	output="$output ] $i/100%"
 	echo -ne "$output"
 
-      random_sleep_progress_bar=$(echo -e "$(( ($RANDOM / 3000)))")
+      random_sleep_progress_bar=$(echo -e "$(( ($RANDOM % 7)))")
 	sleep $random_sleep_progress_bar
 done
 echo -e " ${B2}$progress_bar_done${Color_Off}"
