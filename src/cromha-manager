@@ -599,6 +599,7 @@ fi
 if [ "$option" == "clean" ] || [ "$option" == "auto-clean" ] || [ "$option" == "purge" ]; then
       echo -e " "
 	echo -e "${C5}Cleaning cashed data...${Color_Off}"
+      echo " "
 	if [ $flatpak == True ]; then
             echo -e "[Cleaning Flatpak]"
             sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
@@ -656,6 +657,7 @@ fi
 if [ "$option" == "clean-all" ] || [ "$option" == "auto-clean-all" ] || [ "$option" == "purge-all" ]; then
       echo -e " "
 	echo -e "${C5}Cleaning cashed data...${Color_Off}"
+      echo " "
       echo -e "[Cleaning Flatpak]"
       sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
       ProgressBarFast & PIDFLATPAK2=$!
@@ -1535,6 +1537,7 @@ fi
 if [ "$parameter" == "-clean" ] || [ "$parameter" == "-auto-clean" ] || [ "$parameter" == "-purge" ]; then
       echo -e " "
 	echo -e "${C5}Cleaning cashed data...${Color_Off}"
+      echo " "
 	if [ $flatpak == True ]; then
             echo -e "[Cleaning Flatpak]"
             sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
@@ -1625,6 +1628,7 @@ fi
 if [ "$parameter2" == "-clean" ] || [ "$parameter2" == "-auto-clean" ] || [ "$parameter2" == "-purge" ]; then
       echo -e " "
 	echo -e "${C5}Cleaning cashed data...${Color_Off}"
+      echo " "
 	if [ $flatpak == True ]; then
             echo -e "[Cleaning Flatpak]"
             sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
