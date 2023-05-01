@@ -559,6 +559,8 @@ if [ "$option" == "help" ]; then
 	echo -e " "
 	echo -e  "${B6}autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
       echo -e  "${B6}colors/color-test${normal}: show an output text to test color palette"
+      echo -e  "${B6}clean/auto-clean/purge${normal}: use the clean command of all your enabled package managers (ex: dnf clean)"
+      echo -e  "${B6}clean-all/auto-clean-all/purge-all${normal}: try to use the clean command of all package managers compatible, even the ones not enabled (ex: dnf clean)"
       echo -e  "${B6}config/customize${normal}: customize config.yaml"
       echo -e  "${B6}current-config${normal}: echo to the terminal your current config"
       echo -e  "${B6}downgrade${normal}: downgrade a package to one of your package manager"
@@ -577,12 +579,10 @@ if [ "$option" == "help" ]; then
 	echo -e " "
 	echo -e  "${B5}PARAMETERS${normal} ${C3}(Second and Third entry):${Color_Off}"
 	echo -e " "
-	echo -e  "${B6}-clean${normal}: clean cashed data after executing option"
+	echo -e  "${B6}-clean/-auto-clean/-purge${normal}: use the clean command of all your enabled package managers (ex: dnf clean)"
 	echo -e  "${B6}-exit${normal}: close terminal window after executing option"
-	echo -e  "${B6}-poweroff${normal}: poweroff your system after executing option (alias: -shutdown)"
-	echo -e  "${B6}-reboot${normal}: reboot your system after executing option (alias: -restart)"
-	echo -e  "${B6}-restart${normal}: restart your system after executing option (alias: -reboot)"
-	echo -e  "${B6}-shutdown${normal}: shutdown your system after executing option (alias: -poweroff)"
+	echo -e  "${B6}-reboot/-restart${normal}: reboot your system after executing option (alias: -restart)"
+	echo -e  "${B6}-shutdown/-poweroff${normal}: shutdown your system after executing option (alias: -poweroff)"
       echo -e " "
       echo -e  "${B5}CUSTOMIZATION:${Color_Off}"
       echo -e  "Go to: ${B4}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off} for more information"
@@ -594,6 +594,106 @@ if [ "$option" == "customize" ] || [ "$option" == "config" ]; then
       sleep 1
       $prefered_text_editor $HOME/cromha-manager-config.yaml >&- 2>&-
       sleep .1
+fi
+
+if [ "$option" == "clean" ] || [ "$option" == "auto-clean" ] || [ "$option" == "purge" ]; then
+      echo -e " "
+	echo -e "${C5}Cleaning cashed data...${Color_Off}"
+	if [ $flatpak == True ]; then
+            echo -e "[Cleaning Flatpak]"
+            sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
+            ProgressBarFast & PIDFLATPAK2=$!
+            wait $PIDFLATPAK1
+            wait $PIDFLATPAK2
+      fi
+      if [ $snap == True ]; then
+            echo -e "[Cleaning Snapcraft]"
+            sudo rm -rvf /var/lib/snapd/cache >&- 2>&- & PIDSNAP1=$!
+            ProgressBarFast & PIDSNAP2=$!
+            wait $PIDSNAP1
+            wait $PIDSNAP2
+      fi
+      if [ $yum == True ]; then
+            echo -e "[Cleaning Yum]"
+            sudo yum clean all >&- 2>&- & PIDYUM1=$!
+            ProgressBarFast & PIDYUM2=$!
+            wait $PIDYUM1
+            wait $PIDYUM2
+      fi
+      if [ $cargo == True ]; then
+            echo -e "[Cleaning Cargo]"
+            sudo cargo clean >&- 2>&- & PIDCARGO1=$!
+            ProgressBarFast & PIDCARGO2=$!
+            wait $PIDCARGO1
+            wait $PIDCARGO2
+      fi
+      if [ $dnf == True ]; then
+            echo -e "[Cleaning Dnf]"
+            sudo dnf clean all >&- 2>&- & PIDDNF1=$!
+            ProgressBarFast & PIDDNF2=$!
+            wait $PIDDNF1
+            wait $PIDDNF2
+      fi
+      if [ $apt == True ]; then
+            echo -e "[Cleaning APT]"
+            sudo apt autoclean >&- 2>&- & PIDAPT1=$!
+            ProgressBarFast & PIDAPT2=$!
+            sudo apt purge >&- 2>&- & PIDAPT3=$!
+            wait $PIDAPT1
+            wait $PIDAPT2
+            wait $PIDAPT3
+      fi
+      if [ $zypp == True ]; then
+            echo -e "[Cleaning Zypp]"
+            sudo zypper clean >&- 2>&- & PIDZYPP1=$!
+            ProgressBarFast & PIDZYPP2=$!
+            wait $PIDZYPP1
+            wait $PIDZYPP2
+      fi
+      echo -e " "
+fi
+
+if [ "$option" == "clean-all" ] || [ "$option" == "auto-clean-all" ] || [ "$option" == "purge-all" ]; then
+      echo -e " "
+	echo -e "${C5}Cleaning cashed data...${Color_Off}"
+      echo -e "[Cleaning Flatpak]"
+      sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
+      ProgressBarFast & PIDFLATPAK2=$!
+      wait $PIDFLATPAK1
+      wait $PIDFLATPAK2
+      echo -e "[Cleaning Snapcraft]"
+      sudo rm -rvf /var/lib/snapd/cache >&- 2>&- & PIDSNAP1=$!
+      ProgressBarFast & PIDSNAP2=$!
+      wait $PIDSNAP1
+      wait $PIDSNAP2
+      echo -e "[Cleaning Yum]"
+      sudo yum clean all >&- 2>&- & PIDYUM1=$!
+      ProgressBarFast & PIDYUM2=$!
+      wait $PIDYUM1
+      wait $PIDYUM2
+      echo -e "[Cleaning Cargo]"
+      sudo cargo clean >&- 2>&- & PIDCARGO1=$!
+      ProgressBarFast & PIDCARGO2=$!
+      wait $PIDCARGO1
+      wait $PIDCARGO2
+      echo -e "[Cleaning Dnf]"
+      sudo dnf clean all >&- 2>&- & PIDDNF1=$!
+      ProgressBarFast & PIDDNF2=$!
+      wait $PIDDNF1
+      wait $PIDDNF2
+      echo -e "[Cleaning APT]"
+      sudo apt autoclean >&- 2>&- & PIDAPT1=$!
+      ProgressBarFast & PIDAPT2=$!
+      sudo apt purge >&- 2>&- & PIDAPT3=$!
+      wait $PIDAPT1
+      wait $PIDAPT2
+      wait $PIDAPT3
+      echo -e "[Cleaning Zypp]"
+      sudo zypper clean >&- 2>&- & PIDZYPP1=$!
+      ProgressBarFast & PIDZYPP2=$!
+      wait $PIDZYPP1
+      wait $PIDZYPP2
+      echo -e " "
 fi
 
 if [ "$option" == "reset" ] || [ "$option" == "config-reset" ]; then
@@ -1432,10 +1532,60 @@ fi
 
 # First
 
-if [ "$parameter" == "-clean" ]; then
+if [ "$parameter" == "-clean" ] || [ "$parameter" == "-auto-clean" ] || [ "$parameter" == "-purge" ]; then
       echo -e " "
 	echo -e "${C5}Cleaning cashed data...${Color_Off}"
-	sudo dnf clean all -y >&- 2>&-
+	if [ $flatpak == True ]; then
+            echo -e "[Cleaning Flatpak]"
+            sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
+            ProgressBarFast & PIDFLATPAK2=$!
+            wait $PIDFLATPAK1
+            wait $PIDFLATPAK2
+      fi
+      if [ $snap == True ]; then
+            echo -e "[Cleaning Snapcraft]"
+            sudo rm -rvf /var/lib/snapd/cache >&- 2>&- & PIDSNAP1=$!
+            ProgressBarFast & PIDSNAP2=$!
+            wait $PIDSNAP1
+            wait $PIDSNAP2
+      fi
+      if [ $yum == True ]; then
+            echo -e "[Cleaning Yum]"
+            sudo yum clean all >&- 2>&- & PIDYUM1=$!
+            ProgressBarFast & PIDYUM2=$!
+            wait $PIDYUM1
+            wait $PIDYUM2
+      fi
+      if [ $cargo == True ]; then
+            echo -e "[Cleaning Cargo]"
+            sudo cargo clean >&- 2>&- & PIDCARGO1=$!
+            ProgressBarFast & PIDCARGO2=$!
+            wait $PIDCARGO1
+            wait $PIDCARGO2
+      fi
+      if [ $dnf == True ]; then
+            echo -e "[Cleaning Dnf]"
+            sudo dnf clean all >&- 2>&- & PIDDNF1=$!
+            ProgressBarFast & PIDDNF2=$!
+            wait $PIDDNF1
+            wait $PIDDNF2
+      fi
+      if [ $apt == True ]; then
+            echo -e "[Cleaning APT]"
+            sudo apt autoclean >&- 2>&- & PIDAPT1=$!
+            ProgressBarFast & PIDAPT2=$!
+            sudo apt purge >&- 2>&- & PIDAPT3=$!
+            wait $PIDAPT1
+            wait $PIDAPT2
+            wait $PIDAPT3
+      fi
+      if [ $zypp == True ]; then
+            echo -e "[Cleaning Zypp]"
+            sudo zypper clean >&- 2>&- & PIDZYPP1=$!
+            ProgressBarFast & PIDZYPP2=$!
+            wait $PIDZYPP1
+            wait $PIDZYPP2
+      fi
       echo -e " "
 fi
 
@@ -1472,10 +1622,60 @@ fi
 
 # Second
 
-if [ "$parameter2" == "-clean" ]; then
+if [ "$parameter2" == "-clean" ] || [ "$parameter2" == "-auto-clean" ] || [ "$parameter2" == "-purge" ]; then
       echo -e " "
 	echo -e "${C5}Cleaning cashed data...${Color_Off}"
-	sudo dnf clean all -y >&- 2>&-
+	if [ $flatpak == True ]; then
+            echo -e "[Cleaning Flatpak]"
+            sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
+            ProgressBarFast & PIDFLATPAK2=$!
+            wait $PIDFLATPAK1
+            wait $PIDFLATPAK2
+      fi
+      if [ $snap == True ]; then
+            echo -e "[Cleaning Snapcraft]"
+            sudo rm -rvf /var/lib/snapd/cache >&- 2>&- & PIDSNAP1=$!
+            ProgressBarFast & PIDSNAP2=$!
+            wait $PIDSNAP1
+            wait $PIDSNAP2
+      fi
+      if [ $yum == True ]; then
+            echo -e "[Cleaning Yum]"
+            sudo yum clean all >&- 2>&- & PIDYUM1=$!
+            ProgressBarFast & PIDYUM2=$!
+            wait $PIDYUM1
+            wait $PIDYUM2
+      fi
+      if [ $cargo == True ]; then
+            echo -e "[Cleaning Cargo]"
+            sudo cargo clean >&- 2>&- & PIDCARGO1=$!
+            ProgressBarFast & PIDCARGO2=$!
+            wait $PIDCARGO1
+            wait $PIDCARGO2
+      fi
+      if [ $dnf == True ]; then
+            echo -e "[Cleaning Dnf]"
+            sudo dnf clean all >&- 2>&- & PIDDNF1=$!
+            ProgressBarFast & PIDDNF2=$!
+            wait $PIDDNF1
+            wait $PIDDNF2
+      fi
+      if [ $apt == True ]; then
+            echo -e "[Cleaning APT]"
+            sudo apt autoclean >&- 2>&- & PIDAPT1=$!
+            ProgressBarFast & PIDAPT2=$!
+            sudo apt purge >&- 2>&- & PIDAPT3=$!
+            wait $PIDAPT1
+            wait $PIDAPT2
+            wait $PIDAPT3
+      fi
+      if [ $zypp == True ]; then
+            echo -e "[Cleaning Zypp]"
+            sudo zypper clean >&- 2>&- & PIDZYPP1=$!
+            ProgressBarFast & PIDZYPP2=$!
+            wait $PIDZYPP1
+            wait $PIDZYPP2
+      fi
       echo -e " "
 fi
 
