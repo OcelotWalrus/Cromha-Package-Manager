@@ -140,6 +140,7 @@ if [ "$answer" == "y" ]; then
       FILE=$HOME/cromha-manager-config.yaml
 	if test -f "$FILE"; then
 		sudo cp src/cromha-manager /usr/bin/
+            sudo cp src/cromha-manager-ctl /usr/bin/
 	else
 		cp src/cromha-manager-config.yaml $HOME/
             chmod 777 $HOME/cromha-manager-config.yaml

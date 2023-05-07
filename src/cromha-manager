@@ -243,7 +243,7 @@ ${Color_Off}"
       echo -e  "${C6}A bash script to manage multiple package
 managers easily with high customizability.${Color_Off}"
       echo -e " "
-      echo -e "Hint: run '$ cromha_manager help' for help"
+      echo -e "Hint: run '$ cromha-manager help' for help"
       disable_done=True
 fi
 
