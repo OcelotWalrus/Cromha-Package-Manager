@@ -275,6 +275,7 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       ProgressBarFast & WAIT2=$!
       wait $WAIT
       wait $WAIT2
+      sudo rm -r "$HOME/Cromha-Manager"
 fi
 
 if [ "$disable_done" == False ]; then

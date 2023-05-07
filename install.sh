@@ -131,8 +131,7 @@ managers easily with high customizability.${Color_Off}"
 fi
 
 sleep 1
-echo -e "Would you want to install the Cromha Multi Package Manager? (y/n)"
-read answer
+answer=y
 
 if [ "$answer" == "y" ]; then
 
