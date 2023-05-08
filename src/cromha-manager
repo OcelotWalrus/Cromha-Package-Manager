@@ -265,16 +265,7 @@ if [ "$option" == "autoremove" ]; then
             wait $PID2
       fi
       if [ "$snap" == True ]; then
-            echo -e "[Autoremoving Snapcraft Packages]"
-            set -eu
-            LANG=C snap list --all | awk '/disabled/{print $1, $3}' |
-            while read snapname revision;
-            do
-                  sudo snap remove "$snapname" --revision="$revision" >&- 2>&- & PID1=$!
-            done
-            ProgressBar & PID2=$!
-            wait $PID1
-            wait $PID2
+            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal}
       fi
       if [ "$yum" == True ]; then
             echo -e "[Autoremoving Yum Packages]"
