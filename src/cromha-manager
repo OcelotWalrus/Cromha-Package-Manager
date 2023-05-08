@@ -260,7 +260,7 @@ if [ "$option" == "autoremove" ]; then
       if [ "$flatpak" == True ]; then
             echo -e "[Autoremoving Flatpak Packages]"
             sudo flatpak uninstall -y --unused >&- 2>&- & PID1=$!
-            ProgressBarSlow & PID2=$!
+            ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
       fi
@@ -272,14 +272,14 @@ if [ "$option" == "autoremove" ]; then
             do
                   sudo snap remove "$snapname" --revision="$revision" >&- 2>&- & PID1=$!
             done
-            ProgressBarSlow & PID2=$!
+            ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
       fi
       if [ "$yum" == True ]; then
             echo -e "[Autoremoving Yum Packages]"
             sudo yum autoremove -y >&- 2>&- & PID1=$!
-            ProgressBarSlow & PID2=$!
+            ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
       fi
@@ -289,14 +289,14 @@ if [ "$option" == "autoremove" ]; then
       if [ "$dnf" == True ]; then
             echo -e "[Autoremoving DNF Packages]"
             sudo dnf autoremove -y >&- 2>&- & PID1=$!
-            ProgressBarSlow & PID2=$!
+            ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
       fi
       if [ "$apt " == True ]; then
             echo -e "[Autoremoving APT Packages]"
             sudo apt autoremove -y >&- 2>&- & PID1=$!
-            ProgressBarSlow & PID2=$!
+            ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
       fi
