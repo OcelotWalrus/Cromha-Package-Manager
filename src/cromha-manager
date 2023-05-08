@@ -285,7 +285,7 @@ if [ "$option" == "autoremove" ]; then
             wait $PID1
             wait $PID2
       fi
-      if [ "$apt " == True ]; then
+      if [ "$apt" == True ]; then
             echo -e "[Autoremoving APT Packages]"
             sudo apt autoremove -y >&- 2>&- & PID1=$!
             ProgressBar & PID2=$!
