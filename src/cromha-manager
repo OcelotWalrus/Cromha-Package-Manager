@@ -255,6 +255,7 @@ fi
 # Options
 
 if [ "$option" == "autoremove" ]; then
+      echo -e "${C5}Looking for uneeded or unused dependencises...${Color_Off}"
       echo -e "${C5}Autoremoving packages...${Color_Off}"
       echo " "
       if [ "$flatpak" == True ]; then
@@ -265,7 +266,7 @@ if [ "$option" == "autoremove" ]; then
             wait $PID2
       fi
       if [ "$snap" == True ]; then
-            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but snapcraft autoremove is not yet supported${normal}
       fi
       if [ "$yum" == True ]; then
             echo -e "[Autoremoving Yum Packages]"
