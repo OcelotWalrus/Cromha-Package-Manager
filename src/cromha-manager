@@ -256,41 +256,52 @@ fi
 
 if [ "$option" == "autoremove" ]; then
       echo -e "${C5}Autoremoving packages...${Color_Off}"
+      echo " "
       if [ "$flatpak" == True ]; then
-            sudo flatpak uninstall -y --unused #>&- 2>&-
             echo -e "[Autoremoving Flatpak Packages]"
-            #ProgressBar
+            sudo flatpak uninstall -y --unused >&- 2>&- & PID1=$!
+            ProgressBarSlow & PID2=$!
+            wait $PID1
+            wait $PID2
       fi
       if [ "$snap" == True ]; then
+            echo -e "[Autoremoving Snapcraft Packages]"
             set -eu
             LANG=C snap list --all | awk '/disabled/{print $1, $3}' |
             while read snapname revision;
             do
-                  sudo snap remove "$snapname" --revision="$revision" #>&- 2>&-
+                  sudo snap remove "$snapname" --revision="$revision" >&- 2>&- & PID1=$!
             done
-            echo -e "[Autoremoving Snapcraft Packages]"
-            #ProgressBar
+            ProgressBarSlow & PID2=$!
+            wait $PID1
+            wait $PID2
       fi
       if [ "$yum" == True ]; then
-            sudo yum autoremove -y #>&- 2>&-
             echo -e "[Autoremoving Yum Packages]"
-            #ProgressBar
+            sudo yum autoremove -y >&- 2>&- & PID1=$!
+            ProgressBarSlow & PID2=$!
+            wait $PID1
+            wait $PID2
       fi
       if [ "$cargo" == True ]; then
-            echo -e ${B6}ERROR: Sorry but cargo autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal}
       fi
       if [ "$dnf" == True ]; then
-            sudo dnf autoremove -y #>&- 2>&-
-            echo -e "[Autoremoving Dnf Packages]"
-            #ProgressBar
+            echo -e "[Autoremoving DNF Packages]"
+            sudo dnf autoremove -y >&- 2>&- & PID1=$!
+            ProgressBarSlow & PID2=$!
+            wait $PID1
+            wait $PID2
       fi
       if [ "$apt " == True ]; then
-            sudo apt autoremove -y #>&- 2>&-
             echo -e "[Autoremoving APT Packages]"
-            #ProgressBar
+            sudo apt autoremove -y >&- 2>&- & PID1=$!
+            ProgressBarSlow & PID2=$!
+            wait $PID1
+            wait $PID2
       fi
       if [ "$zypp" == True ]; then
-            echo -e ${B6}ERROR: Sorry but zypper autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but zypper autoremove is not yet supported${normal}
       fi
 fi
 
