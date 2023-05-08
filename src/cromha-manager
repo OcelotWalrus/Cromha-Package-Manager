@@ -125,8 +125,8 @@ function Timer () {
 function CheckNetwork () {
       echo -e "${C5}Checking network connection...${Color_Off}"
       wget --spider --quiet http://google.com
-      sleep 3
       if [ "$?" != 0 ]; then
+            sleep 3
             echo ""
             echo -e "${B1}ERROR: Your computer is not connected to any network, please make sure it is connected to the internet${Color_Off}"
             sleep 3
