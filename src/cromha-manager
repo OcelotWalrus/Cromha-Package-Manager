@@ -301,6 +301,7 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       echo -e "${C5}Checking for package managers updates...${Color_Off}"
       sleep 3
       echo -e "${C5}Updating different package managers...${Color_Off}"
+      sleep 3
       echo -e " "
       if [ $flatpak == True ]; then
             echo -e "[Updating Flatpak Packages]"
