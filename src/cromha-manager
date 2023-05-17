@@ -816,7 +816,7 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
             echo -e "[ZYPPER OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$zypp_list" >> $HOME/packages-list-cromha.temp
       fi
-      echo -e "Opening temporary file where is stored installed packages list..."
+      echo -e "${C5}Opening temporary file where is stored installed packages list..."
       notify-send "Installed packages listing finished"
       sleep 1
       $prefered_text_editor $HOME/packages-list-cromha.temp >&- 2>&-
@@ -898,7 +898,7 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
             wait $PIDSEARCH2
             echo -e " "
       fi
-      echo -e "Opening search temp file..."
+      echo -e "${C5}Opening search temp file..."
       sleep 1
       $prefered_text_editor $HOME/cromha-manager-search.temp >&- 2>&-
       sudo rm $HOME/cromha-manager-search.temp
