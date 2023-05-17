@@ -816,6 +816,7 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
             echo -e "[ZYPPER OUTPUT]" >> $HOME/packages-list-cromha.temp
             echo -e "$zypp_list" >> $HOME/packages-list-cromha.temp
       fi
+      echo ""
       echo -e "${C5}Opening temporary file where is stored installed packages list..."
       notify-send "Installed packages listing finished"
       sleep 1
