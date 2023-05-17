@@ -276,7 +276,7 @@ fi
 
 if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       echo -e " "
-      echo -e "${B1}Warning: It is normal is there is some error messages at the end of the script, it is because the cromha-manager-ctl have been modified during the patch. But don't worry the update will stil happen"
+      echo -e "${B1}WARNING: It is normal is there is some error messages at the end of the script, it is because the cromha-manager-ctl have been modified during the patch. But don't worry the update will stil happen"
       CheckNetwork
       sleep 3
       echo -e "${C5}Checking GitHub Repo..."
