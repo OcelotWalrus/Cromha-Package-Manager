@@ -293,7 +293,7 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       wait $WAIT2
       sudo rm -r "$HOME/Cromha-Manager"
       echo " "
-      echo -e "${B6}Last patch message: $last_patch_info"
+      echo -e "${B6}Last patch message: ${Color_Off}'$last_patch_info'"
 fi
 
 if [ "$disable_done" == False ]; then
