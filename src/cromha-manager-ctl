@@ -278,11 +278,11 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       echo -e " "
       CheckNetwork
       sleep 3
-      echo -e "${C5} Checking GitHub Repo..."
+      echo -e "${C5}Checking GitHub Repo..."
       sleep 2
-      echo -e "${C5} Cloning GitHub Repo into $HOME/Cromha-manager (default path)..."
+      echo -e "${C5}Cloning GitHub Repo into $HOME/Cromha-manager (default path)..."
       git clone https://github.com/OcelotWalrus/Bash-Multi-Package-Manager $HOME/Cromha-Manager >&- 2>&-
-      echo -e "${C5} Upgrading Cromha-Manager...${Color_Off}"
+      echo -e "${C5}Upgrading Cromha-Manager...${Color_Off}"
       echo " "
       echo "[Upgrading Cromha-Manager]"
       cd "$HOME/Cromha-Manager"
