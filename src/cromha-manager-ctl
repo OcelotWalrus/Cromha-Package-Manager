@@ -286,11 +286,14 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       echo " "
       echo "[Upgrading Cromha-Manager]"
       cd "$HOME/Cromha-Manager"
+      last_patch_info=$(git log -1 --pretty=%B)
       sh install.sh >&- 2>&- & WAIT=$!
       ProgressBarFast & WAIT2=$!
       wait $WAIT
       wait $WAIT2
       sudo rm -r "$HOME/Cromha-Manager"
+      echo " "
+      echo -e "${B6}Last patch message: $last_patch_info"
 fi
 
 if [ "$disable_done" == False ]; then
