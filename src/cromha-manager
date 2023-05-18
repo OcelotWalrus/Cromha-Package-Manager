@@ -128,7 +128,7 @@ function CheckNetwork () {
       if [ "$?" != 0 ]; then
             sleep 3
             echo ""
-            echo -e "${B1}ERROR: Your computer is not connected to any network, please make sure it is connected to the internet${Color_Off}"
+            echo -e "${B1}ERROR: Your computer is not connected to any network, please make sure it is connected to the internet${Color_Off} $progress_bar_error"
             sleep 3
             echo ""
             echo -e "${C5}Aborting current process...${Color_Off}"
@@ -192,6 +192,7 @@ version_ver=$(echo -e "$CONFIG_informations_version")
 default_config="settings:
   wait_time: 15
   progress_bar_done_sprite: ✔
+  progress_bar_error_sprite: ✘
   progress_bar_empty_sprite: ▱
   progress_bar_full_sprite: ▰
   prefered_txt_editor: nano
@@ -230,6 +231,7 @@ color_palette:
 wait_time=$(echo -e "$CONFIG_settings_wait_time")
 
 progress_bar_done=$(echo -e "${B2}$CONFIG_settings_progress_bar_done_sprite${Color_Off}")
+progress_bar_error=$(echo -e "${B1}$CONFIG_settings_progress_bar_error_sprite${Color_Off}")
 progress_bar_none=$(echo -e "${C6}$CONFIG_settings_progress_bar_empty_sprite${Color_Off}")
 progress_bar_full=$(echo -e "${B6}$CONFIG_settings_progress_bar_full_sprite${Color_Off}")
 
@@ -281,7 +283,7 @@ if [ "$option" == "autoremove" ]; then
             wait $PID2
       fi
       if [ "$snap" == True ]; then
-            echo -e ${B1}ERROR: Sorry but snapcraft autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but snapcraft autoremove is not yet supported${normal} $progress_bar_error
       fi
       if [ "$yum" == True ]; then
             echo -e "[Autoremoving Yum Packages]"
@@ -291,7 +293,7 @@ if [ "$option" == "autoremove" ]; then
             wait $PID2
       fi
       if [ "$cargo" == True ]; then
-            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal} $progress_bar_error
       fi
       if [ "$dnf" == True ]; then
             echo -e "[Autoremoving DNF Packages]"
@@ -308,7 +310,7 @@ if [ "$option" == "autoremove" ]; then
             wait $PID2
       fi
       if [ "$zypp" == True ]; then
-            echo -e ${B1}ERROR: Sorry but zypper autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but zypper autoremove is not yet supported${normal} $progress_bar_error
       fi
 fi
 
@@ -1721,7 +1723,7 @@ if [ "$parameter" == "-autoremove" ]; then
             wait $PID2
       fi
       if [ "$snap" == True ]; then
-            echo -e ${B1}ERROR: Sorry but snapcraft autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but snapcraft autoremove is not yet supported${normal} $progress_bar_error
       fi
       if [ "$yum" == True ]; then
             echo -e "[Autoremoving Yum Packages]"
@@ -1731,7 +1733,7 @@ if [ "$parameter" == "-autoremove" ]; then
             wait $PID2
       fi
       if [ "$cargo" == True ]; then
-            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal} $progress_bar_error
       fi
       if [ "$dnf" == True ]; then
             echo -e "[Autoremoving DNF Packages]"
@@ -1748,7 +1750,7 @@ if [ "$parameter" == "-autoremove" ]; then
             wait $PID2
       fi
       if [ "$zypp" == True ]; then
-            echo -e ${B1}ERROR: Sorry but zypper autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but zypper autoremove is not yet supported${normal} $progress_bar_error
       fi
 fi
 
@@ -1858,7 +1860,7 @@ if [ "$parameter2" == "-autoremove" ]; then
             wait $PID2
       fi
       if [ "$snap" == True ]; then
-            echo -e ${B1}ERROR: Sorry but snapcraft autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but snapcraft autoremove is not yet supported${normal} $progress_bar_error
       fi
       if [ "$yum" == True ]; then
             echo -e "[Autoremoving Yum Packages]"
@@ -1868,7 +1870,7 @@ if [ "$parameter2" == "-autoremove" ]; then
             wait $PID2
       fi
       if [ "$cargo" == True ]; then
-            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal} $progress_bar_error
       fi
       if [ "$dnf" == True ]; then
             echo -e "[Autoremoving DNF Packages]"
@@ -1885,7 +1887,7 @@ if [ "$parameter2" == "-autoremove" ]; then
             wait $PID2
       fi
       if [ "$zypp" == True ]; then
-            echo -e ${B1}ERROR: Sorry but zypper autoremove is not yet supported${normal}
+            echo -e ${B1}ERROR: Sorry but zypper autoremove is not yet supported${normal} $progress_bar_error
       fi
 fi
 

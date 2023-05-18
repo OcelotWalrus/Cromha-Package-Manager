@@ -1,6 +1,7 @@
 settings:
   wait_time: 15
   progress_bar_done_sprite: ✔
+  progress_bar_error_sprite: ✘
   progress_bar_empty_sprite: ▱
   progress_bar_full_sprite: ▰
   prefered_text_editor: nano
