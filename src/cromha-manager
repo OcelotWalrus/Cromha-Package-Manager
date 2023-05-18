@@ -622,6 +622,7 @@ if [ "$option" == "help" ]; then
 	echo -e  "${B6}-exit${normal}: close terminal window after executing option"
 	echo -e  "${B6}-reboot/-restart${normal}: reboot your system after executing option (alias: -restart)"
 	echo -e  "${B6}-shutdown/-poweroff${normal}: shutdown your system after executing option (alias: -poweroff)"
+      echo -e  "${B6}-autoremove${normal}: remove all unneeded packages that were originally installed as dependencies"
       echo -e " "
       echo -e  "${B5}CUSTOMIZATION:${Color_Off}"
       echo -e  "Go to: ${B4}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off} for more information"
