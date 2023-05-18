@@ -637,7 +637,6 @@ if [ "$option" == "customize" ] || [ "$option" == "config" ]; then
 fi
 
 if [ "$option" == "clean" ] || [ "$option" == "auto-clean" ] || [ "$option" == "purge" ]; then
-      echo -e " "
 	echo -e "${C5}Cleaning cashed data...${Color_Off}"
       echo " "
 	if [ $flatpak == True ]; then
