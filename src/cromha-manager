@@ -1609,7 +1609,7 @@ if [ "$option" == "current-config" ]; then
       echo -e "${C5}Searching for config file...${Color_Off}"
       echo " "
       echo -e "${C2}CURRENT CONFIG:${Color_Off}"
-      current_config=$(cat -A $HOME/cromha-manager-config.yaml)
+      current_config=$(cat "$HOME/cromha-manager-config.yaml")
       echo -e "${C3}$current_config${Color_Off}"
 fi
 
@@ -1687,6 +1687,7 @@ if [ "$parameter" == "-exit" ]; then
 fi
 
 if [ "$parameter" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
+      echo " "
 	echo -e "${C5}Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
 	Timer
@@ -1697,6 +1698,7 @@ if [ "$parameter" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
 fi
 
 if [ "$parameter" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
+      echo " "
 	echo -e "${C5}Rebooting your system in $wait_time seconds...${Color_Off}"
       notify-send "Rebooting your system in $wait_time seconds..."
 	Timer
@@ -1704,6 +1706,50 @@ if [ "$parameter" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
       echo -e "${C5}Rebooting your system now...${Color_Off}"
       notify-send "Rebooting your system now"
 	sudo reboot
+fi
+
+if [ "$parameter" == "-autoremove" ]; then
+      echo ""
+      echo -e "${C5}Looking for uneeded or unused dependencises...${Color_Off}"
+      echo -e "${C5}Autoremoving packages...${Color_Off}"
+      echo " "
+      if [ "$flatpak" == True ]; then
+            echo -e "[Autoremoving Flatpak Packages]"
+            sudo flatpak uninstall -y --unused >&- 2>&- & PID1=$!
+            ProgressBar & PID2=$!
+            wait $PID1
+            wait $PID2
+      fi
+      if [ "$snap" == True ]; then
+            echo -e ${B1}ERROR: Sorry but snapcraft autoremove is not yet supported${normal}
+      fi
+      if [ "$yum" == True ]; then
+            echo -e "[Autoremoving Yum Packages]"
+            sudo yum autoremove -y >&- 2>&- & PID1=$!
+            ProgressBar & PID2=$!
+            wait $PID1
+            wait $PID2
+      fi
+      if [ "$cargo" == True ]; then
+            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal}
+      fi
+      if [ "$dnf" == True ]; then
+            echo -e "[Autoremoving DNF Packages]"
+            sudo dnf autoremove -y >&- 2>&- & PID1=$!
+            ProgressBar & PID2=$!
+            wait $PID1
+            wait $PID2
+      fi
+      if [ "$apt" == True ]; then
+            echo -e "[Autoremoving APT Packages]"
+            sudo apt autoremove -y >&- 2>&- & PID1=$!
+            ProgressBar & PID2=$!
+            wait $PID1
+            wait $PID2
+      fi
+      if [ "$zypp" == True ]; then
+            echo -e ${B1}ERROR: Sorry but zypper autoremove is not yet supported${normal}
+      fi
 fi
 
 # Second
@@ -1778,6 +1824,7 @@ if [ "$parameter2" == "-exit" ]; then
 fi
 
 if [ "$parameter2" == "-poweroff" ] || [ "$parameter2" == "-shutdown" ]; then
+      echo " "
 	echo -e "${C5}Shutingdown your system in $wait_time seconds..."
       notify-send "Shutingdown your system in $wait_time seconds..."
 	Timer
@@ -1788,6 +1835,7 @@ if [ "$parameter2" == "-poweroff" ] || [ "$parameter2" == "-shutdown" ]; then
 fi
 
 if [ "$parameter2" == "-reboot" ] || [ "$parameter2" == "-restart" ]; then
+      echo ""
 	echo -e "${C5}Rebooting your system in $wait_time seconds...${Color_Off}"
       notify-send "Rebooting your system in $wait_time seconds..."
 	Timer
@@ -1795,6 +1843,50 @@ if [ "$parameter2" == "-reboot" ] || [ "$parameter2" == "-restart" ]; then
       echo -e "${C5}Rebooting your system now...${Color_Off}"
       notify-send "Rebooting your system now"
 	sudo reboot
+fi
+
+if [ "$parameter2" == "-autoremove" ]; then
+      echo ""
+      echo -e "${C5}Looking for uneeded or unused dependencises...${Color_Off}"
+      echo -e "${C5}Autoremoving packages...${Color_Off}"
+      echo " "
+      if [ "$flatpak" == True ]; then
+            echo -e "[Autoremoving Flatpak Packages]"
+            sudo flatpak uninstall -y --unused >&- 2>&- & PID1=$!
+            ProgressBar & PID2=$!
+            wait $PID1
+            wait $PID2
+      fi
+      if [ "$snap" == True ]; then
+            echo -e ${B1}ERROR: Sorry but snapcraft autoremove is not yet supported${normal}
+      fi
+      if [ "$yum" == True ]; then
+            echo -e "[Autoremoving Yum Packages]"
+            sudo yum autoremove -y >&- 2>&- & PID1=$!
+            ProgressBar & PID2=$!
+            wait $PID1
+            wait $PID2
+      fi
+      if [ "$cargo" == True ]; then
+            echo -e ${B1}ERROR: Sorry but cargo autoremove is not yet supported${normal}
+      fi
+      if [ "$dnf" == True ]; then
+            echo -e "[Autoremoving DNF Packages]"
+            sudo dnf autoremove -y >&- 2>&- & PID1=$!
+            ProgressBar & PID2=$!
+            wait $PID1
+            wait $PID2
+      fi
+      if [ "$apt" == True ]; then
+            echo -e "[Autoremoving APT Packages]"
+            sudo apt autoremove -y >&- 2>&- & PID1=$!
+            ProgressBar & PID2=$!
+            wait $PID1
+            wait $PID2
+      fi
+      if [ "$zypp" == True ]; then
+            echo -e ${B1}ERROR: Sorry but zypper autoremove is not yet supported${normal}
+      fi
 fi
 
 # End jobs
