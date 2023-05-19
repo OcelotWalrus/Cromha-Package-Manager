@@ -707,7 +707,6 @@ if [ "$option" == "clean" ] || [ "$option" == "auto-clean" ] || [ "$option" == "
 fi
 
 if [ "$option" == "clean-all" ] || [ "$option" == "auto-clean-all" ] || [ "$option" == "purge-all" ]; then
-      echo -e " "
 	echo -e "${C5}Cleaning cashed data...${Color_Off}"
       echo " "
       echo -e "[Cleaning Flatpak]"
