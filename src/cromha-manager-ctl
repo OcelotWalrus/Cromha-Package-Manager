@@ -254,7 +254,7 @@ if [ "$option" == "help" ]; then
 	echo -e " "
 	echo -e  "${B6}help${normal}: display this help message"
       echo -e  "${B6}upgrade/update${normal}: upgrade cromha-manager version"
-      echo -e  "${B6}uninstall/remove${normal}: uninstall cromha-manager (but not cromha-manager-ctl)"
+      echo -e  "${B6}uninstall/remove${normal}: uninstall cromha-manager (and cromha-manager-ctl too)"
 fi
 
 if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
@@ -286,7 +286,7 @@ if [ "$option" == "uninstall" ] || [ "$option" == "remove" ]; then
       echo -e " "
       CheckNetwork
       sleep 3
-      echo -e "${C5}Locating needed file for the cromha-manager..."
+      echo -e "${C5}Locating needed file for the cromha-manager...${Color_Off}"
       echo -e " "
       echo "[Removing/Uninstalling Cromha-Manager]"
       ProgressBar & PID1=$!
