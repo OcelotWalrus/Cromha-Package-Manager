@@ -197,6 +197,7 @@ default_config="settings:
   progress_bar_full_sprite: ▰
   prefered_txt_editor: nano
   prefered_flatpak_repo: flathub
+  notifications: True
 package_managers:
   apt: False
   cargo: False
@@ -239,6 +240,8 @@ prefered_text_editor=$(echo -e "$CONFIG_settings_prefered_text_editor")
 prefered_flatpak_repo=$(echo -e "$CONFIG_settings_prefered_flatpak_repo")
 
 user_distro=$(echo -e "$CONFIG_informations_distro")
+
+notifications=$(echo -e "$CONFIG_settings_notifications")
 
 # Start jobs
 
@@ -371,7 +374,9 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
             wait $PIDZYPP1
             wait $PIDZYPP2
       fi
-      notify-send "Finished upgrading your system"
+      if [ "$notifications" == True ]; then
+            notify-send "Finished upgrading your system"
+      fi
 fi
 
 if [ "$option" == "upgrade-all" ] || [ "$option" == "update-all" ]; then
@@ -416,7 +421,9 @@ if [ "$option" == "upgrade-all" ] || [ "$option" == "update-all" ]; then
       ProgressBar & PIDZYPP2=$!
       wait $PIDZYPP1
       wait $PIDZYPP2
-      notify-send "Finished upgrading your system"
+      if [ "$notifications" == True ]; then
+            notify-send "Finished upgrading your system"
+      fi
 fi
 
 if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
@@ -434,7 +441,9 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
             new_fedora_ver=$(echo -e $(( "$current_fedora_ver" + 1 )))
             echo -e "${B6}Please make sure that before running this command you have upgraded then rebooted your computer (by running 'cromha-manager upgrade -reboot' ${Color_Off}"
             echo -e "${B6}System upgrade will begin in $wait_time seconds${Color_Off}"
-            notify-send "System upgrade will begin in $wait_time seconds"
+            if [ "$notifications" == True ]; then
+                  notify-send "System upgrade will begin in $wait_time seconds"
+            fi
             Timer
             CheckNetwork
             sleep 3
@@ -451,7 +460,9 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
             wait $PID1
             wait $PID2
             echo -e "${C5} Rebooting in $wait_time seconds to apply upgrades...${Color_Off}"
-            notify-send "Rebooting in $wait_time seconds to apply upgrades"
+            if [ "$notifications" == True ]; then
+                  notify-send "Rebooting in $wait_time seconds to apply upgrades"
+            fi
             Timer
             sudo dnf system-upgrade reboot -y >&- 2>&-
       fi
@@ -820,7 +831,9 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
       fi
       echo ""
       echo -e "${C5}Opening temporary file where is stored installed packages list..."
-      notify-send "Installed packages listing finished"
+      if [ "$notifications" == True ]; then
+            notify-send "Installed packages listing finished"
+      fi
       sleep 1
       $prefered_text_editor $HOME/packages-list-cromha.temp >&- 2>&-
       sleep 1
@@ -1680,33 +1693,45 @@ fi
 if [ "$parameter" == "-exit" ]; then
       echo -e " "
 	echo -e "${C5}Closing terminal window in $wait_time secs...${Color_Off}"
-      notify-send  "Closing terminal window in $wait_time secs..."
+      if [ "$notifications" == True ]; then
+            notify-send  "Closing terminal window in $wait_time secs..."
+      fi
       Timer
       echo " "
       echo -e "${C5}Closing terminal window now...${Color_Off}"
-      notify-send "Closing terminal window now..."
+      if [ "$notifications" == True ]; then
+            notify-send "Closing terminal window now..."
+      fi
 	sudo kill -9 $PPID >&- 2>&-
 fi
 
 if [ "$parameter" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
       echo " "
 	echo -e "${C5}Shutingdown your system in $wait_time seconds..."
-      notify-send "Shutingdown your system in $wait_time seconds..."
+      if [ "$notifications" == True ]; then
+            notify-send "Shutingdown your system in $wait_time seconds..."
+      fi
 	Timer
       echo " "
       echo -e "${C5}Shutingdown your system now...${Color_Off}"
-      notify-send "Shutingdown your system now..."
+      if [ "$notifications" == True ]; then
+            notify-send "Shutingdown your system now..."
+      fi
 	sudo poweroff
 fi
 
 if [ "$parameter" == "-reboot" ] || [ "$parameter" == "-restart" ]; then
       echo " "
 	echo -e "${C5}Rebooting your system in $wait_time seconds...${Color_Off}"
-      notify-send "Rebooting your system in $wait_time seconds..."
+      if [ "$notifications" == True ]; then
+            notify-send "Rebooting your system in $wait_time seconds..."
+      fi
 	Timer
       echo " "
       echo -e "${C5}Rebooting your system now...${Color_Off}"
-      notify-send "Rebooting your system now"
+      if [ "$notifications" == True ]; then
+            notify-send "Rebooting your system now"
+      fi
 	sudo reboot
 fi
 
