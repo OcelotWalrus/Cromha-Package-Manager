@@ -149,6 +149,8 @@ if [ "$answer" == "y" ]; then
             echo -e "Please set up the config file for you, if you have any question, check ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
             sleep 3
             nano $HOME/cromha-manager-config.yaml
+            sudo cp src/cromha-manager /usr/bin/
+            sudo cp src/cromha-manager-ctl /usr/bin/
             echo ""
 	fi
       echo "[Finishing Installation]"
