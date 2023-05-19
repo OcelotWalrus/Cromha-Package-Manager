@@ -148,6 +148,12 @@ function CheckNetwork () {
       fi
 }
 
+function Uninstall () {
+      sudo rm -r /usr/bin/cromha-manager >&- 2>&-
+      sudo rm -r /usr/bin/cromha-manager-ctl >&- 2>&-
+      sudo rm -r $HOME/cromha-manager-config.yaml >&- 2>&-
+}
+
 # YAML parser
 function parse_yaml {
       local prefix=$2
@@ -273,6 +279,21 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       sudo rm -r "$HOME/Cromha-Manager"
       echo " "
       echo -e "${B6}Last patch message: ${Color_Off}'$last_patch_info'"
+fi
+
+if [ "$option" == "uninstall" ] || [ "$option" == "remove" ]; then
+      echo -e "${B1}WARNING: It is normal if errors occurs at the end of the script, it is because the nedded files for cromha-manager-ctl to work have been deleted. Even if there is errors, cromha-manager and cromha-manager-ctl will be still removed"
+      echo -e " "
+      CheckNetwork
+      sleep 3
+      echo -e "${C5}Locating needed file for the cromha-manager..."
+      echo -e " "
+      echo "[Removing/Uninstalling Cromha-Manager]"
+      ProgressBar & PID1=$!
+      Uninstall & PID2=$!
+      wait $PID1
+      wait $PID2
+
 fi
 
 if [ "$disable_done" == False ]; then
