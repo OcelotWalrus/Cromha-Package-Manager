@@ -15,6 +15,17 @@ normal=$(tput sgr0)
 
 Color_Off='\033[0m'       # Text Reset
 
+# Check if config file exist
+
+function CheckConfigFile {
+      ConfigFileCheck=$HOME/cromha-manager-config.yaml
+      if test -f "$ConfigFileCheck"; then
+            sleep .1
+      else
+            echo -e "${bold}ERROR:Couldn't locate config file at $HOME/cromha-manager-config.yaml. Please get a config file by running 'cromha-manager-ctl upgrade' or by running the install.sh script provided in the github repo"
+      fi
+}
+
 # Functions
 
 # Progress bar
