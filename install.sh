@@ -143,6 +143,9 @@ if [ "$answer" == "y" ]; then
 	else
 		cp src/cromha-manager-config.yaml $HOME/
             chmod 777 $HOME/cromha-manager-config.yaml
+            echo -e "Opening config file with nano to edit it..."
+            echo -e "Please set up the config file for you, if you have any question, check ${BBlue}https://github.com/OcelotWalrus/Bash-Multi-Package-Manager${Color_Off}"
+            nano $HOME/cromha-manager-config.yaml
 	fi
       ProgressBar
 
