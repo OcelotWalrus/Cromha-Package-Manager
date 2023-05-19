@@ -323,49 +323,49 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       sleep 3
       echo -e " "
       if [ $flatpak == True ]; then
-            echo -e "[Updating Flatpak Packages]"
+            echo -e "[Upgrading Flatpak Packages]"
             sudo flatpak update -y >&- 2>&- & PIDFLATPAK1=$!
             ProgressBar & PIDFLATPAK2=$!
             wait $PIDFLATPAK1
             wait $PIDFLATPAK2
       fi
       if [ $snap == True ]; then
-            echo -e "[Updating Snapcraft Packages]"
+            echo -e "[Upgrading Snapcraft Packages]"
             sudo snap refresh >&- 2>&- & PIDSNAP1=$!
             ProgressBar & PIDSNAP2=$!
             wait $PIDSNAP1
             wait $PIDSNAP2
       fi
       if [ $yum == True ]; then
-            echo -e "[Updating Yum Packages]"
+            echo -e "[Upgrading Yum Packages]"
             sudo yum update -y >&- 2>&- & PIDYUM1=$!
             ProgressBar & PIDYUM2=$!
             wait $PIDYUM1
             wait $PIDYUM2
       fi
       if [ $cargo == True ]; then
-            echo -e "[Updating Cargo Packages]"
+            echo -e "[Upgrading Cargo Packages]"
             sudo cargo update -y >&- 2>&- & PIDCARGO1=$!
             ProgressBar & PIDCARGO2=$!
             wait $PIDCARGO1
             wait $PIDCARGO2
       fi
       if [ $dnf == True ]; then
-            echo -e "[Updating Dnf Packages]"
+            echo -e "[Upgrading Dnf Packages]"
             sudo dnf update -y >&- 2>&- & PIDDNF1=$!
             ProgressBar & PIDDNF2=$!
             wait $PIDDNF1
             wait $PIDDNF2
       fi
       if [ $apt == True ]; then
-            echo -e "[Updating APT Packages]"
+            echo -e "[Upgrading APT Packages]"
             sudo apt update -y >&- 2>&- & PIDAPT1=$!
             ProgressBar & PIDAPT2=$!
             wait $PIDAPT1
             wait $PIDAPT2
       fi
       if [ $zypp == True ]; then
-            echo -e "[Updating Zypp Packages]"
+            echo -e "[Upgrading Zypp Packages]"
             sudo zypper update -y >&- 2>&- & PIDZYPP1=$!
             ProgressBar & PIDZYPP2=$!
             wait $PIDZYPP1
@@ -381,37 +381,37 @@ if [ "$option" == "upgrade-all" ] || [ "$option" == "update-all" ]; then
       sleep 3
       echo -e "${C5}Trying to update all package managers...${Color_Off}"
       echo -e " "
-      echo -e "[Updating Flatpak Packages]"
+      echo -e "[Upgrading Flatpak Packages]"
       sudo flatpak update -y >&- 2>&- & PIDFLATPAK1=$!
       ProgressBar & PIDFLATPAK2=$!
       wait $PIDFLATPAK1
       wait $PIDFLATPAK2
-      echo -e "[Updating Snapcraft Packages]"
+      echo -e "[Upgrading Snapcraft Packages]"
       sudo snap refresh >&- 2>&- & PIDSNAP1=$!
       ProgressBar & PIDSNAP2=$!
       wait $PIDSNAP1
       wait $PIDSNAP2
-      echo -e "[Updating Yum Packages]"
+      echo -e "[Upgrading Yum Packages]"
       sudo yum update -y >&- 2>&- & PIDYUM1=$!
       ProgressBar & PIDYUM2=$!
       wait $PIDYUM1
       wait $PIDYUM2
-      echo -e "[Updating Cargo Packages]"
+      echo -e "[Upgrading Cargo Packages]"
       sudo cargo update -y >&- 2>&- & PIDCARGO1=$!
       ProgressBar & PIDCARGO2=$!
       wait $PIDCARGO1
       wait $PIDCARGO2
-      echo -e "[Updating Dnf Packages]"
+      echo -e "[Upgrading Dnf Packages]"
       sudo dnf update -y >&- 2>&- & PIDDNF1=$!
       ProgressBar & PIDDNF2=$!
       wait $PIDDNF1
       wait $PIDDNF2
-      echo -e "[Updating APT Packages]"
+      echo -e "[Upgrading APT Packages]"
       sudo apt update -y >&- 2>&- & PIDAPT1=$!
       ProgressBar & PIDAPT2=$!
       wait $PIDAPT1
       wait $PIDAPT2
-      echo -e "[Updating Zypp Packages]"
+      echo -e "[Upgrading Zypp Packages]"
       sudo zypper update -y >&- 2>&- & PIDZYPP1=$!
       ProgressBar & PIDZYPP2=$!
       wait $PIDZYPP1
