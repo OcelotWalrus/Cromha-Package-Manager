@@ -436,6 +436,9 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
       echo -e "${C3}Is it right that you are on the distro '$user_distro'? (y/n)${Color_Off}"
       read answer
       echo -e " "
+      if [ "$user_distro" == "" ]; then
+            echo -e "${B1}ERROR: Sorry but it seems that you didn't specified any distro in your config file located in $HOME/cromha-manager-config.yaml. Please use cromha-manager config to specify it they try again $progress_bar_error"
+      fi
       if [ "$user_distro" == "fedora" ] && [ "$answer" == "y" ]; then
             current_fedora_ver=$(awk -F= '$1=="VERSION_ID" { print $2 ;}' /etc/os-release)
             new_fedora_ver=$(echo -e $(( "$current_fedora_ver" + 1 )))
