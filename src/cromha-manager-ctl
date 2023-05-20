@@ -224,12 +224,12 @@ user_distro=$(echo -e "$CONFIG_informations_distro")
 # Start jobs
 
 if [ "$option" == "" ]; then
-      echo -e  "${B1}_________                       .__            
-\_   ___ \_______  ____   _____ |  |__ _____   
-/    \  \/\_  __ \/  _ \ /     \|  |  \\__  \  
-\     \____|  | \(  <_> )  Y Y  \   Y  \/ __ \_
- \______  /|__|   \____/|__|_|  /___|  (____  /
-        \/                    \/     \/     \/ 
+      echo -e  "${B1}_________                       .__                     ____________________.____     
+\_   ___ \_______  ____   _____ |  |__ _____            \_   ___ \__    ___/|    |    
+/    \  \/\_  __ \/  _ \ /     \|  |  \\__  \    ______ /    \  \/ |    |   |    |    
+\     \____|  | \(  <_> )  Y Y  \   Y  \/ __ \_ /_____/ \     \____|    |   |    |___ 
+ \______  /|__|   \____/|__|_|  /___|  (____  /          \______  /|____|   |_______ \
+        \/                    \/     \/     \/                  \/                  \/
 ${Color_Off}"
       echo -e " "
       echo -e "${B6}===============================================================================${normal}"
@@ -287,11 +287,14 @@ fi
 if [ "$option" == "dnf-optimize" ]; then
       echo -e " "
       echo -e "${C5}Locating dnf conf file..."
+      sleep sleep .7
       echo -e "${C5}Reading /etc/dnf/dnf.conf..."
+      sleep sleep .5
       echo -e "${C5}Getting parameters to optimize...${Color_Off}"
+      sleep .8
       echo -e " "
       echo -e "[Optimizing DNF]"
-      ProgressBar & PID1=$!
+      ProgressBarFast & PID1=$!
       sudo echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf >&- 2>&- & PID2=$!
       sudo echo "max_parallel_download=10" | sudo tee -a /etc/dnf/dnf.conf >&- 2>&- & PID3=$!
       sudo echo "deltarpm=True" | sudo tee -a  /etc/dnf/dnf.conf >&- 2>&- & PID4=$!
