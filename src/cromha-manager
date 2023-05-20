@@ -488,31 +488,6 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$op
             Timer
             sudo dnf system-upgrade reboot -y >&- 2>&-
       fi
-      if [ "$user_distro" == "ubuntu" ] && [ "$answer" == "y" ]; then
-            echo -e "${B6}Please make sure that before upgrading your system you runned the following commands and make sure you enabled apt package manager in your $HOME/cromha-manager-config.yaml file; if not run it: cromha-manager upgrade -reboot${Color_Off}"
-            echo " "
-            echo -e "${B6}System upgrade wil begin in $wait_time seconds${Color_Off}"
-            if [ "$notifications" == True ]; then
-                  notify-send "System upgrade will begin in $wait_time seconds"
-            fi
-            Timer
-            echo " "
-            CheckNetwork
-            sleep 3
-            echo -e "${C5}Downloading Unbuntu/APT-Based distro newer version packages...${Color_Off}"
-            echo " "
-            echo -e "[Downloading Unbuntu/APT-Based distro newer packages]"
-            sudo apt-get dist-upgrade -y >&- 2>&- & PID1=$!
-            ProgressBarSlow & PID2=$!
-            wait $PID1
-            wait $PID2
-            echo -e "${C5} Rebooting in $wait_time seconds to apply upgrades...${Color_Off}"
-            if [ "$notifications" == True ]; then
-                  notify-send "Rebooting in $wait_time seconds to apply upgrades"
-            fi
-            Timer
-            sudo reboot >&- 2>&-
-      fi
 fi
 
 if [ "$option" == "package-upgrade" ] || [ "$option" == "package-update" ]; then
