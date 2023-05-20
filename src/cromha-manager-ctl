@@ -276,6 +276,8 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       ProgressBarFast & WAIT2=$!
       wait $WAIT
       wait $WAIT2
+      echo " "
+      echo -e "${C5}Removed cloned github repository used for upgrading..."
       sudo rm -r "$HOME/Cromha-Manager"
       echo " "
       echo -e "${B6}Last patch message: ${Color_Off}'$last_patch_info'"
