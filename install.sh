@@ -131,8 +131,7 @@ managers easily with high customizability.${Color_Off}"
 fi
 
 sleep 1
-echo "Do you want to install cromha-manager-ctl and cromha-manager?(y/n)"
-read answer
+answer="y"
 
 if [ "$answer" == "y" ]; then
 
