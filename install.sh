@@ -138,7 +138,7 @@ if [ "$answer" == "y" ]; then
       echo -e "Installing Cromha Multi Package Manager..."
       FILE=$HOME/cromha-manager-config.yaml
 	if test -f "$FILE"; then
-		sudo cp src/cromha-manager /usr/bin/
+            sudo cp src/cromha-manager /usr/bin/
             sudo cp src/cromha-manager-ctl /usr/bin/
 	else
 		cp src/cromha-manager-config.yaml $HOME/
