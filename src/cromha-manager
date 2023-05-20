@@ -13,6 +13,8 @@ random_sleep_progress_bar=$(echo -e $(( $RANDOM % 8 + 1 )))
 bold=$(tput bold)
 normal=$(tput sgr0)
 
+current_date_simple=$(date --iso-8601)
+
 Color_Off='\033[0m'       # Text Reset
 
 # Check if config file exist
@@ -148,6 +150,10 @@ function CheckNetwork () {
       fi
 }
 
+function Logger () {
+      echo "$1" &>> "$HOME/cromha-manager-log-$current_date_simple"
+}
+
 # YAML parser
 function parse_yaml {
       local prefix=$2
@@ -275,6 +281,7 @@ ${Color_Off}"
 managers easily with high customizability.${Color_Off}"
       echo -e " "
       echo -e "Hint: run '$ cromha-manager help' for help"
+      echo -e "Hint: you can check the logs at '$HOME/cromha-manager-log-$current_date_simple'"
       disable_done=True
 fi
 
@@ -291,7 +298,7 @@ if [ "$option" == "autoremove" ]; then
       echo " "
       if [ "$flatpak" == True ]; then
             echo -e "[Autoremoving Flatpak Packages]"
-            sudo flatpak uninstall -y --unused >&- 2>&- & PID1=$!
+            sudo flatpak uninstall -y --unused &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
@@ -301,7 +308,7 @@ if [ "$option" == "autoremove" ]; then
       fi
       if [ "$yum" == True ]; then
             echo -e "[Autoremoving Yum Packages]"
-            sudo yum autoremove -y >&- 2>&- & PID1=$!
+            sudo yum autoremove -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
@@ -311,14 +318,14 @@ if [ "$option" == "autoremove" ]; then
       fi
       if [ "$dnf" == True ]; then
             echo -e "[Autoremoving DNF Packages]"
-            sudo dnf autoremove -y >&- 2>&- & PID1=$!
+            sudo dnf autoremove -y &>> "$HOME/cromha-manager-log-$current_date_simple"& PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
       fi
       if [ "$apt" == True ]; then
             echo -e "[Autoremoving APT Packages]"
-            sudo apt autoremove -y >&- 2>&- & PID1=$!
+            sudo apt autoremove -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
@@ -338,49 +345,49 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       echo -e " "
       if [ $flatpak == True ]; then
             echo -e "[Upgrading Flatpak Packages]"
-            sudo flatpak update -y >&- 2>&- & PIDFLATPAK1=$!
+            sudo flatpak update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDFLATPAK1=$!
             ProgressBar & PIDFLATPAK2=$!
             wait $PIDFLATPAK1
             wait $PIDFLATPAK2
       fi
       if [ $snap == True ]; then
             echo -e "[Upgrading Snapcraft Packages]"
-            sudo snap refresh >&- 2>&- & PIDSNAP1=$!
+            sudo snap refresh &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDSNAP1=$!
             ProgressBar & PIDSNAP2=$!
             wait $PIDSNAP1
             wait $PIDSNAP2
       fi
       if [ $yum == True ]; then
             echo -e "[Upgrading Yum Packages]"
-            sudo yum update -y >&- 2>&- & PIDYUM1=$!
+            sudo yum update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDYUM1=$!
             ProgressBar & PIDYUM2=$!
             wait $PIDYUM1
             wait $PIDYUM2
       fi
       if [ $cargo == True ]; then
             echo -e "[Upgrading Cargo Packages]"
-            sudo cargo update -y >&- 2>&- & PIDCARGO1=$!
+            sudo cargo update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDCARGO1=$!
             ProgressBar & PIDCARGO2=$!
             wait $PIDCARGO1
             wait $PIDCARGO2
       fi
       if [ $dnf == True ]; then
             echo -e "[Upgrading Dnf Packages]"
-            sudo dnf update -y >&- 2>&- & PIDDNF1=$!
+            sudo dnf update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDDNF1=$!
             ProgressBar & PIDDNF2=$!
             wait $PIDDNF1
             wait $PIDDNF2
       fi
       if [ $apt == True ]; then
             echo -e "[Upgrading APT Packages]"
-            sudo apt update -y >&- 2>&- & PIDAPT1=$!
+            sudo apt update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT1=$!
             ProgressBar & PIDAPT2=$!
             wait $PIDAPT1
             wait $PIDAPT2
       fi
       if [ $zypp == True ]; then
             echo -e "[Upgrading Zypp Packages]"
-            sudo zypper update -y >&- 2>&- & PIDZYPP1=$!
+            sudo zypper update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDZYPP1=$!
             ProgressBar & PIDZYPP2=$!
             wait $PIDZYPP1
             wait $PIDZYPP2
@@ -398,37 +405,37 @@ if [ "$option" == "upgrade-all" ] || [ "$option" == "update-all" ]; then
       echo -e "${C5}Trying to update all package managers...${Color_Off}"
       echo -e " "
       echo -e "[Upgrading Flatpak Packages]"
-      sudo flatpak update -y >&- 2>&- & PIDFLATPAK1=$!
+      sudo flatpak update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDFLATPAK1=$!
       ProgressBar & PIDFLATPAK2=$!
       wait $PIDFLATPAK1
       wait $PIDFLATPAK2
       echo -e "[Upgrading Snapcraft Packages]"
-      sudo snap refresh >&- 2>&- & PIDSNAP1=$!
+      sudo snap refresh &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDSNAP1=$!
       ProgressBar & PIDSNAP2=$!
       wait $PIDSNAP1
       wait $PIDSNAP2
       echo -e "[Upgrading Yum Packages]"
-      sudo yum update -y >&- 2>&- & PIDYUM1=$!
+      sudo yum update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDYUM1=$!
       ProgressBar & PIDYUM2=$!
       wait $PIDYUM1
       wait $PIDYUM2
       echo -e "[Upgrading Cargo Packages]"
-      sudo cargo update -y >&- 2>&- & PIDCARGO1=$!
+      sudo cargo update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDCARGO1=$!
       ProgressBar & PIDCARGO2=$!
       wait $PIDCARGO1
       wait $PIDCARGO2
       echo -e "[Upgrading Dnf Packages]"
-      sudo dnf update -y >&- 2>&- & PIDDNF1=$!
+      sudo dnf update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDDNF1=$!
       ProgressBar & PIDDNF2=$!
       wait $PIDDNF1
       wait $PIDDNF2
       echo -e "[Upgrading APT Packages]"
-      sudo apt update -y >&- 2>&- & PIDAPT1=$!
+      sudo apt update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT1=$!
       ProgressBar & PIDAPT2=$!
       wait $PIDAPT1
       wait $PIDAPT2
       echo -e "[Upgrading Zypp Packages]"
-      sudo zypper update -y >&- 2>&- & PIDZYPP1=$!
+      sudo zypper update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDZYPP1=$!
       ProgressBar & PIDZYPP2=$!
       wait $PIDZYPP1
       wait $PIDZYPP2
@@ -468,7 +475,7 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$op
             sleep 3
             echo -e "${C5}Installing dnf system-upgrade plugin if not installed...${Color_Off}"
             echo " "
-            sudo dnf install dnf-plugin-system-upgrade -y >&- 2>&- & PID1=$!
+            sudo dnf install dnf-plugin-system-upgrade -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             echo "[Installing system-upgrade dnf plugin]"
             ProgressBarFast & PID2=$!
             wait $PID1
@@ -476,7 +483,7 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$op
             echo -e "${C5}Downloading Fedora $new_fedora_ver packages...${Color_Off}"
             echo " "
             echo -e "[Downloading Fedora $new_fedora_ver packages]"
-            sudo dnf system-upgrade download --allowerasing --releasever="$new_fedora_ver" -y >&- 2>&- & PID1=$!
+            sudo dnf system-upgrade download --allowerasing --releasever="$new_fedora_ver" -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBarSlow & PID2=$!
             wait $PID1
             wait $PID2
@@ -486,7 +493,7 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$op
                   notify-send "Rebooting in $wait_time seconds to apply upgrades"
             fi
             Timer
-            sudo dnf system-upgrade reboot -y >&- 2>&-
+            sudo dnf system-upgrade reboot -y &>> "$HOME/cromha-manager-log-$current_date_simple"
       fi
 fi
 
@@ -508,7 +515,7 @@ if [ "$option" == "package-upgrade" ] || [ "$option" == "package-update" ]; then
                   echo -e "${C5}Trying upgrading package '$package_install_name' from flathub repo...${Color_Off}"
                   echo " "
                   echo "[Upgrading From Flatpak]"
-                  flatpak update $prefered_flatpak_repo "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
+                  flatpak update $prefered_flatpak_repo "$package_install_name" -y --noninteractive &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -528,7 +535,7 @@ if [ "$option" == "package-upgrade" ] || [ "$option" == "package-update" ]; then
                   echo -e "${C5}Trying upgrading package '$package_install_name' from snapcraft repo...${Color_Off}"
                   echo " "
                   echo "[Upgrading From Snapcraft]"
-                  sudo snap refresh "$package_install_name" -y >&- 2>&- & PID1=$!
+                  sudo snap refresh "$package_install_name" -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -548,7 +555,7 @@ if [ "$option" == "package-upgrade" ] || [ "$option" == "package-update" ]; then
                   echo -e "${C5}Trying upgrading package '$package_install_name' from yum repo...${Color_Off}"
                   echo " "
                   echo "[Upgrading From Yum]"
-                  sudo yum upgrade -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo yum upgrade -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -568,7 +575,7 @@ if [ "$option" == "package-upgrade" ] || [ "$option" == "package-update" ]; then
                   echo -e "${C5}Trying upgrading package '$package_install_name' from cargo repo...${Color_Off}"
                   echo " "
                   echo "[Upgrading From Cargo]"
-                  sudo cargo update  -p -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo cargo update  -p -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -588,7 +595,7 @@ if [ "$option" == "package-upgrade" ] || [ "$option" == "package-update" ]; then
                   echo -e "${C5}Trying upgrading package '$package_install_name' from dnf repo...${Color_Off}"
                   echo " "
                   echo "[Upgrading From Dnf]"
-                  sudo dnf upgrade -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo dnf upgrade -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -608,7 +615,7 @@ if [ "$option" == "package-upgrade" ] || [ "$option" == "package-update" ]; then
                   echo -e "${C5}Trying upgrading package '$package_install_name' from apt repo...${Color_Off}"
                   echo " "
                   echo "[Upgrading From APT]"
-                  sudo apt upgrade -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo apt upgrade -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -676,51 +683,51 @@ if [ "$option" == "clean" ] || [ "$option" == "auto-clean" ] || [ "$option" == "
       echo " "
 	if [ $flatpak == True ]; then
             echo -e "[Cleaning Flatpak]"
-            sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
+            sudo rm -rfv /var/tmp/flatpak-cache &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDFLATPAK1=$!
             ProgressBarFast & PIDFLATPAK2=$!
             wait $PIDFLATPAK1
             wait $PIDFLATPAK2
       fi
       if [ $snap == True ]; then
             echo -e "[Cleaning Snapcraft]"
-            sudo rm -rvf /var/lib/snapd/cache >&- 2>&- & PIDSNAP1=$!
+            sudo rm -rvf /var/lib/snapd/cache &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDSNAP1=$!
             ProgressBarFast & PIDSNAP2=$!
             wait $PIDSNAP1
             wait $PIDSNAP2
       fi
       if [ $yum == True ]; then
             echo -e "[Cleaning Yum]"
-            sudo yum clean all >&- 2>&- & PIDYUM1=$!
+            sudo yum clean all &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDYUM1=$!
             ProgressBarFast & PIDYUM2=$!
             wait $PIDYUM1
             wait $PIDYUM2
       fi
       if [ $cargo == True ]; then
             echo -e "[Cleaning Cargo]"
-            sudo cargo clean >&- 2>&- & PIDCARGO1=$!
+            sudo cargo clean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDCARGO1=$!
             ProgressBarFast & PIDCARGO2=$!
             wait $PIDCARGO1
             wait $PIDCARGO2
       fi
       if [ $dnf == True ]; then
             echo -e "[Cleaning Dnf]"
-            sudo dnf clean all >&- 2>&- & PIDDNF1=$!
+            sudo dnf clean all &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDDNF1=$!
             ProgressBarFast & PIDDNF2=$!
             wait $PIDDNF1
             wait $PIDDNF2
       fi
       if [ $apt == True ]; then
             echo -e "[Cleaning APT]"
-            sudo apt autoclean >&- 2>&- & PIDAPT1=$!
+            sudo apt autoclean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT1=$!
             ProgressBarFast & PIDAPT2=$!
-            sudo apt purge >&- 2>&- & PIDAPT3=$!
+            sudo apt purge &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT3=$!
             wait $PIDAPT1
             wait $PIDAPT2
             wait $PIDAPT3
       fi
       if [ $zypp == True ]; then
             echo -e "[Cleaning Zypp]"
-            sudo zypper clean >&- 2>&- & PIDZYPP1=$!
+            sudo zypper clean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDZYPP1=$!
             ProgressBarFast & PIDZYPP2=$!
             wait $PIDZYPP1
             wait $PIDZYPP2
@@ -732,39 +739,39 @@ if [ "$option" == "clean-all" ] || [ "$option" == "auto-clean-all" ] || [ "$opti
 	echo -e "${C5}Cleaning cashed data...${Color_Off}"
       echo " "
       echo -e "[Cleaning Flatpak]"
-      sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
+      sudo rm -rfv /var/tmp/flatpak-cache &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDFLATPAK1=$!
       ProgressBarFast & PIDFLATPAK2=$!
       wait $PIDFLATPAK1
       wait $PIDFLATPAK2
       echo -e "[Cleaning Snapcraft]"
-      sudo rm -rvf /var/lib/snapd/cache >&- 2>&- & PIDSNAP1=$!
+      sudo rm -rvf /var/lib/snapd/cache &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDSNAP1=$!
       ProgressBarFast & PIDSNAP2=$!
       wait $PIDSNAP1
       wait $PIDSNAP2
       echo -e "[Cleaning Yum]"
-      sudo yum clean all >&- 2>&- & PIDYUM1=$!
+      sudo yum clean all &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDYUM1=$!
       ProgressBarFast & PIDYUM2=$!
       wait $PIDYUM1
       wait $PIDYUM2
       echo -e "[Cleaning Cargo]"
-      sudo cargo clean >&- 2>&- & PIDCARGO1=$!
+      sudo cargo clean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDCARGO1=$!
       ProgressBarFast & PIDCARGO2=$!
       wait $PIDCARGO1
       wait $PIDCARGO2
       echo -e "[Cleaning Dnf]"
-      sudo dnf clean all >&- 2>&- & PIDDNF1=$!
+      sudo dnf clean all &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDDNF1=$!
       ProgressBarFast & PIDDNF2=$!
       wait $PIDDNF1
       wait $PIDDNF2
       echo -e "[Cleaning APT]"
-      sudo apt autoclean >&- 2>&- & PIDAPT1=$!
+      sudo apt autoclean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT1=$!
       ProgressBarFast & PIDAPT2=$!
-      sudo apt purge >&- 2>&- & PIDAPT3=$!
+      sudo apt purge &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT3=$!
       wait $PIDAPT1
       wait $PIDAPT2
       wait $PIDAPT3
       echo -e "[Cleaning Zypp]"
-      sudo zypper clean >&- 2>&- & PIDZYPP1=$!
+      sudo zypper clean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDZYPP1=$!
       ProgressBarFast & PIDZYPP2=$!
       wait $PIDZYPP1
       wait $PIDZYPP2
@@ -856,10 +863,10 @@ if [ "$option" == "list" ] || [ "$option" == "packages" ]; then
             notify-send "Installed packages listing finished"
       fi
       sleep 1
-      $prefered_text_editor $HOME/packages-list-cromha.temp >&- 2>&-
+      $prefered_text_editor $HOME/packages-list-cromha.temp &>> "$HOME/cromha-manager-log-$current_date_simple"
       sleep 1
       echo -e "Deleting temporary file..."
-      rm $HOME/packages-list-cromha.temp >&- 2>&-
+      rm $HOME/packages-list-cromha.temp &>> "$HOME/cromha-manager-log-$current_date_simple"
 fi
 
 if [ "$option" == "search" ] || [ "$option" == "find" ]; then
@@ -937,7 +944,7 @@ if [ "$option" == "search" ] || [ "$option" == "find" ]; then
       fi
       echo -e "${C5}Opening search temp file..."
       sleep 1
-      $prefered_text_editor $HOME/cromha-manager-search.temp >&- 2>&-
+      $prefered_text_editor $HOME/cromha-manager-search.temp &>> "$HOME/cromha-manager-log-$current_date_simple"
       sudo rm $HOME/cromha-manager-search.temp
 fi
 
@@ -966,7 +973,7 @@ if [ "$option" == "info" ] || [ "$option" == "get-info" ]; then
                   echo " "
                   echo -e "${C5}Opening temp file where stored info about the package..."
                   sleep 1
-                  $prefered_text_editor $HOME/cromha-manager-info.tmp >&- 2>&-
+                  $prefered_text_editor $HOME/cromha-manager-info.tmp &>> "$HOME/cromha-manager-log-$current_date_simple"
                   rm $HOME/cromha-manager-info.tmp
             fi
       fi
@@ -1109,7 +1116,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo -e "${C5}Trying installing package '$package_install_name' from flathub repo...${Color_Off}"
                   echo " "
                   echo "[Installing From Flatpak]"
-                  flatpak install $prefered_flatpak_repo "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
+                  flatpak install $prefered_flatpak_repo "$package_install_name" -y --noninteractive &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1129,7 +1136,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo -e "${C5}Trying installing package '$package_install_name' from snapcraft repo...${Color_Off}"
                   echo " "
                   echo "[Installing From Snapcraft]"
-                  sudo snap install "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo snap install "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1149,7 +1156,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo -e "${C5}Trying installing package '$package_install_name' from yum repo...${Color_Off}"
                   echo " "
                   echo "[Installing From Yum]"
-                  sudo yum install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo yum install -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1169,7 +1176,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo -e "${C5}Trying installing package '$package_install_name' from cargo repo...${Color_Off}"
                   echo " "
                   echo "[Installing From Cargo]"
-                  sudo cargo install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo cargo install -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1189,7 +1196,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo -e "${C5}Trying installing package '$package_install_name' from dnf repo...${Color_Off}"
                   echo " "
                   echo "[Installing From Dnf]"
-                  sudo dnf install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo dnf install -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1209,7 +1216,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo -e "${C5}Trying installing package '$package_install_name' from apt repo...${Color_Off}"
                   echo " "
                   echo "[Installing From APT]"
-                  sudo apt install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo apt install -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1229,7 +1236,7 @@ if [ "$option" == "install" ] || [ "$option" == "add" ]; then
                   echo -e "${C5}Trying installing package '$package_install_name' from zypp repo...${Color_Off}"
                   echo " "
                   echo "[Installing From Zypp]"
-                  sudo zypp install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo zypp install -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1253,7 +1260,7 @@ if [ "$option" == "remove" ] || [ "$option" == "uninstall" ]; then
                   echo -e "${C5}Trying uninstalling package '$package_install_name'...${Color_Off}"
                   echo " "
                   echo "[Removing From Flatpak]"
-                  flatpak uninstall "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
+                  flatpak uninstall "$package_install_name" -y --noninteractive &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1271,7 +1278,7 @@ if [ "$option" == "remove" ] || [ "$option" == "uninstall" ]; then
                   echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
                   echo " "
                   echo "[Removing From Snapcraft]"
-                  sudo snap remove "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo snap remove "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1289,7 +1296,7 @@ if [ "$option" == "remove" ] || [ "$option" == "uninstall" ]; then
                   echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
                   echo " "
                   echo "[Removing From Yum]"
-                  sudo yum remove -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo yum remove -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1307,7 +1314,7 @@ if [ "$option" == "remove" ] || [ "$option" == "uninstall" ]; then
                   echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
                   echo " "
                   echo "[Removing From Cargo]"
-                  sudo cargo uninstall -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo cargo uninstall -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1325,7 +1332,7 @@ if [ "$option" == "remove" ] || [ "$option" == "uninstall" ]; then
                   echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
                   echo " "
                   echo "[Removing From Dnf]"
-                  sudo dnf remove -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo dnf remove -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1343,7 +1350,7 @@ if [ "$option" == "remove" ] || [ "$option" == "uninstall" ]; then
                   echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
                   echo " "
                   echo "[Removing From APT]"
-                  sudo apt uninstall -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo apt uninstall -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1361,7 +1368,7 @@ if [ "$option" == "remove" ] || [ "$option" == "uninstall" ]; then
                   echo -e "${C5}Trying removing package '$package_install_name'...${Color_Off}"
                   echo " "
                   echo "[Removing From Zypp]"
-                  sudo zypp remove -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo zypp remove -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1387,7 +1394,7 @@ if [ "$option" == "reinstall" ]; then
                   echo -e "${C5}Trying reinstalling package '$package_install_name' from flathub repo...${Color_Off}"
                   echo " "
                   echo "[Reinstalling From Flatpak]"
-                  flatpak install $prefered_flatpak_repo --reinstall "$package_install_name" -y --noninteractive >&- 2>&- & PID1=$!
+                  flatpak install $prefered_flatpak_repo --reinstall "$package_install_name" -y --noninteractive &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1407,8 +1414,8 @@ if [ "$option" == "reinstall" ]; then
                   echo -e "${C5}Trying reinstalling package '$package_install_name' from snapcraft repo...${Color_Off}"
                   echo " "
                   echo "[Reinstalling From Snapcraft]"
-                  sudo snap remove "$package_install_name" >&- 2>&- & PID1=$!
-                  sudo snap install "$package_install_name" >&- 2>&- & PID3=$!
+                  sudo snap remove "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
+                  sudo snap install "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID3=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1429,7 +1436,7 @@ if [ "$option" == "reinstall" ]; then
                   echo -e "${C5}Trying reinstalling package '$package_install_name' from yum repo...${Color_Off}"
                   echo " "
                   echo "[Reinstalling From Yum]"
-                  sudo yum reinstall -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo yum reinstall -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1449,8 +1456,8 @@ if [ "$option" == "reinstall" ]; then
                   echo -e "${C5}Trying reinstalling package '$package_install_name' from cargo repo...${Color_Off}"
                   echo " "
                   echo "[Reinstalling From Cargo]"
-                  sudo cargo remove -y "$package_install_name" >&- 2>&- & PID3=$!
-                  sudo cargo install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo cargo remove -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID3=$!
+                  sudo cargo install -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1471,7 +1478,7 @@ if [ "$option" == "reinstall" ]; then
                   echo -e "${C5}Trying reinstalling package '$package_install_name' from dnf repo...${Color_Off}"
                   echo " "
                   echo "[Reinstalling From Dnf]"
-                  sudo dnf reinstall -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo dnf reinstall -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1491,7 +1498,7 @@ if [ "$option" == "reinstall" ]; then
                   echo -e "${C5}Trying reinstalling package '$package_install_name' from apt repo...${Color_Off}"
                   echo " "
                   echo "[Reinstalling From APT]"
-                  sudo apt reinstall -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo apt reinstall -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1511,8 +1518,8 @@ if [ "$option" == "reinstall" ]; then
                   echo -e "${C5}Trying reinstalling package '$package_install_name' from zypp repo...${Color_Off}"
                   echo " "
                   echo "[Reinstalling From Zypp]"
-                  sudo zypp remove -y "$package_install_name" >&- 2>&- & PID3=$!
-                  sudo zypp install -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo zypp remove -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID3=$!
+                  sudo zypp install -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1561,7 +1568,7 @@ if [ "$option" == "downgrade" ]; then
                   echo -e "${C5}Trying downgrading package '$package_install_name' from yum repo...${Color_Off}"
                   echo " "
                   echo "[Downgrading From Yum]"
-                  sudo yum downgrade -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo yum downgrade -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1591,7 +1598,7 @@ if [ "$option" == "downgrade" ]; then
                   echo -e "${C5}Trying downgrading package '$package_install_name' from dnf repo...${Color_Off}"
                   echo " "
                   echo "[Downgrading From Dnf]"
-                  sudo dnf downgrade -y "$package_install_name" >&- 2>&- & PID1=$!
+                  sudo dnf downgrade -y "$package_install_name" &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
                   ProgressBar & PID2=$!
                   wait $PID1
                   wait $PID2
@@ -1659,51 +1666,51 @@ if [ "$parameter" == "-clean" ] || [ "$parameter" == "-auto-clean" ] || [ "$para
       echo " "
 	if [ $flatpak == True ]; then
             echo -e "[Cleaning Flatpak]"
-            sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
+            sudo rm -rfv /var/tmp/flatpak-cache &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDFLATPAK1=$!
             ProgressBarFast & PIDFLATPAK2=$!
             wait $PIDFLATPAK1
             wait $PIDFLATPAK2
       fi
       if [ $snap == True ]; then
             echo -e "[Cleaning Snapcraft]"
-            sudo rm -rvf /var/lib/snapd/cache >&- 2>&- & PIDSNAP1=$!
+            sudo rm -rvf /var/lib/snapd/cache &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDSNAP1=$!
             ProgressBarFast & PIDSNAP2=$!
             wait $PIDSNAP1
             wait $PIDSNAP2
       fi
       if [ $yum == True ]; then
             echo -e "[Cleaning Yum]"
-            sudo yum clean all >&- 2>&- & PIDYUM1=$!
+            sudo yum clean all &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDYUM1=$!
             ProgressBarFast & PIDYUM2=$!
             wait $PIDYUM1
             wait $PIDYUM2
       fi
       if [ $cargo == True ]; then
             echo -e "[Cleaning Cargo]"
-            sudo cargo clean >&- 2>&- & PIDCARGO1=$!
+            sudo cargo clean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDCARGO1=$!
             ProgressBarFast & PIDCARGO2=$!
             wait $PIDCARGO1
             wait $PIDCARGO2
       fi
       if [ $dnf == True ]; then
             echo -e "[Cleaning Dnf]"
-            sudo dnf clean all >&- 2>&- & PIDDNF1=$!
+            sudo dnf clean all &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDDNF1=$!
             ProgressBarFast & PIDDNF2=$!
             wait $PIDDNF1
             wait $PIDDNF2
       fi
       if [ $apt == True ]; then
             echo -e "[Cleaning APT]"
-            sudo apt autoclean >&- 2>&- & PIDAPT1=$!
+            sudo apt autoclean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT1=$!
             ProgressBarFast & PIDAPT2=$!
-            sudo apt purge >&- 2>&- & PIDAPT3=$!
+            sudo apt purge &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT3=$!
             wait $PIDAPT1
             wait $PIDAPT2
             wait $PIDAPT3
       fi
       if [ $zypp == True ]; then
             echo -e "[Cleaning Zypp]"
-            sudo zypper clean >&- 2>&- & PIDZYPP1=$!
+            sudo zypper clean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDZYPP1=$!
             ProgressBarFast & PIDZYPP2=$!
             wait $PIDZYPP1
             wait $PIDZYPP2
@@ -1723,7 +1730,7 @@ if [ "$parameter" == "-exit" ]; then
       if [ "$notifications" == True ]; then
             notify-send "Closing terminal window now..."
       fi
-	sudo kill -9 $PPID >&- 2>&-
+	sudo kill -9 $PPID &>> "$HOME/cromha-manager-log-$current_date_simple"
 fi
 
 if [ "$parameter" == "-poweroff" ] || [ "$parameter" == "-shutdown" ]; then
@@ -1763,7 +1770,7 @@ if [ "$parameter" == "-autoremove" ]; then
       echo " "
       if [ "$flatpak" == True ]; then
             echo -e "[Autoremoving Flatpak Packages]"
-            sudo flatpak uninstall -y --unused >&- 2>&- & PID1=$!
+            sudo flatpak uninstall -y --unused &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
@@ -1773,7 +1780,7 @@ if [ "$parameter" == "-autoremove" ]; then
       fi
       if [ "$yum" == True ]; then
             echo -e "[Autoremoving Yum Packages]"
-            sudo yum autoremove -y >&- 2>&- & PID1=$!
+            sudo yum autoremove -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
@@ -1783,14 +1790,14 @@ if [ "$parameter" == "-autoremove" ]; then
       fi
       if [ "$dnf" == True ]; then
             echo -e "[Autoremoving DNF Packages]"
-            sudo dnf autoremove -y >&- 2>&- & PID1=$!
+            sudo dnf autoremove -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
       fi
       if [ "$apt" == True ]; then
             echo -e "[Autoremoving APT Packages]"
-            sudo apt autoremove -y >&- 2>&- & PID1=$!
+            sudo apt autoremove -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
@@ -1808,51 +1815,51 @@ if [ "$parameter2" == "-clean" ] || [ "$parameter2" == "-auto-clean" ] || [ "$pa
       echo " "
 	if [ $flatpak == True ]; then
             echo -e "[Cleaning Flatpak]"
-            sudo rm -rfv /var/tmp/flatpak-cache >&- 2>&- & PIDFLATPAK1=$!
+            sudo rm -rfv /var/tmp/flatpak-cache &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDFLATPAK1=$!
             ProgressBarFast & PIDFLATPAK2=$!
             wait $PIDFLATPAK1
             wait $PIDFLATPAK2
       fi
       if [ $snap == True ]; then
             echo -e "[Cleaning Snapcraft]"
-            sudo rm -rvf /var/lib/snapd/cache >&- 2>&- & PIDSNAP1=$!
+            sudo rm -rvf /var/lib/snapd/cache &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDSNAP1=$!
             ProgressBarFast & PIDSNAP2=$!
             wait $PIDSNAP1
             wait $PIDSNAP2
       fi
       if [ $yum == True ]; then
             echo -e "[Cleaning Yum]"
-            sudo yum clean all >&- 2>&- & PIDYUM1=$!
+            sudo yum clean all &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDYUM1=$!
             ProgressBarFast & PIDYUM2=$!
             wait $PIDYUM1
             wait $PIDYUM2
       fi
       if [ $cargo == True ]; then
             echo -e "[Cleaning Cargo]"
-            sudo cargo clean >&- 2>&- & PIDCARGO1=$!
+            sudo cargo clean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDCARGO1=$!
             ProgressBarFast & PIDCARGO2=$!
             wait $PIDCARGO1
             wait $PIDCARGO2
       fi
       if [ $dnf == True ]; then
             echo -e "[Cleaning Dnf]"
-            sudo dnf clean all >&- 2>&- & PIDDNF1=$!
+            sudo dnf clean all &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDDNF1=$!
             ProgressBarFast & PIDDNF2=$!
             wait $PIDDNF1
             wait $PIDDNF2
       fi
       if [ $apt == True ]; then
             echo -e "[Cleaning APT]"
-            sudo apt autoclean >&- 2>&- & PIDAPT1=$!
+            sudo apt autoclean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT1=$!
             ProgressBarFast & PIDAPT2=$!
-            sudo apt purge >&- 2>&- & PIDAPT3=$!
+            sudo apt purge &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT3=$!
             wait $PIDAPT1
             wait $PIDAPT2
             wait $PIDAPT3
       fi
       if [ $zypp == True ]; then
             echo -e "[Cleaning Zypp]"
-            sudo zypper clean >&- 2>&- & PIDZYPP1=$!
+            sudo zypper clean &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDZYPP1=$!
             ProgressBarFast & PIDZYPP2=$!
             wait $PIDZYPP1
             wait $PIDZYPP2
@@ -1868,7 +1875,7 @@ if [ "$parameter2" == "-exit" ]; then
       echo " "
       echo -e "${C5}Closing terminal window now...${Color_Off}"
       notify-send "Closing terminal window now..."
-	sudo kill -9 $PPID >&- 2>&-
+	sudo kill -9 $PPID &>> "$HOME/cromha-manager-log-$current_date_simple"
 fi
 
 if [ "$parameter2" == "-poweroff" ] || [ "$parameter2" == "-shutdown" ]; then
@@ -1900,7 +1907,7 @@ if [ "$parameter2" == "-autoremove" ]; then
       echo " "
       if [ "$flatpak" == True ]; then
             echo -e "[Autoremoving Flatpak Packages]"
-            sudo flatpak uninstall -y --unused >&- 2>&- & PID1=$!
+            sudo flatpak uninstall -y --unused &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
@@ -1910,7 +1917,7 @@ if [ "$parameter2" == "-autoremove" ]; then
       fi
       if [ "$yum" == True ]; then
             echo -e "[Autoremoving Yum Packages]"
-            sudo yum autoremove -y >&- 2>&- & PID1=$!
+            sudo yum autoremove -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
@@ -1920,14 +1927,14 @@ if [ "$parameter2" == "-autoremove" ]; then
       fi
       if [ "$dnf" == True ]; then
             echo -e "[Autoremoving DNF Packages]"
-            sudo dnf autoremove -y >&- 2>&- & PID1=$!
+            sudo dnf autoremove -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2
       fi
       if [ "$apt" == True ]; then
             echo -e "[Autoremoving APT Packages]"
-            sudo apt autoremove -y >&- 2>&- & PID1=$!
+            sudo apt autoremove -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
             ProgressBar & PID2=$!
             wait $PID1
             wait $PID2

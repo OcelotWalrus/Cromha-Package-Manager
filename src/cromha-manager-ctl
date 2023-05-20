@@ -149,9 +149,13 @@ function CheckNetwork () {
 }
 
 function Uninstall () {
-      sudo rm -r /usr/bin/cromha-manager >&- 2>&-
-      sudo rm -r /usr/bin/cromha-manager-ctl >&- 2>&-
-      sudo rm -r $HOME/cromha-manager-config.yaml >&- 2>&-
+      sudo rm -r /usr/bin/cromha-manager &>> "$HOME/cromha-manager-log-$current_date_simple"
+      sudo rm -r /usr/bin/cromha-manager-ctl &>> "$HOME/cromha-manager-log-$current_date_simple"
+      sudo rm -r $HOME/cromha-manager-config.yaml &>> "$HOME/cromha-manager-log-$current_date_simple"
+}
+
+function Logger () {
+      echo "$1" &>> "$HOME/cromha-manager-ctl-log-$current_date_simple"
 }
 
 # YAML parser
@@ -242,6 +246,7 @@ ${Color_Off}"
 managers easily with high customizability.${Color_Off}"
       echo -e " "
       echo -e "Hint: run '$ cromha-manager-ctl help' for help"
+      echo -e "Hint: you can check the logs at '$HOME/cromha-manager-ctl-log-$current_date_simple'"
       disable_done=True
 fi
 
@@ -267,13 +272,13 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       echo -e "${C5}Checking GitHub Repo..."
       sleep 2
       echo -e "${C5}Cloning GitHub Repo into $HOME/Cromha-manager (default path)..."
-      git clone https://github.com/OcelotWalrus/Bash-Multi-Package-Manager $HOME/Cromha-Manager >&- 2>&-
+      git clone https://github.com/OcelotWalrus/Bash-Multi-Package-Manager $HOME/Cromha-Manager &>> "$HOME/cromha-manager-log-$current_date_simple"
       echo -e "${C5}Upgrading Cromha-Manager...${Color_Off}"
       echo " "
       echo "[Upgrading Cromha-Manager]"
       cd "$HOME/Cromha-Manager"
       last_patch_info=$(git log -1 --pretty=%B)
-      sh install.sh >&- 2>&- & WAIT=$!
+      sh install.sh &>> "$HOME/cromha-manager-log-$current_date_simple" & WAIT=$!
       ProgressBarFast & WAIT2=$!
       wait $WAIT
       wait $WAIT2
@@ -295,10 +300,10 @@ if [ "$option" == "dnf-optimize" ]; then
       echo -e " "
       echo -e "[Optimizing DNF]"
       ProgressBarFast & PID1=$!
-      sudo echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf >&- 2>&- & PID2=$!
-      sudo echo "max_parallel_download=10" | sudo tee -a /etc/dnf/dnf.conf >&- 2>&- & PID3=$!
-      sudo echo "deltarpm=True" | sudo tee -a  /etc/dnf/dnf.conf >&- 2>&- & PID4=$!
-      sudo echo "skip_if_unavaible=True" | sudo tee -a /etc/dnf/dnf.conf >&- 2>&- & PID5=$!
+      sudo echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-log-$current_date_simple" & PID2=$!
+      sudo echo "max_parallel_download=10" | sudo tee -a /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-log-$current_date_simple" & PID3=$!
+      sudo echo "deltarpm=True" | sudo tee -a  /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-log-$current_date_simple" & PID4=$!
+      sudo echo "skip_if_unavaible=True" | sudo tee -a /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-log-$current_date_simple" & PID5=$!
       wait $PID1
       wait $PID2
       wait $PID3
