@@ -679,7 +679,7 @@ if [ "$option" == "customize" ] || [ "$option" == "config" ]; then
       sleep .1
 fi
 
-if [ "$option" == "logs" ] || [ "$option" == "open-log" ]; then
+if [ "$option" == "logs" ] || [ "$option" == "open-logs" ]; then
       echo -e "${C5}Opening cromha-manager-log-$current_date_simple...${Color_Off}"
       sleep 1
       $prefered_text_editor "$HOME/cromha-manager-log-$current_date_simple"

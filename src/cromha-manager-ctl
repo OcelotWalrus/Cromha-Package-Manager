@@ -259,6 +259,7 @@ if [ "$option" == "help" ]; then
 	echo -e " "
 	echo -e  "${B6}help${normal}: display this help message"
       echo -e  "${B6}logs/open-logs${normal}: open $HOME/cromha-manager-ctl-log-$current_date_simple to check logs"
+      echo -e  "${B6}clean-logs/clean-log${normal}: clean both cromha-manager logs and cromha-manager-ctl-logs (${B0}at $HOME/${Color_Off})"
       echo -e  "${B6}upgrade/update${normal}: upgrade cromha-manager version"
       echo -e  "${B6}uninstall/remove${normal}: uninstall cromha-manager (${B0}and cromha-manager-ctl too${Color_Off})"
       echo -e  "${B6}dnf-optimize${normal}: modify your dnf configuration at /etc/dnf/dnf.conf to optimize it (${B0}add fastestmirror=True; max_parallel_download=10; deltarpm=True; skip_if_unavaible=True${Color_Off})"
@@ -312,10 +313,18 @@ if [ "$option" == "dnf-optimize" ]; then
       wait $PID5
 fi
 
-if [ "$option" == "logs" ] || [ "$option" == "open-log" ]; then
+if [ "$option" == "logs" ] || [ "$option" == "open-logs" ]; then
       echo -e "${C5}Opening cromha-manager-ctl-log-$current_date_simple...${Color_Off}"
       sleep 1
       $prefered_text_editor "$HOME/cromha-manager-ctl-log-$current_date_simple"
+      sleep .1
+fi
+
+if [ "$option" == "clean-logs" ] || [ "$option" == "clean-log" ]; then
+      echo -e "${C5}Cleaning logs...${Color_Off}"
+      sleep 1
+      sudo rm -r $HOME/cromha-manager-ctl-log*
+      sudo rm -r $HOME/cromha-manager-log*
       sleep .1
 fi
 
