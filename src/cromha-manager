@@ -437,7 +437,7 @@ if [ "$option" == "upgrade-all" ] || [ "$option" == "update-all" ]; then
       fi
 fi
 
-if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
+if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$option" == "dist_upgrade" ] || [ "$option" == "distro-upgrade" ]; then
       echo -e "${C6}It is highly recommended to make a backup of your system before upgrading to a new distribution release"
       echo -e ""
       CheckNetwork
@@ -674,7 +674,7 @@ if [ "$option" == "help" ]; then
       echo -e  "${B6}uninstall/remove${normal}: uninstall/remove a package to one of your package manager"
       echo -e  "${B6}upgrade/update${normal}: upgrade all your packages installed from activated package managers"
       echo -e  "${B6}upgrade-all/update-all${normal}: try to upgrade all package managers packages, even the one not installed"
-      echo -e  "${B6}sys-upgrade/system-upgrade${normal}: upgrade your system ${B1}[compatibility: fedora based systems and unbuntu/apt based systems]${Color_Off} (upgrade from Fedora 36 to 37 for example)" 
+      echo -e  "${B6}sys-upgrade/system-upgrade/dist-upgrade/distro-upgrade${normal}: upgrade your system ${B1}[compatibility: fedora based systems and unbuntu/apt based systems]${Color_Off} (upgrade from Fedora 36 to 37 for example)" 
 	echo -e " "
 	echo -e  "${B5}PARAMETERS${normal} ${C3}(Second and Third entry):${Color_Off}"
 	echo -e " "
