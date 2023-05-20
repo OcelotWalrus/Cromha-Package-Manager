@@ -326,7 +326,9 @@ fi
 if [ "$option" == "clean-logs" ] || [ "$option" == "clean-log" ]; then
       echo " "
       echo -e "${C5}Cleaning logs...${Color_Off}"
+      echo -e " "
       sleep 1
+      echo -e "[Cleaning logs]"
       sudo rm -r $HOME/cromha-manager-ctl-log* &>> $HOME/cache/cromha-cache & PID1=$!
       sudo rm -r $HOME/cromha-manager-log* &>> $HOME/cache/cromha-cache & PID2=$!
       ProgressBarFast & PID3=$!
