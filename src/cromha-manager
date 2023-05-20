@@ -502,7 +502,7 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
             echo -e "${C5}Downloading Unbuntu/APT-Based distro newer version packages...${Color_Off}"
             echo " "
             echo -e "[Downloading Unbuntu/APT-Based distro newer packages]"
-            sudo apt-get upgrade -y >&- 2>&- & PID1=$!
+            sudo apt-get dist-upgrade -y >&- 2>&- & PID1=$!
             ProgressBarSlow & PID2=$!
             wait $PID1
             wait $PID2
