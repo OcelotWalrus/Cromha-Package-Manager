@@ -463,10 +463,11 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
                   notify-send "System upgrade will begin in $wait_time seconds"
             fi
             Timer
+            echo " "
             CheckNetwork
             sleep 3
             echo -e "${C5}Installing dnf system-upgrade plugin if not installed...${Color_Off}"
-            echo ""
+            echo " "
             sudo dnf install dnf-plugin-system-upgrade -y >&- 2>&- & PID1=$!
             echo "[Installing system-upgrade dnf plugin]"
             ProgressBarFast & PID2=$!
@@ -479,7 +480,7 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
             ProgressBarSlow & PID2=$!
             wait $PID1
             wait $PID2
-            echo ""
+            echo " "
             echo -e "${C5} Rebooting in $wait_time seconds to apply upgrades...${Color_Off}"
             if [ "$notifications" == True ]; then
                   notify-send "Rebooting in $wait_time seconds to apply upgrades"
@@ -489,15 +490,17 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
       fi
       if [ "$user_distro" == "unbuntu" ] && [ "$answer" == "y" ]; then
             echo -e "${B6}Please make sure that before upgrading your system you runned the following commands and make sure you enabled apt package manager in your $HOME/cromha-manager-config.yaml file; if not run it: cromha-manager upgrade -reboot${Color_Off}"
+            echo " "
             echo -e "${B6}System upgrade wil begin in $wait_time seconds${Color_Off}"
             if [ "$notifications" == True ]; then
                   notify-send "System upgrade will begin in $wait_time seconds"
             fi
             Timer
+            echo " "
             CheckNetwork
             sleep 3
             echo -e "${C5}Downloading Unbuntu/APT-Based distro newer version packages...${Color_Off}"
-            echo ""
+            echo " "
             echo -e "[Downloading Unbuntu/APT-Based distro newer packages]"
             sudo apt-get upgrade -y >&- 2>&- & PID1=$!
             ProgressBarSlow & PID2=$!
