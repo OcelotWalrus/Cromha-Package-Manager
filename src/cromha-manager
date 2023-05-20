@@ -484,6 +484,28 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ]; then
             Timer
             sudo dnf system-upgrade reboot -y >&- 2>&-
       fi
+      if [ "$user_distro" == "unbuntu" ] && [ "$answer" == "y" ]; then
+            echo -e "${B6}Please make sure that before upgrading your system you runned the following commands and make sure you enabled apt package manager in your $HOME/cromha-manager-config.yaml file; if not run it: cromha-manager upgrade -reboot${Color_Off}"
+            echo -e "${B6}System upgrade wil begin in $wait_time seconds${Color_Off}"
+            if [ "$notifications" == True ]; then
+                  notify-send "System upgrade will begin in $wait_time seconds"
+            fi
+            Timer
+            CheckNetwork
+            sleep 3
+            echo -e "${C5}Downloading Unbuntu/APT-Based distro newer version packages...${Color_Off}"
+            echo -e "[Downloading Unbuntu/APT-Based distro newer packages]"
+            sudo apt-get upgrade -y >&- 2>&- & PID1=$!
+            ProgressBarSlow & PID2=$!
+            wait $PID1
+            wait $PID2
+            echo -e "${C5} Rebooting in $wait_time seconds to apply upgrades...${Color_Off}"
+            if [ "$notifications" == True ]; then
+                  notify-send "Rebooting in $wait_time seconds to apply upgrades"
+            fi
+            Timer
+            sudo reboot >&- 2>&-
+      fi
 fi
 
 if [ "$option" == "package-upgrade" ] || [ "$option" == "package-update" ]; then
@@ -645,7 +667,7 @@ if [ "$option" == "help" ]; then
       echo -e  "${B6}uninstall/remove${normal}: uninstall/remove a package to one of your package manager"
       echo -e  "${B6}upgrade/update${normal}: upgrade all your packages installed from activated package managers"
       echo -e  "${B6}upgrade-all/update-all${normal}: try to upgrade all package managers packages, even the one not installed"
-      echo -e  "${B6}sys-upgrade/system-upgrade${normal}: upgrade your system (upgrade from Fedora 36 to 37 for example)" 
+      echo -e  "${B6}sys-upgrade/system-upgrade${normal}: upgrade your system ${B1}[compatibility: fedora based systems and unbuntu/apt based systems]${Color_Off} (upgrade from Fedora 36 to 37 for example)" 
 	echo -e " "
 	echo -e  "${B5}PARAMETERS${normal} ${C3}(Second and Third entry):${Color_Off}"
 	echo -e " "
