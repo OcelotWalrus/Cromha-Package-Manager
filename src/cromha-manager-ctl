@@ -254,8 +254,8 @@ if [ "$option" == "help" ]; then
 	echo -e " "
 	echo -e  "${B6}help${normal}: display this help message"
       echo -e  "${B6}upgrade/update${normal}: upgrade cromha-manager version"
-      echo -e  "${B6}uninstall/remove${normal}: uninstall cromha-manager (${B1}and cromha-manager-ctl too${Color_Off})"
-      echo -e  "${B6}dnf-optimize${normal}: modify your dnf configuration at /etc/dnf/dnf.conf to optimize it (${B1}add fastestmirror=True; max_parallel_download=10; deltarpm=True; skip_if_unavaible=True${Color_Off})"
+      echo -e  "${B6}uninstall/remove${normal}: uninstall cromha-manager (${B0}and cromha-manager-ctl too${Color_Off})"
+      echo -e  "${B6}dnf-optimize${normal}: modify your dnf configuration at /etc/dnf/dnf.conf to optimize it (${B0}add fastestmirror=True; max_parallel_download=10; deltarpm=True; skip_if_unavaible=True${Color_Off})"
 fi
 
 if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
