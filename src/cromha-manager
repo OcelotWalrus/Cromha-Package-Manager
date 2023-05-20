@@ -635,7 +635,7 @@ if [ "$option" == "help" ]; then
       echo -e  "${B6}colors/color-test${normal}: show an output text to test color palette"
       echo -e  "${B6}clean/auto-clean/purge${normal}: use the clean command of all your enabled package managers (${B0}clean cache${Color_Off})"
       echo -e  "${B6}clean-all/auto-clean-all/purge-all${normal}: try to use the clean command of all package managers compatible, even the ones not enabled (${B0}ex: dnf clean${Color_Off})(${B0}also does not output errors${Color_Off})"
-      echo -e  "${B0}config/customize${normal}: customize config (${B0}$HOME/cromha-manager-config.yaml${Color_Off})"
+      echo -e  "${B6}config/customize${normal}: customize config (${B0}$HOME/cromha-manager-config.yaml${Color_Off})"
       echo -e  "${B6}current-config${normal}: echo to the terminal your current config"
       echo -e  "${B6}downgrade${normal}: downgrade a package to one of your package manager (${B0}from the current version to the last one${Color_Off})"
       echo -e  "${B6}help${normal}: show this help page"
