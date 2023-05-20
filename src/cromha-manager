@@ -692,7 +692,7 @@ fi
 if [ "$option" == "customize" ] || [ "$option" == "config" ]; then
       echo -e "${C5}Opening config.yaml...${Color_Off}"
       sleep 1
-      $prefered_text_editor $HOME/cromha-manager-config.yaml >&- 2>&-
+      $prefered_text_editor $HOME/cromha-manager-config.yaml
       sleep .1
 fi
 
