@@ -255,6 +255,7 @@ if [ "$option" == "help" ]; then
 	echo -e  "${B6}help${normal}: display this help message"
       echo -e  "${B6}upgrade/update${normal}: upgrade cromha-manager version"
       echo -e  "${B6}uninstall/remove${normal}: uninstall cromha-manager (and cromha-manager-ctl too)"
+      echo -e  "${B6}dnf-optimize${normal}: modify your dnf configuration at /etc/dnf/dnf.conf to optimize it (add fastestmirror=True; max_parallel_download=10; deltarpm=True; skip_if_unavaible=True)"
 fi
 
 if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
@@ -281,6 +282,25 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       sudo rm -r "$HOME/Cromha-Manager"
       echo " "
       echo -e "${B6}Last patch message: ${Color_Off}'$last_patch_info'"
+fi
+
+if [ "$option" == "dnf-optimize" ]; then
+      echo -e " "
+      echo -e "${C5}Locating dnf conf file..."
+      echo -e "${C5}Reading /etc/dnf/dnf.conf..."
+      echo -e "${C5}Getting parameters to optimize..."
+      echo -e " "
+      echo -e "[Optimizing DNF]"
+      ProgressBar & PID1=$!
+      sudo echo "fastestmirror=True" >> /etc/dnf/dnf.conf >&- 2>&- & PID2=$!
+      sudo echo "max_parallel_download=10" >> /etc/dnf/dnf.conf >&- 2>&- & PID3=$!
+      sudo echo "deltarpm=True" >> /etc/dnf/dnf.conf >&- 2>&- & PID4=$!
+      sudo echo "skip_if_unavaible=True" >> /etc/dnf/dnf.conf >&- 2>&- & PID5=$!
+      wait $PID1
+      wait $PID2
+      wait $PID3
+      wait $PID4
+      wait $PID5
 fi
 
 if [ "$option" == "uninstall" ] || [ "$option" == "remove" ]; then
