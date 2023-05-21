@@ -151,7 +151,9 @@ function CheckNetwork () {
 }
 
 function Logger () {
-      echo "$1" &>> "$HOME/cromha-manager-log-$current_date_simple"
+      if [ "$logging" == True ]; then
+            echo "$1" &>> "$HOME/cromha-manager-log-$current_date_simple"
+      fi
 }
 
 # YAML parser
@@ -215,6 +217,7 @@ default_config="settings:
   prefered_txt_editor: nano
   prefered_flatpak_repo: flathub
   notifications: True
+  cromha_manager_logging: True
 package_managers:
   apt: False
   cargo: False
@@ -255,6 +258,7 @@ progress_bar_full=$(echo -e "${B6}$CONFIG_settings_progress_bar_full_sprite${Col
 
 prefered_text_editor=$(echo -e "$CONFIG_settings_prefered_text_editor")
 prefered_flatpak_repo=$(echo -e "$CONFIG_settings_prefered_flatpak_repo")
+logging=$(echo -e "$CONFIG_settings_cromha_manager_logging")
 
 user_distro=$(echo -e "$CONFIG_informations_distro")
 

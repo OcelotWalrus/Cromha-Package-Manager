@@ -7,6 +7,7 @@ settings:
   prefered_text_editor: nano
   prefered_flatpak_repo: flathub
   notifications: True
+  cromha_manager_logging: True
 package_managers:
   apt: False
   cargo: False
