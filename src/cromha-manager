@@ -370,7 +370,7 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       fi
       if [ $cargo == True ]; then
             echo -e "[Upgrading Cargo Packages]"
-            sudo cargo update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDCARGO1=$!
+            sudo cargo update &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDCARGO1=$!
             ProgressBar & PIDCARGO2=$!
             wait $PIDCARGO1
             wait $PIDCARGO2
