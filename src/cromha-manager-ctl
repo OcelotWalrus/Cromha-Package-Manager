@@ -145,15 +145,16 @@ function CheckNetwork () {
             sleep 3
             echo ""
             echo -e "${C5}Aborting current process...${Color_Off}"
+            Logger "CROMHA-MANAGER-ERROR:Aborting process because no internet was avaible"
             sleep 1
             exit
       fi
 }
 
 function Uninstall () {
-      sudo rm -r /usr/bin/cromha-manager &>> "$HOME/cromha-manager-log-$current_date_simple"
-      sudo rm -r /usr/bin/cromha-manager-ctl &>> "$HOME/cromha-manager-log-$current_date_simple"
-      sudo rm -r $HOME/cromha-manager-config.yaml &>> "$HOME/cromha-manager-log-$current_date_simple"
+      sudo rm -r /usr/bin/cromha-manager &>> "$HOME/cromha-manager-ctl-log-$current_date_simple"
+      sudo rm -r /usr/bin/cromha-manager-ctl &>> "$HOME/cromha-manager-ctl-log-$current_date_simple"
+      sudo rm -r $HOME/cromha-manager-config.yaml &>> "$HOME/cromha-manager-ctl-log-$current_date_simple"
 }
 
 function Logger () {
@@ -233,6 +234,7 @@ user_distro=$(echo -e "$CONFIG_informations_distro")
 # Start jobs
 
 if [ "$option" == "" ]; then
+      Logger "CROMHA-MANAGER-CTL: Showed welcome screen"
       echo
       echo -e "${B1}_________ .__                                          ____________________.____     
 \_   ___ \|  |_________  ____   _____ _____            \_   ___ \__    ___/|    |    
@@ -258,6 +260,7 @@ fi
 # Commands
 
 if [ "$option" == "help" ]; then
+      Logger "CROMHA-MANAGER-CTL: Showed help page"
       echo -e  "${B2}HELP PAGE:${Color_Off}"
 	echo -e " "
 	echo -e  "${B5}COMMANDS${normal} ${C3}(First entry):${Color_Off}"
@@ -271,32 +274,39 @@ if [ "$option" == "help" ]; then
 fi
 
 if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
+      Logger "CROMHA-MANAGER-CTL: Starting upgrading process"
       echo -e " "
       echo -e "${B1}WARNING: It is normal is there is some error messages at the end of the script, it is because the cromha-manager-ctl have been modified during the patch. But don't worry the update will stil happen. You can still run again the program and you will see no error"
       echo " "
+      Logger "CROMHA-MANAGER-CTL: Checking internet connection"
       CheckNetwork
+      Logger "CROMHA-MANAGER-CTL: Succesfully passed internet connection test"
       sleep 3
       echo -e "${C5}Checking GitHub Repo..."
       sleep 2
-      echo -e "${C5}Cloning GitHub Repo into $HOME/Cromha-manager (default path)..."
-      git clone https://github.com/OcelotWalrus/Bash-Multi-Package-Manager $HOME/Cromha-Manager &>> "$HOME/cromha-manager-log-$current_date_simple"
+      Logger "CROMHA-MANAGER-CTL: Cloning GitHub repository"
+      echo -e "${C5}Cloning GitHub Repo into $HOME/Cromha-Manager (default path)..."
+      git clone https://github.com/OcelotWalrus/Bash-Multi-Package-Manager $HOME/Cromha-Manager &>> "$HOME/cromha-manager-ctl-log-$current_date_simple"
+      Logger "CROMHA-MANAGER-CTL: Reinstalling cromha-manager and cromha-manager-ctl to upgrade"
       echo -e "${C5}Upgrading Cromha-Manager...${Color_Off}"
       echo " "
       echo "[Upgrading Cromha-Manager]"
       cd "$HOME/Cromha-Manager"
       last_patch_info=$(git log -1 --pretty=%B)
-      sh install.sh &>> "$HOME/cromha-manager-log-$current_date_simple" & WAIT=$!
+      sh install.sh &>> "$HOME/cromha-manager-ctl-log-$current_date_simple" & WAIT=$!
       ProgressBarFast & WAIT2=$!
       wait $WAIT
       wait $WAIT2
       echo " "
       echo -e "${C5}Removed cloned github repository used for upgrading..."
       sudo rm -r "$HOME/Cromha-Manager"
+      Logger "CROMHA-MANAGER-CTL: Removed cloned github repository at $HOME/Cromha-Manager"
       echo " "
       echo -e "${B6}Last patch message: ${Color_Off}'$last_patch_info'"
 fi
 
 if [ "$option" == "dnf-optimize" ]; then
+      Logger "CROMHA-MANAGER-CTL: Starting dnf optimize process"
       echo -e " "
       echo -e "${C5}Locating dnf conf file..."
       sleep .7
@@ -305,12 +315,13 @@ if [ "$option" == "dnf-optimize" ]; then
       echo -e "${C5}Getting parameters to optimize...${Color_Off}"
       sleep .8
       echo -e " "
+      Logger "CROMHA-MANAGER-CTL: Writing dnf parameters to /ect/dnf/dnf.conf"
       echo -e "[Optimizing DNF]"
       ProgressBarFast & PID1=$!
-      sudo echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-log-$current_date_simple" & PID2=$!
-      sudo echo "max_parallel_download=10" | sudo tee -a /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-log-$current_date_simple" & PID3=$!
-      sudo echo "deltarpm=True" | sudo tee -a  /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-log-$current_date_simple" & PID4=$!
-      sudo echo "skip_if_unavaible=True" | sudo tee -a /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-log-$current_date_simple" & PID5=$!
+      sudo echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-ctl-log-$current_date_simple" & PID2=$!
+      sudo echo "max_parallel_download=10" | sudo tee -a /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-ctl-log-$current_date_simple" & PID3=$!
+      sudo echo "deltarpm=True" | sudo tee -a  /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-ctl-log-$current_date_simple" & PID4=$!
+      sudo echo "skip_if_unavaible=True" | sudo tee -a /etc/dnf/dnf.conf &>> "$HOME/cromha-manager-ctl-log-$current_date_simple" & PID5=$!
       wait $PID1
       wait $PID2
       wait $PID3
@@ -320,6 +331,8 @@ fi
 
 if [ "$option" == "logs" ] || [ "$option" == "open-logs" ]; then
       echo " "
+      Logger "CROMHA-MANAGER-CTL: Starting logs open process"
+      Logger "CROMHA-MANAGER-CTL: Opening logs"
       echo -e "${C5}Opening cromha-manager-ctl-log-$current_date_simple...${Color_Off}"
       sleep 1
       $prefered_text_editor "$HOME/cromha-manager-ctl-log-$current_date_simple"
@@ -327,6 +340,7 @@ if [ "$option" == "logs" ] || [ "$option" == "open-logs" ]; then
 fi
 
 if [ "$option" == "clean-logs" ] || [ "$option" == "clean-log" ]; then
+      Logger "CROMHA-MANAGER-CTL: Started logs cleaning process"
       echo " "
       echo -e "${C5}Cleaning logs...${Color_Off}"
       echo -e " "
@@ -335,6 +349,7 @@ if [ "$option" == "clean-logs" ] || [ "$option" == "clean-log" ]; then
       sudo rm -r $HOME/cromha-manager-ctl-log* &>> $HOME/cache/cromha-cache & PID1=$!
       sudo rm -r $HOME/cromha-manager-log* &>> $HOME/cache/cromha-cache & PID2=$!
       ProgressBarFast & PID3=$!
+      Logger "CROMHA-MANAGER-CTL: Cleaned logs"
       wait $PID1
       wait $PID2
       wait $PID3
@@ -342,6 +357,7 @@ if [ "$option" == "clean-logs" ] || [ "$option" == "clean-log" ]; then
 fi
 
 if [ "$option" == "uninstall" ] || [ "$option" == "remove" ]; then
+      Logger "CROMHA-MANAGER-CTL: Starting uninstall process"
       echo -e "${B1}WARNING: It is normal if errors occurs at the end of the script, it is because the nedded files for cromha-manager-ctl to work have been deleted. Even if there is errors, cromha-manager and cromha-manager-ctl will be still removed"
       echo -e " "
       CheckNetwork
@@ -351,6 +367,7 @@ if [ "$option" == "uninstall" ] || [ "$option" == "remove" ]; then
       echo "[Removing/Uninstalling Cromha-Manager]"
       ProgressBar & PID1=$!
       Uninstall & PID2=$!
+      Logger "CROMHA-MANAGER-CTL: Uninstalled cromha-manager and cromha-magaer-ctl"
       wait $PID1
       wait $PID2
 
@@ -359,4 +376,5 @@ fi
 if [ "$disable_done" == False ]; then
       echo " "
       echo -e  "${Color_Off}${B6}Done $progress_bar_done${Color_Off}"
+      Logger "CROMHA-MANAGER-CTL: Finished process"
 fi
