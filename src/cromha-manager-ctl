@@ -159,7 +159,7 @@ function Uninstall () {
 
 function Logger () {
       if [ "$logging" == True ]; then
-            echo "$1" &>> "$HOME/cromha-manager-ctl-log-$current_date_simple"
+            echo "$1" >> "$HOME/cromha-manager-ctl-log-$current_date_simple"
       fi
 }
 
