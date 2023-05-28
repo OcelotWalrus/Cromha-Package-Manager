@@ -448,7 +448,7 @@ if [ "$option" == "upgrade-all" ] || [ "$option" == "update-all" ]; then
       fi
 fi
 
-if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$option" == "dist_upgrade" ] || [ "$option" == "distro-upgrade" ]; then
+if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$option" == "dist-upgrade" ] || [ "$option" == "distro-upgrade" ]; then
       echo -e "${C6}It is highly recommended to make a backup of your system before upgrading to a new distribution release"
       echo -e ""
       CheckNetwork
@@ -484,6 +484,7 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$op
             ProgressBarFast & PID2=$!
             wait $PID1
             wait $PID2
+            echo " "
             echo -e "${C5}Downloading Fedora $new_fedora_ver packages...${Color_Off}"
             echo " "
             echo -e "[Downloading Fedora $new_fedora_ver packages]"
