@@ -1663,7 +1663,6 @@ if [ "$option" == "colors" ] || [ "$option" == "color-test" ]; then
 fi
 
 if [ "$option" == "progress-bar" ] || [ "$option" == "progress-bars" ] || [ "$option" == "progress-bar-test" ] || [ "$option" == "progress-bars-test" ]; then
-	echo " "
 	echo "[Fast Progress Bar]"
 	ProgressBarFast
 	echo " "
