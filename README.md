@@ -1,13 +1,92 @@
-# STILL IN WORK
+# Cromha-Package-Manager
+```
+lolo@fedora ~ $ cromha-manager
+_________                       .__            
+\_   ___ \_______  ____   _____ |  |__ _____   
+/    \  \/\_  __ \/  _ \ /     \|  |  \__  \  
+\     \____|  | \(  <_> )  Y Y  \   Y  \/ __ \_
+ \______  /|__|   \____/|__|_|  /___|  (____  /
+        \/                    \/     \/     \/
+Current version: 0.1
+```
 
-For people who are interested in this project, here is a small paragraph to explain the major idea of this "Bash Multi-Package Manager"
+## About
 
-The idea of this is to have a single command to group almost any package manager that you can imagine.
-You will be able to enable and disable package managers(like disable apt and enabling dnf instead or other things like that) in the config.yaml file and enable other misc options.
+The Cromha Package Manager is a personal project I made for myself (I currently use it for package managing) for fun. It is basically a bash script in your bin/ directory so you can use it everywhere. It has multiple useful functions, a logging system and a developed YAML config file to customize your command prompt.
 
-Here is an example of commands to give you an idea of how it will look:
+It is actually two scripts: the cromha-manager script, the main script where you run the package managing commands and all that stuff, and the cromha-manager-ctl script, which you will use to update the Cromha Package Manager scripts and to do various stuff like, optimizing DNF...
 
-    $ cromha-manager search my-amazing-package
+## Installing & Using
 
-command output will be something like this :
-![Screenshot-20230308183650-1261x695](https://user-images.githubusercontent.com/87318892/223788464-7fa6d168-5d7c-44fd-a92a-974ed2e1cd6b.png)
+### Installing
+
+Installing and using the Cromha Package Manager might be kind of annoying if you don't understand how it works.
+First, clone the github repository by running:
+```
+git clone git@github.com:OcelotWalrus/Cromha-Package-Manager.git
+```
+
+Then, run the install.sh script:
+```
+chmod +x install.sh
+sh install.sh
+```
+
+And you should be good to go!
+
+### Using
+
+The Cromha Package Manager command is very simple:
+
+you can run 'OPTIONS', that will run specific actions. After that, you can add up to two 'PARAMETERS', separated by spaces, which are basically like 'OPTIONS' but they are runned after the 'OPTIONS'.
+Example:
+```
+cromha-manager upgrade --purge --reboot
+```
+
+This command will first upgrade my packages, then it will purge my cache and finnally, it will reboot my system. All PARAMETERS that reboots, shutdown or close terminal prompts have a Timer of 60 seconds by default and it will send you a notification.
+
+## Functions
+
+You can check all functionalities by running:
+<details>
+
+  <summary>Expand</summary>
+
+```
+cromha-manager help
+```
+
+```
+cromha-manager-ctl help
+```
+
+</details>
+
+Here are the main functionalitities:
+* cromha-manager script:
+  * OPTIONS:
+    * autoremove: remove all unneeded packages that were originaly installed as dependencies
+    * logs/open-logs: open the latest cromha-manager log file
+    * clean/purge: use the `clean` option of all enabled packages managers
+    * config/customize: open the config file
+    * info: Get infos about a specific package
+    * install/add: install a package
+    * list/packages: list all your enabled packages
+    * reinstall: reinstall a package
+    * search/find: find a package
+    * uninstall/remove: uninstall a package
+    * upgrade/update: upgrade all your packages
+    * sys-upgrade: upgrade your distribution (from Fedora 36 to 37. Only Fedora is compatible for now)
+  * PARAMETERS:
+    * -clean/-purge: use the `clean` option of all enabled packages managers
+    * -exit: close the command prompt after execution of the option
+    * -reboot: reboot your system after execution of the option
+    * -poweroff: shutdown your system after execution of the option
+* cromha-manager-ctl script:
+  * OPTIONS:
+    * logs: open the lastest cromha-manager-ctl log file
+    * clean-logs: clean both cromha-manager and cromha-mnagaer-ctl logs
+    * upgrade/update: update both cromha-manager and cromha-manager-ctl scripts for git
+    * uninstall/remove: uninstall both cromha-manager and cromha-manager-ctl scripts
+    * dnf-optimize: modify your DNF configuration to optimize it
