@@ -36,6 +36,8 @@ And you should be good to go!
 
 ### Using
 
+#### Introduction
+
 The Cromha Package Manager command is very simple:
 
 you can run 'OPTIONS', that will run specific actions. After that, you can add up to two 'PARAMETERS', separated by spaces, which are basically like 'OPTIONS' but they are runned after the 'OPTIONS'.
@@ -45,6 +47,15 @@ cromha-manager upgrade --purge --reboot
 ```
 
 This command will first upgrade my packages, then it will purge my cache and finnally, it will reboot my system. All PARAMETERS that reboots, shutdown or close terminal prompts have a Timer of 60 seconds by default and it will send you a notification.
+
+#### Configuration
+
+By default, no package manager will be enabled and you won't be able to do almost anything. What you need to do is to run:
+```
+cromha-manager config
+```
+
+It will open your config file using nano. Then you can change all options to make the Cromha Package Manager like you want!
 
 ## Functions
 
