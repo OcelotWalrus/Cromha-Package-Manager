@@ -520,7 +520,7 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$op
             wait $PID1
             wait $PID2
             echo " "
-            echo "${C5]Upgrading your system packages...${Color_Off}"
+            echo "${C5}Upgrading your system packages...${Color_Off}"
             echo " "
             sudo do-release-upgrade
       fi
