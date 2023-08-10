@@ -384,10 +384,12 @@ if [ "$option" == "upgrade" ] || [ "$option" == "update" ]; then
       fi
       if [ $apt == True ]; then
             echo -e "[Upgrading APT Packages]"
-            sudo apt update -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT1=$!
-            ProgressBar & PIDAPT2=$!
+            sudo apt update &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT1=$!
+		sudo apt upgrade -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PIDAPT2=$!
+            ProgressBar & PIDAPT3=$!
             wait $PIDAPT1
             wait $PIDAPT2
+		wait $PIDAPT3
       fi
       if [ $zypp == True ]; then
             echo -e "[Upgrading Zypp Packages]"
