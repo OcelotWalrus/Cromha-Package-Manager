@@ -60,9 +60,6 @@ It will open your config file using nano. Then you can change all options to mak
 ## Functions
 
 You can check all functionalities by running:
-<details>
-
-  <summary>Expand</summary>
 
 ```
 cromha-manager help
@@ -71,8 +68,6 @@ cromha-manager help
 ```
 cromha-manager-ctl help
 ```
-
-</details>
 
 Here are the main functionalitities:
 * cromha-manager script:
