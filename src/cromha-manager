@@ -470,7 +470,7 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$op
       if [ "$user_distro" == "fedora" ] && [ "$answer" == "y" ]; then
             current_fedora_ver=$(awk -F= '$1=="VERSION_ID" { print $2 ;}' /etc/os-release)
             new_fedora_ver=$(echo -e $(( "$current_fedora_ver" + 1 )))
-            echo -e "${B6}Please make sure that before running this command you have upgraded then rebooted your computer (by running cromha-manager upgrade -reboot) ${Color_Off}"
+            echo -e "${B6}Please make sure that before running this command you have upgraded then rebooted your computer (by running `cromha-manager upgrade -reboot`) ${Color_Off}"
             echo -e "${B6}System upgrade will begin in $wait_time seconds${Color_Off}"
             if [ "$notifications" == True ]; then
                   notify-send "System upgrade will begin in $wait_time seconds"
@@ -502,8 +502,8 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$op
             Timer
             sudo dnf system-upgrade reboot -y &>> "$HOME/cromha-manager-log-$current_date_simple"
       fi
-      if [ "$user_distro" == "ubuntu" ] && [ "$answer = "y" ]; then
-            echo -e "${B6}Please make sure that before running this command you have upgraded then rebooted your computer (by running cromha-manager upgrade -reboot) ${Color_Off}"
+      if [ "$user_distro" == "ubuntu" ] && [ "$answer" = "y" ]; then
+            echo -e "${B6}Please make sure that before running this command you have upgraded then rebooted your computer (by running `cromha-manager upgrade -reboot`) ${Color_Off}"
             echo -e "${B6}System upgrade will begin in $wait_time seconds${Color_Off}"
             if [ "$notifications" == True ]; then
                   notify-send "System upgrade will begin in $wait_time seconds"
