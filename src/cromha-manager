@@ -500,6 +500,28 @@ if [ "$option" == "sys-upgrade" ] || [ "$option" == "system-upgrade" ] || [ "$op
             Timer
             sudo dnf system-upgrade reboot -y &>> "$HOME/cromha-manager-log-$current_date_simple"
       fi
+	if [ "$user_distro" == "ubuntu" ] && [ "$answer = "y" ]; then
+		echo -e "${B6}Please make sure that before running this command you have upgraded then rebooted your computer (by running 'cromha-manager upgrade -reboot' ${Color_Off}"
+            echo -e "${B6}System upgrade will begin in $wait_time seconds${Color_Off}"
+            if [ "$notifications" == True ]; then
+                  notify-send "System upgrade will begin in $wait_time seconds"
+            fi
+            Timer
+            echo " "
+            CheckNetwork
+            sleep 3
+		echo -e "${C5}Installing apt update-manager-core plugin if not installed...${Color_Off}"
+            echo " "
+            sudo apt install update-manager-core -y &>> "$HOME/cromha-manager-log-$current_date_simple" & PID1=$!
+            echo "[Installing update-manager-core apt plugin]"
+            ProgressBarFast & PID2=$!
+            wait $PID1
+            wait $PID2
+		echo " "
+		echo "${C5]Upgrading your system packages...${Color_Off}"
+		echo " "
+		sudo do-release-upgrade
+	fi
 fi
 
 if [ "$option" == "package-upgrade" ] || [ "$option" == "package-update" ]; then
